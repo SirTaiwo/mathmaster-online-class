@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>
+My Courses
+</title>
+
+<style>
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+}
+
+
+.container {
+    max-width: 900px;
+    margin: auto;
+}
+
+
+h1 {
+    text-align: center;
+}
+
+
+.welcome {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+
+.course-card {
+
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 20px;
+
+}
+
+
+.course-card h2 {
+
+    margin-top: 0;
+
+}
+
+
+.course-info {
+
+    margin: 10px 0;
+
+}
+
+
+.button {
+
+    display: inline-block;
+    padding: 10px 18px;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+
+}
+
+
+.button:hover {
+
+    background: #0056b3;
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<h1>
+My Mathematics Courses
+</h1>
+
+
+<div class="welcome">
+
+Welcome,
+<strong>
+<%= user.first_name %>
+</strong>
+
+</div>
+
+
+
+<% if(courses.length === 0){ %>
+
+
+<p>
+You have not enrolled in any courses yet.
+</p>
+
+
+<% } %>
+
+
+
+<% courses.forEach(course => { %>
+
+
+<div class="course-card">
+
+
+<h2>
+📚 <%= course.title %>
+</h2>
+
+
+<div class="course-info">
+
+<strong>
+Grade:
+</strong>
+
+<%= course.grade %>
+
+</div>
+
+
+
+<div class="course-info">
+
+<%= course.description %>
+
+</div>
+
+
+
+<a 
+class="button"
+href="/student/courses/<%= course.id %>/lessons">
+
+Continue Learning
+
+</a>
+
+
+</div>
+
+
+<% }) %>
+
+
+
+</div>
+
+
+</body>
+
+</html>

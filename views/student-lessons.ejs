@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>
+<%= course.title %>
+</title>
+
+<link rel="stylesheet"
+      href="/css/style.css">
+
+</head>
+
+<body>
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+Math<span>Master</span>
+</div>
+
+<div class="nav-links">
+
+<a href="/student/dashboard">
+Dashboard
+</a>
+
+<a href="/student/my-courses">
+My Courses
+</a>
+
+<a href="/logout">
+Logout
+</a>
+
+</div>
+
+</nav>
+
+</header>
+
+
+
+<main class="dashboard">
+
+<div class="dashboard-header">
+
+<p class="eyebrow">
+
+COURSE LESSONS
+
+</p>
+
+<h1>
+
+<%= course.title %>
+
+</h1>
+
+<p>
+
+Grade:
+<strong><%= course.grade %></strong>
+
+</p>
+
+</div>
+
+
+
+<% if (lessons.length === 0) { %>
+
+<div class="card">
+
+<h3>
+
+No lessons available yet.
+
+</h3>
+
+<p>
+
+Your teacher has not published any lessons for this course.
+
+</p>
+
+</div>
+
+<% } else { %>
+
+<% lessons.forEach(function(lesson){ %>
+
+<div class="card">
+
+<h2>
+
+📘 <%= lesson.title %>
+
+</h2>
+
+<p>
+
+<%= lesson.content %>
+
+</p>
+
+</div>
+
+<% }) %>
+
+<% } %>
+
+</main>
+
+</body>
+
+</html>

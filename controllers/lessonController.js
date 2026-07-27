@@ -94,34 +94,35 @@ exports.createLessonForm = (req, res) => {
 
 exports.createLesson = (req, res) => {
 
+    console.log("=== CREATE LESSON ===");
+    console.log("Course ID:", req.params.courseId);
+    console.log("Body:", req.body);
 
-    const {
-        title,
-        content
-    } = req.body;
+    try {
 
+        const { title, content } = req.body;
 
+        const result = Lesson.createLesson(
+            req.params.courseId,
+            title,
+            content
+        );
 
-    Lesson.createLesson(
+        console.log("Insert result:", result);
 
-        req.params.courseId,
+        res.redirect(
+            `/teacher/courses/${req.params.courseId}/lessons`
+        );
 
-        title,
+    } catch (error) {
 
-        content
+        console.error("Lesson creation error:", error);
 
-    );
+        res.status(500).send(error.message);
 
-
-    res.redirect(
-        `/teacher/courses/${req.params.courseId}/lessons`
-    );
-
+    }
 
 };
-
-
-
 // ========================================
 // DELETE LESSON
 // ========================================

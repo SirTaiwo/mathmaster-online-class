@@ -88,6 +88,24 @@ router.get(
     requireRole("student"),
     studentController.enroll
 );
+// ========================================
+// STUDENT MY COURSES
+// ========================================
+
+router.get(
+    "/student/my-courses",
+    requireRole("student"),
+    studentController.myCourses
+);
+// ========================================
+// VIEW LESSONS FOR ENROLLED COURSE
+// ========================================
+
+router.get(
+    "/student/courses/:courseId/lessons",
+    requireRole("student"),
+    studentController.courseLessons
+);
 
 
 module.exports = router;

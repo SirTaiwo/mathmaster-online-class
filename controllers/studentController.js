@@ -39,7 +39,7 @@ exports.dashboard = (req, res) => {
 
 
 res.render(
-    "dashboard",
+    "student-dashboard",
     {
         user: student,
 
@@ -403,5 +403,76 @@ exports.enroll = (req, res) => {
         }
     );
 
+
+};
+// ========================================
+// STUDENT MY COURSES
+// ========================================
+
+exports.myCourses = (req, res) => {
+
+
+    const studentId =
+        req.session.student.id;
+
+
+    const courses =
+        Enrollment.findCoursesByStudent(
+            studentId
+        );
+
+
+    res.render(
+        "student-my-courses",
+        {
+
+            user:
+                req.session.student,
+
+            courses
+
+        }
+    );
+
+
+};
+// ========================================
+// VIEW COURSE LESSONS
+// ========================================
+
+exports.courseLessons = (req, res) => {
+
+    const course =
+        Course.findById(
+            req.params.courseId
+        );
+
+    if (!course) {
+
+        return res.redirect(
+            "/student/my-courses"
+        );
+
+    }
+
+    const lessons =
+        require("../models/Lesson")
+            .findByCourse(
+                req.params.courseId
+            );
+
+    res.render(
+        "student-lessons",
+        {
+
+            user:
+                req.session.student,
+
+            course,
+
+            lessons
+
+        }
+    );
 
 };
