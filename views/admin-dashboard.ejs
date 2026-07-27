@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Admin Dashboard</title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+<body>
+
+<header>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Math<span>Master</span>
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/">
+                Home
+            </a>
+
+            <a href="/logout">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+</header>
+
+
+<body>
+
+<div class="admin-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+            Math<span>Master</span>
+        </div>
+
+        <ul class="sidebar-menu">
+
+            <li>
+                <a href="/admin/dashboard">🏠 Dashboard</a>
+            </li>
+
+            <li>
+                <a href="/admin/users">👥 Users</a>
+            </li>
+
+            <li>
+                <a href="#">👨‍🎓 Students</a>
+            </li>
+
+            <li>
+                <a href="#">👨‍🏫 Teachers</a>
+            </li>
+
+            <li>
+                <a href="#">📚 Classes</a>
+            </li>
+
+            <li>
+                <a href="#">📝 Assignments</a>
+            </li>
+
+            <li>
+                <a href="#">📊 Reports</a>
+            </li>
+
+            <li>
+                <a href="#">⚙ Settings</a>
+            </li>
+
+        </ul>
+
+        <a class="logout-btn" href="/logout">
+            🚪 Logout
+        </a>
+
+    </aside>
+
+
+    <!-- Main Content -->
+
+    <main class="main-content">
+
+        <div class="dashboard-header">
+
+            <p class="eyebrow">
+                ADMINISTRATION
+            </p>
+
+            <h1>
+                Welcome,
+                <%= user.first_name %>
+                <%= user.last_name %>!
+            </h1>
+
+            <p>
+                Role:
+                <strong><%= user.role %></strong>
+            </p>
+
+        </div>
+
+        <!-- Keep your existing dashboard-grid here -->
+
+        <!-- Keep your Recent Users section here -->
+
+    </main>
+
+</div>
+
+</body>
+</body>
+
+</html>

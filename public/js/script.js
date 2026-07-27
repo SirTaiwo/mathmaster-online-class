@@ -1,0 +1,1 @@
+console.log("MathMaster Online Class loaded successfully.");

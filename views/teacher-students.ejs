@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>
+Teacher Students
+</title>
+
+<link
+rel="stylesheet"
+href="/css/style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+Math<span>Master</span>
+</div>
+
+
+<div class="nav-links">
+
+<a href="/teacher/dashboard">
+Dashboard
+</a>
+
+<a href="/logout">
+Logout
+</a>
+
+</div>
+
+</nav>
+
+</header>
+
+
+
+<main class="dashboard">
+
+
+<h1>
+My Students
+</h1>
+
+
+<p>
+Students enrolled in your courses.
+</p>
+
+
+
+<div class="dashboard-grid">
+
+
+<% students.forEach(student => { %>
+
+
+<div class="dashboard-card">
+
+
+<h3>
+👨‍🎓
+<%= student.first_name %>
+<%= student.last_name %>
+</h3>
+
+
+<p>
+Email:
+<%= student.email %>
+</p>
+
+
+</div>
+
+
+<% }) %>
+
+
+
+</div>
+
+
+</main>
+
+
+</body>
+
+</html>

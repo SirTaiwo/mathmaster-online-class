@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Create Course</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+Math<span>Master</span>
+</div>
+
+
+<div class="nav-links">
+
+<a href="/teacher/courses">
+My Courses
+</a>
+
+<a href="/logout">
+Logout
+</a>
+
+</div>
+
+</nav>
+
+</header>
+
+
+
+<main class="dashboard">
+
+
+<div class="dashboard-header">
+
+<p class="eyebrow">
+CREATE COURSE
+</p>
+
+
+<h1>
+Create Mathematics Course
+</h1>
+
+
+</div>
+
+
+
+<form method="POST"
+action="/teacher/courses/create"
+class="form-card">
+
+
+<label>
+Course Title
+</label>
+
+
+<input
+type="text"
+name="title"
+placeholder="Example: Grade 10 Mathematics"
+required
+>
+
+
+
+<label>
+Description
+</label>
+
+
+<textarea
+name="description"
+placeholder="Describe this course"
+></textarea>
+
+
+
+<label>
+Grade
+</label>
+
+
+<select name="grade" required>
+
+
+<option value="">
+Select Grade
+</option>
+
+
+<option value="Grade 8">
+Grade 8
+</option>
+
+
+<option value="Grade 9">
+Grade 9
+</option>
+
+
+<option value="Grade 10">
+Grade 10
+</option>
+
+
+<option value="Grade 11">
+Grade 11
+</option>
+
+
+<option value="Grade 12">
+Grade 12
+</option>
+
+
+</select>
+
+
+
+<button
+type="submit"
+class="btn primary">
+
+Create Course
+
+</button>
+
+
+</form>
+
+
+</main>
+
+
+</body>
+
+</html>

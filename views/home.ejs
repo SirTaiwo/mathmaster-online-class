@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>MathMaster Online Class</title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+<body>
+
+<header>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Math<span>Master</span>
+        </div>
+
+
+        <div class="nav-links">
+
+            <a href="/">Home</a>
+
+            <a href="#courses">
+                Courses
+            </a>
+
+            <a href="#about">
+                About
+            </a>
+
+
+            <% if (student) { %>
+
+               <% if (student) { %>
+
+    <% if (student.role === "student") { %>
+
+        <a href="/student/dashboard">
+            Dashboard
+        </a>
+
+    <% } %>
+
+
+    <% if (student.role === "teacher") { %>
+
+        <a href="/teacher/dashboard">
+            Teacher Dashboard
+        </a>
+
+    <% } %>
+
+
+    <% if (student.role === "admin") { %>
+
+        <a href="/admin/dashboard">
+            Admin Dashboard
+        </a>
+
+    <% } %>
+
+
+    <a href="/logout">
+        Logout
+    </a>
+
+<% } else { %>
+
+    <a href="/login">
+        Login
+    </a>
+
+    <a
+        href="/register"
+        class="nav-button"
+    >
+        Register
+    </a>
+
+<% } %>
+
+                <a href="/logout">
+                    Logout
+                </a>
+
+            <% } else { %>
+
+                <a href="/login">
+                    Login
+                </a>
+
+                <a
+                    href="/register"
+                    class="nav-button"
+                >
+                    Register
+                </a>
+
+            <% } %>
+
+        </div>
+
+    </nav>
+
+</header>
+
+
+<main>
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <p class="eyebrow">
+            ONLINE MATHEMATICS EDUCATION
+        </p>
+
+        <h1>
+            Learn Mathematics
+            <span>With Confidence</span>
+        </h1>
+
+        <p>
+            Interactive mathematics lessons,
+            practice exercises and assessments
+            designed to help students succeed.
+        </p>
+
+
+        <div class="hero-buttons">
+
+            <% if (student) { %>
+
+                <a
+                    href="/dashboard"
+                    class="btn primary"
+                >
+                    Go to Dashboard
+                </a>
+
+            <% } else { %>
+
+                <a
+                    href="/register"
+                    class="btn primary"
+                >
+                    Start Learning
+                </a>
+
+                <a
+                    href="/login"
+                    class="btn secondary"
+                >
+                    Student Login
+                </a>
+
+            <% } %>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section
+    class="courses"
+    id="courses"
+>
+
+    <div class="section-title">
+
+        <p>OUR PROGRAMMES</p>
+
+        <h2>
+            What You Can Learn
+        </h2>
+
+    </div>
+
+
+    <div class="course-grid">
+
+        <div class="course-card">
+
+            <div class="course-icon">
+                ∑
+            </div>
+
+            <h3>
+                Mathematics
+            </h3>
+
+            <p>
+                Develop mathematical concepts,
+                reasoning and problem-solving skills.
+            </p>
+
+        </div>
+
+
+        <div class="course-card">
+
+            <div class="course-icon">
+                %
+            </div>
+
+            <h3>
+                Mathematics Literacy
+            </h3>
+
+            <p>
+                Apply mathematics to everyday
+                situations and practical problems.
+            </p>
+
+        </div>
+
+
+        <div class="course-card">
+
+            <div class="course-icon">
+                📊
+            </div>
+
+            <h3>
+                Accounting
+            </h3>
+
+            <p>
+                Learn bookkeeping, financial
+                statements and accounting concepts.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section
+    class="about"
+    id="about"
+>
+
+    <div>
+
+        <p class="eyebrow">
+            ABOUT MATHMASTER
+        </p>
+
+        <h2>
+            Making Difficult Concepts Easier
+        </h2>
+
+        <p>
+            MathMaster Online Class provides
+            structured lessons and practice
+            activities to help learners build
+            confidence and improve performance.
+        </p>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<footer>
+
+    <p>
+        © 2026 MathMaster Online Class
+    </p>
+
+</footer>
+
+
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>

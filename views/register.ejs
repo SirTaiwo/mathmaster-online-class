@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Student Registration</title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+<body>
+
+<div class="auth-page">
+
+    <div class="auth-card">
+
+        <h1>
+            Create Student Account
+        </h1>
+
+        <p>
+            Register to start learning.
+        </p>
+
+
+        <% if (error) { %>
+
+            <div class="error">
+                <%= error %>
+            </div>
+
+        <% } %>
+
+
+        <form
+            action="/register"
+            method="POST"
+        >
+
+            <label>
+                First Name
+            </label>
+
+            <input
+                type="text"
+                name="first_name"
+                required
+            >
+
+
+            <label>
+                Last Name
+            </label>
+
+            <input
+                type="text"
+                name="last_name"
+                required
+            >
+
+
+            <label>
+                Email Address
+            </label>
+
+            <input
+                type="email"
+                name="email"
+                required
+            >
+
+
+            <label>
+                Grade
+            </label>
+
+            <select
+                name="grade"
+                required
+            >
+
+                <option value="">
+                    Select your grade
+                </option>
+
+                <option value="Grade 8">
+                    Grade 8
+                </option>
+
+                <option value="Grade 9">
+                    Grade 9
+                </option>
+
+                <option value="Grade 10">
+                    Grade 10
+                </option>
+
+                <option value="Grade 11">
+                    Grade 11
+                </option>
+
+                <option value="Grade 12">
+                    Grade 12
+                </option>
+
+            </select>
+
+
+            <label>
+                Password
+            </label>
+
+            <input
+                type="password"
+                name="password"
+                minlength="6"
+                required
+            >
+
+
+            <button
+                type="submit"
+                class="btn primary full-width"
+            >
+                Create Account
+            </button>
+
+        </form>
+
+
+        <p class="auth-link">
+
+            Already have an account?
+
+            <a href="/login">
+                Login here
+            </a>
+
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

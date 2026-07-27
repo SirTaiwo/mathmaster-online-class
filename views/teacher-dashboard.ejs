@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Teacher Dashboard</title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+<body>
+
+<header>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Math<span>Master</span>
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/">
+                Home
+            </a>
+
+            <a href="/logout">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+</header>
+
+
+<main class="dashboard">
+
+    <div class="dashboard-header">
+
+        <p class="eyebrow">
+            TEACHER DASHBOARD
+        </p>
+
+        <h1>
+            Welcome,
+            <%= user.first_name %>!
+        </h1>
+
+        <p>
+            Role:
+            <strong>
+                <%= user.role %>
+            </strong>
+        </p>
+
+    </div>
+
+
+    <div class="dashboard-card">
+
+    <h3>
+        📚 Classes
+    </h3>
+
+    <h2>
+        <%= stats.classes %>
+    </h2>
+
+    <p>
+        Manage your mathematics classes.
+    </p>
+
+</div>
+
+
+<div class="dashboard-card">
+
+    <h3>
+        👨‍🎓 Students
+    </h3>
+
+    <h2>
+        <%= stats.students %>
+    </h2>
+
+    <p>
+        View students assigned to you.
+    </p>
+
+</div>
+
+
+<div class="dashboard-card">
+
+    <h3>
+        📝 Assignments
+    </h3>
+
+    <h2>
+        <%= stats.assignments %>
+    </h2>
+
+    <p>
+        Create and manage assignments.
+    </p>
+
+</div>
+
+
+<div class="dashboard-card">
+
+    <h3>
+        📊 Assessments
+    </h3>
+
+    <h2>
+        <%= stats.assessments %>
+    </h2>
+
+    <p>
+        Monitor learner performance.
+    </p>
+
+</div>
+
+        <div class="dashboard-card">
+
+    <h3>
+        📚 Courses
+    </h3>
+
+    <p>
+        Create and manage mathematics courses.
+    </p>
+
+
+    <a 
+    href="/teacher/courses"
+    class="btn primary">
+
+        Manage Courses
+
+    </a>
+
+</div>
+
+
+        <div class="dashboard-card">
+
+            <h3>
+                📝 Lessons
+            </h3>
+
+            <p>
+                Create lessons and learning materials.
+            </p>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <h3>
+                📊 Student Results
+            </h3>
+
+            <p>
+                Monitor student performance and progress.
+            </p>
+
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+
+</html>

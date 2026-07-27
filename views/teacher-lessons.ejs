@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Course Lessons</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+Math<span>Master</span>
+</div>
+
+
+<div class="nav-links">
+
+<a href="/teacher/courses">
+My Courses
+</a>
+
+<a href="/logout">
+Logout
+</a>
+
+</div>
+
+</nav>
+
+</header>
+
+
+
+<main class="dashboard">
+
+
+<div class="dashboard-header">
+
+<p class="eyebrow">
+COURSE LESSONS
+</p>
+
+
+<h1>
+<%= course.title %>
+</h1>
+
+
+<p>
+Grade:
+<strong>
+<%= course.grade %>
+</strong>
+</p>
+
+
+<a 
+href="/teacher/courses/<%= course.id %>/lessons/create"
+class="btn primary">
+
+Create Lesson
+
+</a>
+
+
+</div>
+
+
+
+<div class="dashboard-grid">
+
+
+<% if (lessons.length === 0) { %>
+
+<div class="dashboard-card">
+
+<h3>
+No Lessons Yet
+</h3>
+
+<p>
+Start adding teaching materials.
+</p>
+
+</div>
+
+
+<% } %>
+
+
+
+<% lessons.forEach(lesson => { %>
+
+
+<div class="dashboard-card">
+
+
+<h3>
+<%= lesson.title %>
+</h3>
+
+
+<p>
+<%= lesson.content %>
+</p>
+
+
+<a href="/teacher/courses/<%= course.id %>/lessons/delete/<%= lesson.id %>">
+
+Delete
+
+</a>
+
+
+</div>
+
+
+<% }) %>
+
+
+
+</div>
+
+
+</main>
+
+
+</body>
+
+</html>

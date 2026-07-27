@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Edit User</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+Math<span>Master</span>
+</div>
+
+<div class="nav-links">
+
+<a href="/admin/users">
+Back
+</a>
+
+<a href="/logout">
+Logout
+</a>
+
+</div>
+
+</nav>
+
+</header>
+
+
+
+<main class="dashboard">
+
+
+<div class="auth-card">
+
+<h1>
+Edit User
+</h1>
+
+
+<% if(error){ %>
+
+<div class="error">
+<%= error %>
+</div>
+
+<% } %>
+
+
+
+<form method="POST"
+action="/admin/students/edit/<%= student.id %>"
+
+
+<label>
+First Name
+</label>
+
+<input
+type="text"
+name="first_name"
+value="<%= student.first_name %>"
+required
+>
+
+
+<label>
+Last Name
+</label>
+
+<input
+type="text"
+name="last_name"
+value="<%= student.last_name %>"
+required
+>
+
+
+<label>
+Email
+</label>
+
+<input
+type="email"
+name="email"
+value="<%= student.email %>"
+required
+>
+
+
+
+<label>
+Grade
+</label>
+
+<select
+    name="grade"
+    required
+>
+    <option value="Grade 8"
+        <%= student.grade === "Grade 8" ? "selected" : "" %>>
+        Grade 8
+    </option>
+
+    <option value="Grade 9"
+        <%= student.grade === "Grade 9" ? "selected" : "" %>>
+        Grade 9
+    </option>
+
+    <option value="Grade 10"
+        <%= student.grade === "Grade 10" ? "selected" : "" %>>
+        Grade 10
+    </option>
+
+    <option value="Grade 11"
+        <%= student.grade === "Grade 11" ? "selected" : "" %>>
+        Grade 11
+    </option>
+
+    <option value="Grade 12"
+        <%= student.grade === "Grade 12" ? "selected" : "" %>>
+        Grade 12
+    </option>
+</select>
+
+
+
+<button
+class="btn primary"
+type="submit">
+Save Changes
+</button>
+
+
+</form>
+
+
+</div>
+
+
+</main>
+
+
+</body>
+
+</html>

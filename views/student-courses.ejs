@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Student Courses</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+Math<span>Master</span>
+</div>
+
+
+<div class="nav-links">
+
+<a href="/student/dashboard">
+Dashboard
+</a>
+
+<a href="/logout">
+Logout
+</a>
+
+</div>
+
+</nav>
+
+</header>
+
+
+
+<main class="dashboard">
+
+
+<div class="dashboard-header">
+
+<p class="eyebrow">
+AVAILABLE COURSES
+</p>
+
+
+<h1>
+Mathematics Courses
+</h1>
+<% if (message) { %>
+
+<p class="success">
+<%= message %>
+</p>
+
+<% } %>
+
+
+<p>
+Choose a course and start learning.
+</p>
+
+
+</div>
+
+
+
+<div class="dashboard-grid">
+
+
+<% courses.forEach(course => { %>
+
+
+<div class="dashboard-card">
+
+
+<h3>
+📚 <%= course.title %>
+</h3>
+
+
+
+<p>
+
+<strong>
+Teacher:
+</strong>
+
+<%= course.first_name %>
+<%= course.last_name %>
+
+</p>
+
+
+
+<p>
+
+<strong>
+Grade:
+</strong>
+
+<%= course.grade %>
+
+</p>
+
+
+
+<p>
+
+<%= course.description %>
+
+</p>
+
+
+
+<a 
+class="btn"
+href="/student/courses/enroll/<%= course.id %>"
+>
+
+Enroll
+
+</a>
+
+
+</div>
+
+
+<% }) %>
+
+
+</div>
+
+
+</main>
+
+
+</body>
+
+</html>
