@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Create Exercise</title>
+
+<link rel="stylesheet"
+href="/css/style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+Math<span>Master</span>
+</div>
+
+
+<div class="nav-links">
+
+<a href="/teacher/dashboard">
+Dashboard
+</a>
+
+<a href="/logout">
+Logout
+</a>
+
+</div>
+
+</nav>
+
+</header>
+
+
+
+<main class="dashboard">
+
+
+<div class="dashboard-header">
+
+<p class="eyebrow">
+CREATE EXERCISE
+</p>
+
+
+<h1>
+<%= lesson.title %>
+</h1>
+
+
+</div>
+
+
+
+<form method="POST"
+action="/teacher/lessons/<%= lesson.id %>/exercises/create"
+class="form-card">
+
+
+
+<label>
+Question
+</label>
+
+
+<textarea
+name="question"
+rows="5"
+placeholder="Enter mathematics question..."
+required></textarea>
+
+
+
+<label>
+Correct Answer
+</label>
+
+
+<input
+type="text"
+name="answer"
+placeholder="Example: 10a"
+required>
+
+
+
+<label>
+Marks
+</label>
+
+
+<input
+type="number"
+name="marks"
+value="1"
+min="1"
+required>
+
+
+
+<button
+class="btn primary"
+type="submit">
+
+Save Exercise
+
+</button>
+
+
+</form>
+
+
+</main>
+
+
+</body>
+
+</html>

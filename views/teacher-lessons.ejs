@@ -116,6 +116,54 @@ Start adding teaching materials.
 <p>
 <%= lesson.content %>
 </p>
+<h3>
+📝 Exercises
+</h3>
+
+
+<% if (lesson.exercises.length === 0) { %>
+
+<p>
+No exercises added yet.
+</p>
+
+<% } else { %>
+
+
+<% lesson.exercises.forEach(function(exercise){ %>
+
+<div class="card">
+
+
+<p>
+<strong>
+Question:
+</strong>
+
+<%= exercise.question %>
+</p>
+
+
+<p>
+Marks:
+<%= exercise.marks %>
+</p>
+<p>
+<strong>
+Answer:
+</strong>
+
+<%= exercise.answer %>
+</p>
+
+
+</div>
+
+
+<% }) %>
+
+
+<% } %>
 
 
 <a href="/teacher/courses/<%= course.id %>/lessons/delete/<%= lesson.id %>">

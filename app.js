@@ -149,6 +149,10 @@ app.use(
     "/",
     lessonRoutes
 );
+app.use(
+    require("./routes/exercise")
+);
+
 
 
 

@@ -94,6 +94,31 @@ db.prepare(`
 
 )
 `).run();
+
+// ========================================
+// CREATE EXERCISES TABLE
+// ========================================
+
+db.prepare(`
+    CREATE TABLE IF NOT EXISTS exercises (
+
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+        lesson_id INTEGER NOT NULL,
+
+        question TEXT NOT NULL,
+
+        answer TEXT NOT NULL,
+
+        marks INTEGER DEFAULT 1,
+
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+        FOREIGN KEY (lesson_id)
+            REFERENCES lessons(id)
+
+    )
+`).run();
 // ========================================
 // CREATE ENROLLMENTS TABLE
 // ========================================

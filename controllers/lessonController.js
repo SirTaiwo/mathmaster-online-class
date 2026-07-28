@@ -33,6 +33,20 @@ exports.lessons = (req, res) => {
         );
 
 
+    const Exercise =
+        require("../models/Exercise");
+
+
+    lessons.forEach((lesson) => {
+
+        lesson.exercises =
+            Exercise.findByLesson(
+                lesson.id
+            );
+
+    });
+
+
     res.render(
         "teacher-lessons",
         {
@@ -50,6 +64,7 @@ exports.lessons = (req, res) => {
 
         }
     );
+
 
 };
 

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>
+Exercise
+</title>
+
+<link rel="stylesheet"
+      href="/css/style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+Math<span>Master</span>
+</div>
+
+
+<div class="nav-links">
+
+<a href="/student/dashboard">
+Dashboard
+</a>
+
+
+<a href="/student/my-courses">
+My Courses
+</a>
+
+
+<a href="/logout">
+Logout
+</a>
+
+
+</div>
+
+</nav>
+
+</header>
+
+
+
+<main class="dashboard">
+
+
+<div class="dashboard-header">
+
+
+<p class="eyebrow">
+MATHEMATICS EXERCISE
+</p>
+
+
+<h1>
+<%= exercise.question %>
+</h1>
+
+
+</div>
+
+
+
+<div class="dashboard-card">
+
+
+<form method="POST"
+action="/student/exercises/<%= exercise.id %>/submit">
+
+
+<label>
+Your Answer
+</label>
+
+
+<input
+type="text"
+name="answer"
+placeholder="Enter your answer"
+required
+>
+
+
+<button
+class="btn primary"
+type="submit">
+
+Submit Answer
+
+</button>
+
+
+</form>
+
+
+
+<% if (result) { %>
+
+<hr>
+
+
+<h3>
+
+<%= result %>
+
+</h3>
+
+
+<% } %>
+
+
+
+</div>
+
+
+</main>
+
+
+</body>
+
+</html>

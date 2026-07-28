@@ -9,6 +9,8 @@ const Enrollment =
 
 const Course =
     require("../models/Course");
+    const Submission =
+    require("../models/Submission");
 
 
 // ========================================
@@ -34,8 +36,42 @@ exports.dashboard = (req, res) => {
     }
 
 
-   const stats =
+  const stats =
     Student.getStatistics();
+
+
+const rawSummary =
+    Submission.getStudentSummary(
+        req.session.student.id
+    );
+
+const courses =
+    Enrollment.findCoursesByStudent(
+        req.session.student.id
+    ).length;
+
+const summary = {
+
+    courses,
+
+    attempted:
+        rawSummary.attempted || 0,
+
+    correct:
+        rawSummary.correct_answers || 0,
+
+    marks:
+        rawSummary.total_marks || 0,
+
+    accuracy:
+        rawSummary.attempted
+            ? Math.round(
+                (rawSummary.correct_answers /
+                 rawSummary.attempted) * 100
+              )
+            : 0
+
+};
 
 
 res.render(
@@ -43,7 +79,9 @@ res.render(
     {
         user: student,
 
-        stats
+        stats,
+
+        summary
     }
 );
 
