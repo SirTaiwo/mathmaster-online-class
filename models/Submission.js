@@ -98,18 +98,72 @@ function getStudentSummary(studentId) {
 
 
 }
+// ========================================
+// COURSE PERFORMANCE SUMMARY
+// ========================================
+
+function findCoursePerformance(courseId) {
+
+
+    return db.prepare(`
+
+        SELECT
+
+            students.first_name,
+            students.last_name,
+
+            COUNT(submissions.id)
+            AS attempts,
+
+
+            SUM(submissions.correct)
+            AS correct,
+
+
+            SUM(submissions.marks)
+            AS marks
 
 
 
-module.exports = {
+        FROM submissions
 
-    createSubmission,
 
-    findByStudent,   
-    getStudentSummary,
-    findAll
+        JOIN students
 
-};
+        ON submissions.student_id =
+           students.id
+
+
+        JOIN exercises
+
+        ON submissions.exercise_id =
+           exercises.id
+
+
+        JOIN lessons
+
+        ON exercises.lesson_id =
+           lessons.id
+
+
+        WHERE lessons.course_id = ?
+
+
+        GROUP BY students.id
+
+
+    `).all(
+
+        courseId
+
+    );
+
+
+}
+
+
+
+
 // ========================================
 // FIND ALL SUBMISSIONS
 // ========================================
@@ -150,3 +204,16 @@ function findAll() {
 
 
 }
+module.exports = {
+
+    createSubmission,
+
+    findByStudent,
+
+    getStudentSummary,
+
+    findCoursePerformance,
+
+    findAll
+
+};

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>
+Course Gradebook
+</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+Math<span>Master</span>
+</div>
+
+
+<div class="nav-links">
+
+<a href="/teacher/courses">
+Courses
+</a>
+
+<a href="/logout">
+Logout
+</a>
+
+</div>
+
+</nav>
+
+</header>
+
+
+
+<main class="dashboard">
+
+
+<div class="dashboard-header">
+
+
+<p class="eyebrow">
+GRADEBOOK
+</p>
+
+
+<h1>
+<%= course.title %>
+</h1>
+
+
+</div>
+
+
+
+<div class="dashboard-card">
+
+
+<table>
+
+<tr>
+
+<th>
+Student
+</th>
+
+<th>
+Attempts
+</th>
+
+<th>
+Correct
+</th>
+
+<th>
+Marks
+</th>
+
+<th>
+Accuracy
+</th>
+
+</tr>
+
+
+
+<% students.forEach(function(student){ %>
+
+
+<tr>
+
+<td>
+
+<%= student.first_name %>
+<%= student.last_name %>
+
+</td>
+
+
+<td>
+<%= student.attempts %>
+</td>
+
+
+<td>
+<%= student.correct %>
+</td>
+
+
+<td>
+<%= student.marks %>
+</td>
+
+
+<td>
+
+<%= 
+Math.round(
+(student.correct / student.attempts) * 100
+)
+%>%
+
+</td>
+
+
+</tr>
+
+
+<% }) %>
+
+
+</table>
+
+
+</div>
+
+
+</main>
+
+
+</body>
+
+</html>

@@ -1,6 +1,13 @@
 const Submission =
     require("../models/Submission");
 
+const Course =
+    require("../models/Course");
+
+
+// ========================================
+// ALL SUBMISSIONS
+// ========================================
 
 exports.index = (req, res) => {
 
@@ -17,6 +24,51 @@ exports.index = (req, res) => {
                 req.session.student,
 
             submissions
+
+        }
+    );
+
+
+};
+// ========================================
+// COURSE GRADEBOOK
+// ========================================
+
+exports.courseGradebook = (req, res) => {
+
+
+    const course =
+        Course.findById(
+            req.params.courseId
+        );
+
+
+    if (!course) {
+
+        return res.redirect(
+            "/teacher/courses"
+        );
+
+    }
+
+
+    const students =
+        Submission.findCoursePerformance(
+            req.params.courseId
+        );
+
+
+
+    res.render(
+        "course-gradebook",
+        {
+
+            user:
+                req.session.student,
+
+            course,
+
+            students
 
         }
     );

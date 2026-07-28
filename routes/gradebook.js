@@ -11,13 +11,15 @@ const gradebookController =
     require("../controllers/gradebookController");
 
 
-// TEACHER GRADEBOOK
+
+// COURSE GRADEBOOK
 
 router.get(
-    "/teacher/gradebook",
+    "/teacher/courses/:courseId/gradebook",
     requireRole("teacher", "admin"),
-    gradebookController.index
+    gradebookController.courseGradebook
 );
+
 
 
 module.exports = router;
