@@ -118,7 +118,15 @@ Start adding teaching materials.
 <h3>
 <%= lesson.title %>
 </h3>
+<a
 
+href="/teacher/courses/<%= course.id %>/lessons/<%= lesson.id %>/assessments/create"
+
+class="btn primary">
+
+Create Assessment
+
+</a>
 
 <p>
 <%= lesson.content %>

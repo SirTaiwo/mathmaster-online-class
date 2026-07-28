@@ -28,6 +28,8 @@ const adminRoutes =
     require("./routes/course");
     const lessonRoutes =
     require("./routes/lesson");
+    const assessmentRoutes =
+    require("./routes/assessment");
 
 
 const app = express();
@@ -155,6 +157,10 @@ app.use(
 app.use(
     "/",
     require("./routes/gradebook")
+);
+app.use(
+    "/",
+    assessmentRoutes
 );
 
 

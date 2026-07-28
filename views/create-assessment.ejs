@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Create Assessment</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+Math<span>Master</span>
+</div>
+
+
+<div class="nav-links">
+
+<a href="/teacher/courses">
+Courses
+</a>
+
+<a href="/logout">
+Logout
+</a>
+
+</div>
+
+</nav>
+
+</header>
+
+
+
+
+<main class="dashboard">
+
+
+<div class="dashboard-header">
+
+
+<p class="eyebrow">
+CREATE ASSESSMENT
+</p>
+
+
+<h1>
+<%= lesson.title %>
+</h1>
+
+
+</div>
+
+
+
+
+<form method="POST"
+
+action="/teacher/courses/<%= courseId %>/lessons/<%= lesson.id %>/assessments/create"
+
+class="form-card">
+
+
+
+<label>
+Assessment Title
+</label>
+
+
+<input
+
+type="text"
+
+name="title"
+
+placeholder="Example: Algebra Test"
+
+required
+
+>
+
+
+
+<label>
+Description
+</label>
+
+
+<textarea
+
+name="description"
+
+rows="5"
+
+placeholder="Describe this assessment..."
+
+></textarea>
+
+
+
+<label>
+Total Marks
+</label>
+
+
+<input
+
+type="number"
+
+name="totalMarks"
+
+placeholder="20"
+
+required
+
+>
+
+
+
+<button
+
+class="btn primary"
+
+type="submit">
+
+Create Assessment
+
+</button>
+
+
+
+</form>
+
+
+
+</main>
+
+
+</body>
+
+</html>
