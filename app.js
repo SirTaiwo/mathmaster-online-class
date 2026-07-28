@@ -152,7 +152,10 @@ app.use(
 app.use(
     require("./routes/exercise")
 );
-
+app.use(
+    "/",
+    require("./routes/gradebook")
+);
 
 
 

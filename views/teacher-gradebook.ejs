@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>
+Teacher Gradebook
+</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+Math<span>Master</span>
+</div>
+
+
+<div class="nav-links">
+
+<a href="/teacher/dashboard">
+Dashboard
+</a>
+
+<a href="/logout">
+Logout
+</a>
+
+</div>
+
+</nav>
+
+</header>
+
+
+
+<main class="dashboard">
+
+
+<div class="dashboard-header">
+
+<p class="eyebrow">
+GRADEBOOK
+</p>
+
+<h1>
+Student Performance
+</h1>
+
+
+</div>
+
+
+
+
+<div class="dashboard-card">
+
+
+<table>
+
+
+<tr>
+
+<th>
+Student
+</th>
+
+<th>
+Exercise
+</th>
+
+<th>
+Answer
+</th>
+
+<th>
+Status
+</th>
+
+<th>
+Marks
+</th>
+
+</tr>
+
+
+
+<% submissions.forEach(function(item){ %>
+
+
+<tr>
+
+
+<td>
+
+<%= item.first_name %>
+<%= item.last_name %>
+
+</td>
+
+
+<td>
+
+<%= item.question %>
+
+</td>
+
+
+<td>
+
+<%= item.answer %>
+
+</td>
+
+
+<td>
+
+<%= item.correct ? "✅ Correct" : "❌ Incorrect" %>
+
+</td>
+
+
+<td>
+
+<%= item.marks %>
+
+</td>
+
+
+</tr>
+
+
+<% }) %>
+
+
+</table>
+
+
+</div>
+
+
+</main>
+
+
+</body>
+
+</html>

@@ -105,8 +105,48 @@ module.exports = {
 
     createSubmission,
 
-    findByStudent,
-
-    getStudentSummary
+    findByStudent,   
+    getStudentSummary,
+    findAll
 
 };
+// ========================================
+// FIND ALL SUBMISSIONS
+// ========================================
+
+function findAll() {
+
+
+    return db.prepare(`
+
+        SELECT
+
+            submissions.*,
+
+            students.first_name,
+            students.last_name,
+
+            exercises.question
+
+        FROM submissions
+
+
+        JOIN students
+
+        ON submissions.student_id =
+           students.id
+
+
+        JOIN exercises
+
+        ON submissions.exercise_id =
+           exercises.id
+
+
+        ORDER BY submissions.created_at DESC
+
+
+    `).all();
+
+
+}
