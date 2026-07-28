@@ -100,15 +100,33 @@ exports.createLesson = (req, res) => {
 
     try {
 
-        const { title, content } = req.body;
+      const {
+    title,
+    objectives,
+    content,
+    example,
+    exercise
+} = req.body;
 
-        const result = Lesson.createLesson(
-            req.params.courseId,
-            title,
-            content
-        );
 
-        console.log("Insert result:", result);
+const result =
+    Lesson.createLesson(
+
+        req.params.courseId,
+
+        title,
+
+        objectives,
+
+        content,
+
+        example,
+
+        exercise
+
+    );
+
+console.log("Insert result:", result);
 
         res.redirect(
             `/teacher/courses/${req.params.courseId}/lessons`

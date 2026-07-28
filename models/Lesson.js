@@ -7,9 +7,12 @@ const db =
 // ========================================
 
 function createLesson(
-    courseId,
-    title,
-    content
+   courseId,
+title,
+objectives,
+content,
+example,
+exercise
 ) {
 
     return db.prepare(`
@@ -17,15 +20,21 @@ function createLesson(
         (
             course_id,
             title,
-            content
+            objectives,
+            content,
+            example,
+            exercise
         )
 
-        VALUES (?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?)
 
     `).run(
         courseId,
         title,
-        content
+        objectives,
+        content,
+        example,
+        exercise
     );
 
 }

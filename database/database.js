@@ -73,20 +73,26 @@ db.prepare(`
 db.prepare(`
     CREATE TABLE IF NOT EXISTS lessons (
 
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
 
-        course_id INTEGER NOT NULL,
+    course_id INTEGER NOT NULL,
 
-        title TEXT NOT NULL,
+    title TEXT NOT NULL,
 
-        content TEXT,
+    objectives TEXT,
 
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    content TEXT,
 
-        FOREIGN KEY (course_id)
-            REFERENCES courses(id)
+    example TEXT,
 
-    )
+    exercise TEXT,
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (course_id)
+        REFERENCES courses(id)
+
+)
 `).run();
 // ========================================
 // CREATE ENROLLMENTS TABLE

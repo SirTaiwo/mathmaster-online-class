@@ -100,17 +100,54 @@ Your teacher has not published any lessons for this course.
 
 <div class="card">
 
-<h2>
 
-📘 <%= lesson.title %>
 
-</h2>
+<h2><%= lesson.title %></h2>
 
-<p>
+<% if (lesson.objectives) { %>
 
-<%= lesson.content %>
+<h3>🎯 Learning Objectives</h3>
 
+<p style="white-space: pre-line;">
+<%= lesson.objectives %>
 </p>
+
+<% } %>
+
+
+<% if (lesson.content) { %>
+
+<h3>📖 Lesson Notes</h3>
+
+<p style="white-space: pre-line;">
+<%= lesson.content %>
+</p>
+
+<% } %>
+
+
+<% if (lesson.example) { %>
+
+<h3>💡 Worked Example</h3>
+
+<p style="white-space: pre-line;">
+<%= lesson.example %>
+</p>
+
+<% } %>
+
+
+<% if (lesson.exercise) { %>
+
+<h3>📝 Practice Questions</h3>
+
+<p style="white-space: pre-line;">
+<%= lesson.exercise %>
+</p>
+
+<% } %>
+
+
 
 </div>
 
