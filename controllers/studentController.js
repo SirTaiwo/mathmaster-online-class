@@ -11,8 +11,12 @@ const Course =
     require("../models/Course");
     const Submission =
     require("../models/Submission");
+
     const StudentAssessment =
     require("../models/StudentAssessment");
+
+    const AssessmentResult =
+    require("../models/AssessmentResult");
 
 
 // ========================================
@@ -78,6 +82,10 @@ const assessments =
     StudentAssessment.findByStudent(
         req.session.student.id
     );
+    const results =
+    AssessmentResult.findByStudent(
+        req.session.student.id
+    );
 
 
 res.render(
@@ -88,7 +96,9 @@ res.render(
         stats,
 
         summary,
-        assessments
+        assessments,
+        results
+        
     }
 );
 

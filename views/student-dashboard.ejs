@@ -207,6 +207,75 @@ Take Assessment
 
 
 </section>
+<hr>
+
+<section>
+
+<h2>
+📊 My Assessment Results
+</h2>
+
+
+<% if(results.length === 0){ %>
+
+<p>
+No assessment results yet.
+</p>
+
+
+<% } else { %>
+
+
+<% results.forEach(result => { %>
+
+
+<div class="dashboard-card">
+
+
+<h3>
+<%= result.assessment_title %>
+</h3>
+
+
+<p>
+Score:
+
+<strong>
+<%= result.score %> /
+<%= result.total_marks %>
+</strong>
+
+</p>
+
+
+<p>
+Percentage:
+
+<strong>
+<%= result.percentage %>%
+</strong>
+
+</p>
+
+
+<p>
+Submitted:
+
+<%= result.submitted_at %>
+
+</p>
+
+
+</div>
+
+
+<% }) %>
+
+
+<% } %>
+
+
+</section>
 
 </div>
 

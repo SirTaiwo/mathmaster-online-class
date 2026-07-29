@@ -53,17 +53,37 @@ function saveResult(
 
 function findByStudent(studentId) {
 
+
     return db.prepare(`
 
-        SELECT *
+        SELECT
+
+            assessment_results.*,
+
+            assessments.title AS assessment_title
+
 
         FROM assessment_results
 
-        WHERE student_id = ?
+
+        JOIN assessments
+
+        ON assessment_results.assessment_id =
+           assessments.id
+
+
+        WHERE assessment_results.student_id = ?
+
 
         ORDER BY submitted_at DESC
 
-    `).all(studentId);
+
+    `).all(
+
+        studentId
+
+    );
+
 
 }
 
