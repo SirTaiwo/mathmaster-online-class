@@ -86,6 +86,10 @@ const assessments =
     AssessmentResult.findByStudent(
         req.session.student.id
     );
+    const performance =
+    AssessmentResult.getStudentPerformance(
+        req.session.student.id
+    );
 
 
 res.render(
@@ -97,7 +101,10 @@ res.render(
 
         summary,
         assessments,
-        results
+
+        results,
+        
+        performance
         
     }
 );

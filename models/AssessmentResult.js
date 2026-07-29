@@ -120,6 +120,59 @@ function findByAssessment(
     );
 
 }
+// ========================================
+// STUDENT PERFORMANCE SUMMARY
+// ========================================
+
+function getStudentPerformance(studentId) {
+
+
+    return db.prepare(`
+
+        SELECT
+
+            COUNT(*) AS attempts,
+
+            ROUND(
+                AVG(percentage),
+                2
+            ) AS average_percentage,
+
+
+            MAX(percentage)
+            AS highest_percentage,
+
+
+            (
+                SELECT percentage
+
+                FROM assessment_results
+
+                WHERE student_id = ?
+
+                ORDER BY submitted_at DESC
+
+                LIMIT 1
+
+            ) AS latest_percentage
+
+
+        FROM assessment_results
+
+
+        WHERE student_id = ?
+
+
+    `).get(
+
+        studentId,
+
+        studentId
+
+    );
+
+
+}
 
 
 
@@ -129,6 +182,7 @@ module.exports = {
 
     findByStudent,
 
-    findByAssessment
+    findByAssessment,
+    getStudentPerformance
 
 };
