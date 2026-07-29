@@ -58,9 +58,40 @@ function getAllResults() {
     `).all();
 
 }
+// ========================================
+// GRADEBOOK ANALYTICS
+// ========================================
+
+function getAnalytics() {
+
+    return db.prepare(`
+
+        SELECT
+
+            COUNT(*) AS attempts,
+
+            ROUND(
+                AVG(percentage),
+                0
+            ) AS average_percentage,
+
+            MAX(percentage)
+            AS highest_percentage,
+
+            MIN(percentage)
+            AS lowest_percentage
+
+
+        FROM assessment_results
+
+
+    `).get();
+
+}
 
 module.exports = {
 
-    getAllResults
+    getAllResults,
+    getAnalytics
 
 };

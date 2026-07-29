@@ -23,14 +23,111 @@
     </h1>
 
 
-    <p>
-        View student assessment performance.
-    </p>
+   <p>
+    View student assessment performance.
+</p>
+
+
+<!-- ========================================
+     ASSESSMENT ANALYTICS
+========================================= -->
+
+
+<div class="stats-grid">
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            📝
+        </div>
+
+        <div>
+
+            <p>
+                Attempts
+            </p>
+
+            <h2>
+                <%= analytics.attempts %>
+            </h2>
+
+        </div>
+
+    </div>
 
 
 
-    <table class="admin-table">
+    <div class="stat-card">
 
+        <div class="stat-icon">
+            📊
+        </div>
+
+        <div>
+
+            <p>
+                Average Score
+            </p>
+
+            <h2>
+                <%= analytics.average_percentage %>%
+            </h2>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            🏆
+        </div>
+
+        <div>
+
+            <p>
+                Highest Score
+            </p>
+
+            <h2>
+                <%= analytics.highest_percentage %>%
+            </h2>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            ⚠
+        </div>
+
+        <div>
+
+            <p>
+                Lowest Score
+            </p>
+
+            <h2>
+                <%= analytics.lowest_percentage %>%
+            </h2>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+<table class="admin-table">
 
         <thead>
 

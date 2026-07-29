@@ -82,11 +82,19 @@ exports.courseGradebook = (req, res) => {
 // ASSESSMENT GRADEBOOK
 // ========================================
 
+// ========================================
+// ASSESSMENT GRADEBOOK
+// ========================================
+
 exports.assessmentGradebook = (req, res) => {
 
 
     const results =
         Gradebook.getAllResults();
+
+
+    const analytics =
+        Gradebook.getAnalytics();
 
 
     res.render(
@@ -98,7 +106,9 @@ exports.assessmentGradebook = (req, res) => {
             user:
                 req.session.student,
 
-            results
+            results,
+
+            analytics
 
         }
 
