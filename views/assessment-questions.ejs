@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Assessment Questions</title>
+
+<link rel="stylesheet"
+href="/css/style.css">
+
+</head>
+
+<body>
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+Math<span>Master</span>
+</div>
+
+<div class="nav-links">
+
+<a href="/teacher/courses">
+Courses
+</a>
+
+<a href="/logout">
+Logout
+</a>
+
+</div>
+
+</nav>
+
+</header>
+
+
+<main class="dashboard">
+
+<div class="dashboard-header">
+
+<h1>
+
+<%= assessment.title %>
+
+</h1>
+
+<a
+
+href="/teacher/assessments/<%= assessment.id %>/questions/create"
+
+class="btn primary">
+
+Add Question
+
+</a>
+
+</div>
+
+
+<% questions.forEach(question => { %>
+
+<div class="dashboard-card">
+
+<h3>
+
+<%= question.question %>
+
+</h3>
+
+<p>
+
+A. <%= question.option_a %>
+
+</p>
+
+<p>
+
+B. <%= question.option_b %>
+
+</p>
+
+<p>
+
+C. <%= question.option_c %>
+
+</p>
+
+<p>
+
+D. <%= question.option_d %>
+
+</p>
+
+<p>
+
+<strong>
+
+Correct:
+
+</strong>
+
+<%= question.correct_answer %>
+
+</p>
+
+<p>
+
+Marks:
+
+<%= question.marks %>
+
+</p>
+
+</div>
+
+<% }) %>
+
+</main>
+
+</body>
+
+</html>

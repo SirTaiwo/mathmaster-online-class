@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Create Assessment Question</title>
+
+<link rel="stylesheet"
+href="/css/style.css">
+
+</head>
+
+<body>
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+Math<span>Master</span>
+</div>
+
+<div class="nav-links">
+
+<a href="/teacher/courses">
+Courses
+</a>
+
+<a href="/logout">
+Logout
+</a>
+
+</div>
+
+</nav>
+
+</header>
+
+
+<main class="dashboard">
+
+<div class="dashboard-header">
+
+<p class="eyebrow">
+ASSESSMENT
+</p>
+
+<h1>
+<%= assessment.title %>
+</h1>
+
+<p>
+Add a new question
+</p>
+
+</div>
+
+
+<form
+
+method="POST"
+
+action="/teacher/assessments/<%= assessment.id %>/questions/create"
+
+class="form-card">
+
+<label>
+
+Question
+
+</label>
+
+<textarea
+
+name="question"
+
+required>
+
+</textarea>
+
+
+<label>
+
+Option A
+
+</label>
+
+<input
+type="text"
+name="option_a"
+required>
+
+
+<label>
+
+Option B
+
+</label>
+
+<input
+type="text"
+name="option_b"
+required>
+
+
+<label>
+
+Option C
+
+</label>
+
+<input
+type="text"
+name="option_c"
+required>
+
+
+<label>
+
+Option D
+
+</label>
+
+<input
+type="text"
+name="option_d"
+required>
+
+
+<label>
+
+Correct Answer
+
+</label>
+
+<select
+name="correct_answer">
+
+<option>A</option>
+
+<option>B</option>
+
+<option>C</option>
+
+<option>D</option>
+
+</select>
+
+
+<label>
+
+Marks
+
+</label>
+
+<input
+type="number"
+name="marks"
+value="1">
+
+
+<button
+class="btn primary">
+
+Save Question
+
+</button>
+
+</form>
+
+</main>
+
+</body>
+
+</html>

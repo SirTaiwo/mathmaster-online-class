@@ -16,7 +16,6 @@ function createAssessment(
     return db.prepare(`
 
         INSERT INTO assessments
-
         (
             lesson_id,
             title,
@@ -29,14 +28,16 @@ function createAssessment(
     `).run(
 
         lessonId,
+
         title,
+
         description,
+
         totalMarks
 
     );
 
 }
-
 
 
 // ========================================
@@ -66,7 +67,6 @@ function findByLesson(
 }
 
 
-
 // ========================================
 // FIND ASSESSMENT BY ID
 // ========================================
@@ -90,7 +90,25 @@ function findById(
     );
 
 }
+// ========================================
+// FIND ALL ASSESSMENTS FOR A LESSON
+// ========================================
 
+function findByLesson(lessonId) {
+
+    return db.prepare(`
+
+        SELECT *
+
+        FROM assessments
+
+        WHERE lesson_id = ?
+
+        ORDER BY created_at ASC
+
+    `).all(lessonId);
+
+}
 
 
 module.exports = {

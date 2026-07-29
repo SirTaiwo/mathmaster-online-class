@@ -1,0 +1,161 @@
+const Assessment =
+    require("../models/Assessment");
+
+const AssessmentQuestion =
+    require("../models/AssessmentQuestion");
+
+const AssessmentResult =
+    require("../models/AssessmentResult");
+
+
+// ========================================
+// LIST ASSESSMENTS
+// ========================================
+
+exports.listAssessments = (req, res) => {
+
+    const assessments =
+        Assessment.findByLesson(
+            req.params.lessonId
+        );
+
+    res.render(
+        "student-assessments",
+        {
+            user: req.session.student,
+            assessments,
+            lessonId: req.params.lessonId
+        }
+    );
+
+};
+
+
+// ========================================
+// START ASSESSMENT
+// ========================================
+
+exports.takeAssessment = (req, res) => {
+
+    const assessment =
+        Assessment.findById(
+            req.params.assessmentId
+        );
+
+    const questions =
+        AssessmentQuestion.findByAssessment(
+            req.params.assessmentId
+        );
+
+    res.render(
+        "student-assessment",
+        {
+            user: req.session.student,
+            assessment,
+            questions
+        }
+    );
+
+};
+
+
+// ========================================
+// SUBMIT ASSESSMENT AND MARK
+// ========================================
+
+exports.submitAssessment = (req, res) => {
+
+
+    const assessmentId =
+        req.params.assessmentId;
+
+
+    const studentId =
+        req.session.student.id;
+
+
+    const questions =
+        AssessmentQuestion.findByAssessment(
+            assessmentId
+        );
+
+
+    let score = 0;
+
+    let totalMarks = 0;
+
+
+
+    questions.forEach(question => {
+
+
+        const answer =
+            req.body[
+                `question_${question.id}`
+            ];
+
+
+        totalMarks += question.marks;
+
+
+
+        if (
+            answer &&
+            answer === question.correct_answer
+        ) {
+
+            score += question.marks;
+
+        }
+
+
+    });
+
+
+
+    const percentage =
+        totalMarks
+            ? Math.round(
+                (score / totalMarks) * 100
+              )
+            : 0;
+
+
+
+    AssessmentResult.saveResult(
+
+        studentId,
+
+        assessmentId,
+
+        score,
+
+        totalMarks,
+
+        percentage
+
+    );
+
+
+
+    res.render(
+
+        "assessment-result",
+
+        {
+
+            user:
+                req.session.student,
+
+            score,
+
+            totalMarks,
+
+            percentage
+
+        }
+
+    );
+
+
+};

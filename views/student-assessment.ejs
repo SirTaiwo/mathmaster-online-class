@@ -1,0 +1,81 @@
+<h1><%= assessment.title %></h1>
+
+<form
+method="POST"
+action="/student/assessments/<%= assessment.id %>">
+
+<% questions.forEach(question => { %>
+
+    <hr>
+
+    <p>
+
+        <strong>
+
+            <%= question.question %>
+
+        </strong>
+
+    </p>
+
+    <label>
+
+        <input
+        type="radio"
+        name="question_<%= question.id %>"
+        value="A">
+
+        <%= question.option_a %>
+
+    </label>
+
+    <br>
+
+    <label>
+
+        <input
+        type="radio"
+        name="question_<%= question.id %>"
+        value="B">
+
+        <%= question.option_b %>
+
+    </label>
+
+    <br>
+
+    <label>
+
+        <input
+        type="radio"
+        name="question_<%= question.id %>"
+        value="C">
+
+        <%= question.option_c %>
+
+    </label>
+
+    <br>
+
+    <label>
+
+        <input
+        type="radio"
+        name="question_<%= question.id %>"
+        value="D">
+
+        <%= question.option_d %>
+
+    </label>
+
+<% }) %>
+
+<br><br>
+
+<button type="submit">
+
+    Submit Assessment
+
+</button>
+
+</form>

@@ -2,6 +2,9 @@ const express = require("express");
 const path = require("path");
 const session = require("express-session");
 
+const studentAssessmentRoutes =
+    require("./routes/studentAssessment");
+
 
 // Load database
 
@@ -24,12 +27,20 @@ const studentRoutes =
 
 const adminRoutes =
     require("./routes/admin");
+
     const courseRoutes =
     require("./routes/course");
+
     const lessonRoutes =
     require("./routes/lesson");
+
     const assessmentRoutes =
     require("./routes/assessment");
+
+    const assessmentQuestionRoutes =
+    require("./routes/assessmentQuestion");
+
+
 
 
 const app = express();
@@ -162,7 +173,19 @@ app.use(
     "/",
     assessmentRoutes
 );
+app.use(
+    "/",
+    assessmentQuestionRoutes
+);
 
+// ========================================
+// STUDENT ASSESSMENT ROUTES
+// ========================================
+
+app.use(
+    "/",
+    studentAssessmentRoutes
+);
 
 
 

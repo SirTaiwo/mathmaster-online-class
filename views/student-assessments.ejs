@@ -1,0 +1,17 @@
+<h1>Available Assessments</h1>
+
+<% assessments.forEach(a => { %>
+
+    <p>
+
+        <strong><%= a.title %></strong>
+
+        <a href="/student/assessments/<%= a.id %>">
+
+            Start Assessment
+
+        </a>
+
+    </p>
+
+<% }) %>

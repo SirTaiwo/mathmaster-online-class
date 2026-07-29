@@ -142,6 +142,71 @@ class="btn primary">
 My Courses
 
 </a>
+<section>
+
+<h2>
+📝 Available Assessments
+</h2>
+
+
+<% if(assessments.length === 0){ %>
+
+<p>
+No assessments available yet.
+</p>
+
+
+<% } else { %>
+
+
+<% assessments.forEach(a => { %>
+
+
+<div class="admin-card">
+
+
+<h3>
+<%= a.title %>
+</h3>
+
+
+<p>
+Course:
+<%= a.course_title %>
+</p>
+
+
+<p>
+Lesson:
+<%= a.lesson_title %>
+</p>
+
+
+<p>
+Total Marks:
+<%= a.total_marks %>
+</p>
+
+
+<a
+href="/student/assessments/<%= a.id %>"
+class="btn primary">
+
+Take Assessment
+
+</a>
+
+
+</div>
+
+
+<% }) %>
+
+
+<% } %>
+
+
+</section>
 
 </div>
 
