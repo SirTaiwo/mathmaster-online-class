@@ -43,6 +43,9 @@ const adminRoutes =
     const teacherAssessmentRoutes =
     require("./routes/teacherAssessment");
 
+    const leaderboardRoutes =
+    require("./routes/leaderboard");
+
 
 
 
@@ -181,6 +184,16 @@ app.use(
 app.use(
     "/",
     teacherAssessmentRoutes
+);
+
+app.use(
+    "/",
+    leaderboardRoutes
+);
+
+app.use(
+    "/",
+    require("./routes/assessmentGradebook")
 );
 
 // ========================================

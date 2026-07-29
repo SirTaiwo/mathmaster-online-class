@@ -4,6 +4,9 @@ const Submission =
 const Course =
     require("../models/Course");
 
+    const Gradebook =
+    require("../models/Gradebook");
+
 
 // ========================================
 // ALL SUBMISSIONS
@@ -71,6 +74,34 @@ exports.courseGradebook = (req, res) => {
             students
 
         }
+    );
+
+
+};
+// ========================================
+// ASSESSMENT GRADEBOOK
+// ========================================
+
+exports.assessmentGradebook = (req, res) => {
+
+
+    const results =
+        Gradebook.getAllResults();
+
+
+    res.render(
+
+        "teacher-assessment-gradebook",
+
+        {
+
+            user:
+                req.session.student,
+
+            results
+
+        }
+
     );
 
 

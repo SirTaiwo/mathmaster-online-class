@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Student Leaderboard</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+
+<main class="dashboard-container">
+
+<h1>🏆 Student Leaderboard</h1>
+
+<p class="subtitle">
+
+Top-performing students across all assessments.
+
+</p>
+
+
+<div class="leaderboard-grid">
+
+<div class="stat-card">
+
+<h2>
+
+<%= leaderboard.length %>
+
+</h2>
+
+<p>Students Ranked</p>
+
+</div>
+
+
+<div class="stat-card">
+
+<h2>
+
+<%= leaderboard.length ? leaderboard[0].average_score : 0 %>%
+
+</h2>
+
+<p>Highest Average</p>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>📊 Rankings</h2>
+
+<table class="table">
+
+<thead>
+
+<tr>
+
+<th>Rank</th>
+
+<th>Student</th>
+
+<th>Attempts</th>
+
+<th>Average</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<% leaderboard.forEach((student,index)=>{ %>
+
+<tr>
+
+<td>
+
+<% if(index===0){ %>
+
+🥇
+
+<% } else if(index===1){ %>
+
+🥈
+
+<% } else if(index===2){ %>
+
+🥉
+
+<% } else { %>
+
+<%= index+1 %>
+
+<% } %>
+
+</td>
+
+<td>
+
+<strong>
+
+<%= student.first_name %>
+
+<%= student.last_name %>
+
+</strong>
+
+</td>
+
+<td>
+
+<%= student.attempts %>
+
+</td>
+
+<td>
+
+<strong>
+
+<%= student.average_score %>%
+
+</strong>
+
+</td>
+
+</tr>
+
+<% }) %>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<p>
+
+<a href="/teacher/dashboard"
+
+class="btn secondary">
+
+⬅ Back to Dashboard
+
+</a>
+
+</p>
+
+</main>
+
+</body>
+
+</html>

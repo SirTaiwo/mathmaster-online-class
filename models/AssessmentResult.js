@@ -216,6 +216,50 @@ function getStudentPerformance(studentId) {
 
 
 }
+// ========================================
+// STUDENT LEADERBOARD
+// ========================================
+
+function leaderboard() {
+
+    return db.prepare(`
+
+        SELECT
+
+            students.id,
+
+            students.first_name,
+
+            students.last_name,
+
+            COUNT(assessment_results.id)
+                AS attempts,
+
+            ROUND(
+
+                AVG(
+                    assessment_results.percentage
+                ),
+
+                0
+
+            ) AS average_score
+
+        FROM assessment_results
+
+        JOIN students
+
+        ON assessment_results.student_id =
+           students.id
+
+        GROUP BY students.id
+
+        ORDER BY average_score DESC,
+                 attempts DESC
+
+    `).all();
+
+}
 
 
 
@@ -227,6 +271,8 @@ module.exports = {
 
     findStudentAssessmentResult,
 
-    findByAssessment
+    findByAssessment,
+
+    leaderboard
 
 };

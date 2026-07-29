@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>
+        Assessment Gradebook
+    </title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <h1>
+        📊 Assessment Gradebook
+    </h1>
+
+
+    <p>
+        View student assessment performance.
+    </p>
+
+
+
+    <table class="admin-table">
+
+
+        <thead>
+
+            <tr>
+
+                <th>
+                    Student
+                </th>
+
+
+                <th>
+                    Assessment
+                </th>
+
+
+                <th>
+                    Score
+                </th>
+
+
+                <th>
+                    Percentage
+                </th>
+
+
+                <th>
+                    Submitted
+                </th>
+
+
+            </tr>
+
+        </thead>
+
+
+
+        <tbody>
+
+
+        <% results.forEach(r => { %>
+
+
+            <tr>
+
+
+                <td>
+
+                    <%= r.first_name %>
+                    <%= r.last_name %>
+
+                </td>
+
+
+
+                <td>
+
+                    <%= r.assessment_title %>
+
+                </td>
+
+
+
+                <td>
+
+                    <%= r.score %>
+                    /
+                    <%= r.total_marks %>
+
+                </td>
+
+
+
+                <td>
+
+                    <%= r.percentage %>%
+
+                </td>
+
+
+
+                <td>
+
+                    <%= r.submitted_at %>
+
+                </td>
+
+
+            </tr>
+
+
+        <% }) %>
+
+
+        </tbody>
+
+
+    </table>
+
+
+
+    <br>
+
+
+    <a href="/teacher/dashboard">
+        ⬅ Back to Dashboard
+    </a>
+
+
+
+</div>
+
+
+</body>
+
+
+</html>
