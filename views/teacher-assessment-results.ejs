@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>
+Assessment Results
+</title>
+
+
+<style>
+
+body {
+
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+    margin: 0;
+    padding: 30px;
+
+}
+
+
+.container {
+
+    max-width: 1100px;
+    margin: auto;
+
+}
+
+
+.card {
+
+    background: white;
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+
+}
+
+
+h1 {
+
+    text-align: center;
+
+}
+
+
+
+.stats {
+
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+
+}
+
+
+.stat {
+
+    flex: 1;
+    text-align: center;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+
+}
+
+
+.stat h3 {
+
+    margin: 0;
+    font-size: 28px;
+
+}
+
+
+
+table {
+
+    width: 100%;
+    border-collapse: collapse;
+
+}
+
+
+th {
+
+    background: #343a40;
+    color: white;
+    padding: 12px;
+
+}
+
+
+td {
+
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+
+}
+
+
+
+.back {
+
+    display: inline-block;
+    margin-top: 20px;
+
+}
+
+
+
+</style>
+
+
+</head>
+
+
+
+<body>
+
+
+<div class="container">
+
+
+
+<div class="card">
+
+
+<h1>
+<%= assessment.title %>
+</h1>
+
+
+</div>
+
+
+
+
+<div class="card">
+
+
+<h2>
+📊 Assessment Performance
+</h2>
+
+
+<div class="stats">
+
+
+<div class="stat">
+
+<h3>
+<%= statistics.attempts %>
+</h3>
+
+<p>
+📝 Attempts
+</p>
+
+</div>
+
+
+
+<div class="stat">
+
+<h3>
+<%= statistics.average %>%
+</h3>
+
+<p>
+📊 Average Score
+</p>
+
+</div>
+
+
+
+<div class="stat">
+
+<h3>
+<%= statistics.highest %>%
+</h3>
+
+<p>
+🏆 Highest Score
+</p>
+
+</div>
+
+
+
+<div class="stat">
+
+<h3>
+<%= statistics.lowest %>%
+</h3>
+
+<p>
+⚠ Lowest Score
+</p>
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+👨‍🎓 Student Results
+</h2>
+
+
+
+<table>
+
+
+<tr>
+
+<th>
+Student
+</th>
+
+
+<th>
+Score
+</th>
+
+
+<th>
+Percentage
+</th>
+
+
+<th>
+Submitted
+</th>
+
+
+</tr>
+
+
+
+<% results.forEach(result => { %>
+
+
+<tr>
+
+
+<td>
+
+<%= result.first_name %>
+<%= result.last_name %>
+
+</td>
+
+
+<td>
+
+<%= result.score %>
+/
+<%= result.total_marks %>
+
+</td>
+
+
+<td>
+
+<%= result.percentage %>%
+
+</td>
+
+
+<td>
+
+<%= result.submitted_at %>
+
+</td>
+
+
+</tr>
+
+
+
+<% }) %>
+
+
+
+</table>
+
+
+
+<a 
+class="back"
+href="/teacher/courses">
+
+⬅ Back to Courses
+
+</a>
+
+
+
+</div>
+
+
+
+</div>
+
+
+</body>
+
+</html>

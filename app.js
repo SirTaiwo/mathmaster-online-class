@@ -40,6 +40,9 @@ const adminRoutes =
     const assessmentQuestionRoutes =
     require("./routes/assessmentQuestion");
 
+    const teacherAssessmentRoutes =
+    require("./routes/teacherAssessment");
+
 
 
 
@@ -173,9 +176,11 @@ app.use(
     "/",
     assessmentRoutes
 );
+
+    
 app.use(
     "/",
-    assessmentQuestionRoutes
+    teacherAssessmentRoutes
 );
 
 // ========================================

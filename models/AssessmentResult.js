@@ -93,7 +93,7 @@ function findByStudent(studentId) {
 // FIND RESULT
 // ========================================
 
-function findByAssessment(
+function findStudentAssessmentResult(
 
     studentId,
 
@@ -114,6 +114,49 @@ function findByAssessment(
     `).get(
 
         studentId,
+
+        assessmentId
+
+    );
+
+}
+// ========================================
+// FIND ALL RESULTS BY ASSESSMENT
+// ========================================
+
+function findByAssessment(assessmentId) {
+
+    return db.prepare(`
+
+        SELECT
+
+            assessment_results.*,
+
+            students.first_name,
+
+            students.last_name,
+
+            students.email
+
+
+        FROM assessment_results
+
+
+        JOIN students
+
+        ON assessment_results.student_id =
+           students.id
+
+
+        WHERE assessment_results.assessment_id = ?
+
+
+        ORDER BY 
+    assessment_results.percentage DESC,
+    assessment_results.submitted_at DESC
+
+
+    `).all(
 
         assessmentId
 
@@ -182,7 +225,8 @@ module.exports = {
 
     findByStudent,
 
-    findByAssessment,
-    getStudentPerformance
+    findStudentAssessmentResult,
+
+    findByAssessment
 
 };
