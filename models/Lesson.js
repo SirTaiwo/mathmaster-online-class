@@ -45,25 +45,35 @@ exercise
 // FIND LESSONS BY COURSE
 // ========================================
 
-function findByCourse(
-    courseId
-) {
+function findByCourse(courseId) {
 
     return db.prepare(`
+
         SELECT
-            *
+
+            lessons.*,
+
+            assessments.id AS assessment_id,
+
+            assessments.title AS assessment_title
+
+
         FROM lessons
 
-        WHERE course_id = ?
 
-        ORDER BY created_at ASC
+        LEFT JOIN assessments
 
-    `).all(
-        courseId
-    );
+        ON lessons.id = assessments.lesson_id
+
+
+        WHERE lessons.course_id = ?
+
+
+        ORDER BY lessons.created_at ASC
+
+    `).all(courseId);
 
 }
-
 
 
 // ========================================

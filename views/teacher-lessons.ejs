@@ -117,7 +117,21 @@ Start adding teaching materials.
 
 <h3>
 <%= lesson.title %>
+<% if (lesson.assessment_title) { %>
+
+<p>
+
+<strong>
+Assessment:
+</strong>
+
+<%= lesson.assessment_title %>
+
+</p>
+
+<% } %>
 </h3>
+
 <a
 
 href="/teacher/courses/<%= course.id %>/lessons/<%= lesson.id %>/assessments/create"
@@ -127,6 +141,18 @@ class="btn primary">
 Create Assessment
 
 </a>
+<% if (lesson.assessment_id) { %>
+
+<a
+href="/teacher/assessments/<%= lesson.assessment_id %>/questions"
+class="btn secondary">
+
+Manage Questions
+
+</a>
+
+<% } %>
+
 
 <p>
 <%= lesson.content %>

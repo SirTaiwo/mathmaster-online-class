@@ -125,3 +125,116 @@ exports.listQuestions = (req, res) => {
     );
 
 };
+
+// ========================================
+// EDIT QUESTION FORM
+// ========================================
+
+exports.editQuestionForm = (req, res) => {
+
+    const question =
+        AssessmentQuestion.findById(
+            req.params.id
+        );
+
+    if (!question) {
+
+        return res.redirect(
+            "/teacher/courses"
+        );
+
+    }
+
+    res.render(
+        "edit-assessment-question",
+        {
+
+            user:
+                req.session.student,
+
+            question
+
+        }
+    );
+
+};
+// ========================================
+// UPDATE QUESTION
+// ========================================
+
+exports.updateQuestion = (req, res) => {
+
+    const {
+        question,
+        option_a,
+        option_b,
+        option_c,
+        option_d,
+        correct_answer,
+        marks
+    } = req.body;
+
+
+    AssessmentQuestion.updateQuestion(
+
+        req.params.id,
+
+        question,
+
+        option_a,
+
+        option_b,
+
+        option_c,
+
+        option_d,
+
+        correct_answer,
+
+        marks
+
+    );
+
+
+    const currentQuestion =
+        AssessmentQuestion.findById(
+            req.params.id
+        );
+
+    res.redirect(
+
+        `/teacher/assessments/${currentQuestion.assessment_id}/questions`
+
+    );
+
+};
+// ========================================
+// DELETE QUESTION
+// ========================================
+
+exports.deleteQuestion = (req, res) => {
+
+    const question =
+        AssessmentQuestion.findById(
+            req.params.id
+        );
+
+    if (!question) {
+
+        return res.redirect(
+            "/teacher/courses"
+        );
+
+    }
+
+    AssessmentQuestion.deleteQuestion(
+        req.params.id
+    );
+
+    res.redirect(
+
+        `/teacher/assessments/${question.assessment_id}/questions`
+
+    );
+
+};

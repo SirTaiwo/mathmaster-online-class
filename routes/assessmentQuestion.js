@@ -47,6 +47,47 @@ router.get(
     controller.listQuestions
 
 );
+// ========================================
+// EDIT QUESTION FORM
+// ========================================
+
+router.get(
+
+    "/teacher/questions/:id/edit",
+
+    requireRole("teacher", "admin"),
+
+    controller.editQuestionForm
+
+);
+
+
+// ========================================
+// UPDATE QUESTION
+// ========================================
+
+router.post(
+
+    "/teacher/questions/:id/edit",
+
+    requireRole("teacher", "admin"),
+
+    controller.updateQuestion
+
+);
+// ========================================
+// DELETE QUESTION
+// ========================================
+
+router.post(
+
+    "/teacher/questions/:id/delete",
+
+    requireRole("teacher", "admin"),
+
+    controller.deleteQuestion
+
+);
 
 
 module.exports = router;

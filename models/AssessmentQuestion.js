@@ -94,6 +94,88 @@ function findById(id) {
 
 }
 // ========================================
+// UPDATE QUESTION
+// ========================================
+
+function updateQuestion(
+
+    id,
+
+    question,
+
+    optionA,
+
+    optionB,
+
+    optionC,
+
+    optionD,
+
+    correctAnswer,
+
+    marks
+
+) {
+
+    return db.prepare(`
+
+        UPDATE assessment_questions
+
+        SET
+
+            question = ?,
+
+            option_a = ?,
+
+            option_b = ?,
+
+            option_c = ?,
+
+            option_d = ?,
+
+            correct_answer = ?,
+
+            marks = ?
+
+        WHERE id = ?
+
+    `).run(
+
+        question,
+
+        optionA,
+
+        optionB,
+
+        optionC,
+
+        optionD,
+
+        correctAnswer,
+
+        marks,
+
+        id
+
+    );
+
+}
+// ========================================
+// DELETE QUESTION
+// ========================================
+
+function deleteQuestion(id) {
+
+    return db.prepare(`
+
+        DELETE FROM assessment_questions
+
+        WHERE id = ?
+
+    `).run(id);
+
+}
+// ========================================
 // TOTAL MARKS
 // ========================================
 
@@ -120,6 +202,10 @@ module.exports = {
     findByAssessment,
 
     findById,
+
+    updateQuestion,
+
+    deleteQuestion,
 
     totalMarks
 
