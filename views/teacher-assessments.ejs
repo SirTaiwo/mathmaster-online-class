@@ -61,9 +61,49 @@ Total Marks:
 </p>
 
 
-<a href="/teacher/assessments/<%= a.id %>/questions">
-Manage Questions
-</a>
+<div class="assessment-actions">
+
+    <a
+        class="btn btn-primary"
+        href="/teacher/assessments/<%= a.id %>/questions">
+
+        📝 Manage Questions
+
+    </a>
+
+
+    <a
+        class="btn btn-success"
+        href="/teacher/assessments/<%= a.id %>/results">
+
+        📊 View Results
+
+    </a>
+
+
+    <a
+        class="btn btn-warning"
+        href="/teacher/assessments/<%= a.id %>/edit">
+
+        ✏ Edit Assessment
+
+    </a>
+
+
+    <form
+    action="/teacher/assessments/<%= a.id %>/delete"
+    method="POST"
+    onsubmit="return confirm('Delete this assessment and all its questions and results?');">
+
+    <button class="btn btn-danger">
+
+        🗑 Delete Assessment
+
+    </button>
+
+</form>
+
+</div>
 
 
 </div>

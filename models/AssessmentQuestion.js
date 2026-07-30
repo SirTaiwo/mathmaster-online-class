@@ -194,6 +194,28 @@ function totalMarks(assessmentId) {
 
 }
 
+// ========================================
+// DELETE ALL QUESTIONS FOR ASSESSMENT
+// ========================================
+
+function deleteByAssessment(assessmentId) {
+
+    return db.prepare(`
+
+        DELETE
+
+        FROM assessment_questions
+
+        WHERE assessment_id = ?
+
+    `).run(
+
+        assessmentId
+
+    );
+
+}
+
 
 module.exports = {
 
@@ -207,6 +229,8 @@ module.exports = {
 
     deleteQuestion,
 
-    totalMarks
+    totalMarks,
+
+    deleteByAssessment
 
 };

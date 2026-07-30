@@ -31,5 +31,48 @@ router.get(
 
 );
 
+// ========================================
+// EDIT ASSESSMENT FORM
+// ========================================
+
+router.get(
+
+    "/teacher/assessments/:id/edit",
+
+    requireRole("teacher", "admin"),
+
+    controller.editForm
+
+);
+
+
+// ========================================
+// UPDATE ASSESSMENT
+// ========================================
+
+router.post(
+
+    "/teacher/assessments/:id/edit",
+
+    requireRole("teacher", "admin"),
+
+    controller.update
+
+);
+
+// ========================================
+// DELETE ASSESSMENT
+// ========================================
+
+router.post(
+
+    "/teacher/assessments/:id/delete",
+
+    requireRole("teacher", "admin"),
+
+    controller.delete
+
+);
+
 
 module.exports = router;

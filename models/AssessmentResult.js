@@ -261,6 +261,28 @@ function leaderboard() {
 
 }
 
+// ========================================
+// DELETE RESULTS FOR ASSESSMENT
+// ========================================
+
+function deleteByAssessment(assessmentId) {
+
+    return db.prepare(`
+
+        DELETE
+
+        FROM assessment_results
+
+        WHERE assessment_id = ?
+
+    `).run(
+
+        assessmentId
+
+    );
+
+}
+
 
 
 module.exports = {
@@ -273,6 +295,8 @@ module.exports = {
 
     findByAssessment,
 
-    leaderboard
+    leaderboard,
+
+    deleteByAssessment
 
 };

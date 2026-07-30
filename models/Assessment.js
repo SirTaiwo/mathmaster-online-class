@@ -90,6 +90,64 @@ function findById(
     );
 
 }
+
+// ========================================
+// UPDATE ASSESSMENT
+// ========================================
+
+function updateAssessment(
+    id,
+    title,
+    description,
+    totalMarks
+) {
+
+    return db.prepare(`
+
+        UPDATE assessments
+
+        SET
+
+            title = ?,
+
+            description = ?,
+
+            total_marks = ?
+
+        WHERE id = ?
+
+    `).run(
+
+        title,
+
+        description,
+
+        totalMarks,
+
+        id
+
+    );
+
+}
+
+
+// ========================================
+// DELETE ASSESSMENT
+// ========================================
+
+function deleteAssessment(id) {
+
+    return db.prepare(`
+
+        DELETE
+
+        FROM assessments
+
+        WHERE id = ?
+
+    `).run(id);
+
+}
 // ========================================
 // FIND ALL ASSESSMENTS
 // ========================================
@@ -136,6 +194,10 @@ module.exports = {
     findByLesson,
 
     findById,
+
+    updateAssessment,
+
+    deleteAssessment,
 
     findAll
 
