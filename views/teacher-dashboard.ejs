@@ -60,6 +60,33 @@
             <%= user.first_name %>!
         </h1>
 
+        <div class="dashboard-card">
+
+    <label>
+
+        <strong>
+            👨‍🎓 Select Student
+        </strong>
+
+    </label>
+
+    <select id="studentSelector">
+
+        <% students.forEach(student => { %>
+
+            <option value="<%= student.id %>">
+
+                <%= student.first_name %>
+                <%= student.last_name %>
+
+            </option>
+
+        <% }) %>
+
+    </select>
+
+</div>
+
         <p>
             Role:
             <strong>
@@ -610,6 +637,47 @@ new Chart(ctx, {
     }
 
 });
+
+</script>
+
+<script>
+
+const selector =
+    document.getElementById(
+        "studentSelector"
+    );
+
+
+selector.addEventListener(
+    "change",
+    function () {
+
+
+        const studentId =
+            this.value;
+
+
+        fetch(
+            `/teacher/student-analytics/${studentId}`
+        )
+
+        .then(response =>
+            response.json()
+        )
+
+        .then(data => {
+
+            console.log(
+                "Student Analytics:",
+                data
+            );
+
+
+        });
+
+
+    }
+);
 
 </script>
 

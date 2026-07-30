@@ -105,6 +105,7 @@ res.render(
         stats,
 
         analytics,
+        students: enrolledStudents,
 
         progressTrend,
 
@@ -168,5 +169,39 @@ exports.students = (req, res) => {
 
         }
     );
+
+};
+
+// ========================================
+// STUDENT ANALYTICS API
+// ========================================
+
+exports.studentAnalytics = (req, res) => {
+
+
+    const studentId =
+        req.params.id;
+
+
+    const performance =
+        AssessmentResult.getStudentPerformance(
+            studentId
+        );
+
+
+    const progressTrend =
+        AssessmentResult.getProgressTrend(
+            studentId
+        );
+
+
+    res.json({
+
+        performance,
+
+        progressTrend
+
+    });
+
 
 };

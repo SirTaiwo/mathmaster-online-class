@@ -25,4 +25,14 @@ router.get(
     teacherController.students
 );
 
+// ========================================
+// STUDENT ANALYTICS API
+// ========================================
+
+router.get(
+    "/teacher/student-analytics/:id",
+    requireRole("teacher", "admin"),
+    teacherController.studentAnalytics
+);
+
 module.exports = router;
