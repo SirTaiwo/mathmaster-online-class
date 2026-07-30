@@ -43,6 +43,36 @@ if (!hasRoleColumn) {
     );
 
 }
+
+// ========================================
+// DATABASE MIGRATION
+// ADD MAX ATTEMPTS TO ASSESSMENTS
+// ========================================
+
+const assessmentColumns = db.prepare(`
+    PRAGMA table_info(assessments)
+`).all();
+
+
+const hasMaxAttempts =
+    assessmentColumns.some(
+        column => column.name === "max_attempts"
+    );
+
+
+if (!hasMaxAttempts) {
+
+    db.prepare(`
+        ALTER TABLE assessments
+        ADD COLUMN max_attempts INTEGER DEFAULT 1
+    `).run();
+
+
+    console.log(
+        "Database updated: max_attempts column added."
+    );
+
+}
 // ========================================
 // CREATE COURSES TABLE
 // ========================================

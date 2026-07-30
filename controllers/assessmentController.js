@@ -65,7 +65,9 @@ exports.createAssessment = (req, res) => {
 
         description,
 
-        totalMarks
+        totalMarks,
+
+        maxAttempts
 
     } = req.body;
 
@@ -79,7 +81,9 @@ exports.createAssessment = (req, res) => {
 
         description,
 
-        totalMarks
+        totalMarks,
+        
+        maxAttempts
 
     );
 

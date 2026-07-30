@@ -10,20 +10,22 @@ function createAssessment(
     lessonId,
     title,
     description,
-    totalMarks
+    totalMarks,
+    maxAttempts
 ) {
 
     return db.prepare(`
 
-        INSERT INTO assessments
-        (
-            lesson_id,
-            title,
-            description,
-            total_marks
-        )
+       INSERT INTO assessments
+(
+    lesson_id,
+    title,
+    description,
+    total_marks,
+    max_attempts
+)
 
-        VALUES (?, ?, ?, ?)
+VALUES (?, ?, ?, ?, ?)
 
     `).run(
 
@@ -33,7 +35,8 @@ function createAssessment(
 
         description,
 
-        totalMarks
+        totalMarks,
+        maxAttempts
 
     );
 
@@ -99,7 +102,8 @@ function updateAssessment(
     id,
     title,
     description,
-    totalMarks
+    totalMarks,
+    maxAttempts
 ) {
 
     return db.prepare(`
