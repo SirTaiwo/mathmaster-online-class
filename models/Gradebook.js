@@ -193,11 +193,90 @@ function getDashboardAnalytics() {
 
 }
 
+// ========================================
+// TEACHER SPECIFIC ANALYTICS
+// ========================================
+
+function getTeacherAnalytics(teacherId) {
+
+
+    return db.prepare(`
+
+        SELECT
+
+            COUNT(assessment_results.id)
+            AS total_attempts,
+
+
+            ROUND(
+                AVG(assessment_results.percentage),
+                2
+            )
+            AS average_score,
+
+
+            MAX(assessment_results.percentage)
+            AS highest_score,
+
+
+            SUM(
+                CASE
+                    WHEN assessment_results.percentage >= 50
+                    THEN 1
+                    ELSE 0
+                END
+            )
+            AS passed,
+
+
+            SUM(
+                CASE
+                    WHEN assessment_results.percentage < 50
+                    THEN 1
+                    ELSE 0
+                END
+            )
+            AS failed
+
+
+        FROM assessment_results
+
+
+        JOIN assessments
+
+        ON assessments.id =
+           assessment_results.assessment_id
+
+
+        JOIN lessons
+
+        ON lessons.id =
+           assessments.lesson_id
+
+
+        JOIN courses
+
+        ON courses.id =
+           lessons.course_id
+
+
+        WHERE courses.teacher_id = ?
+
+
+    `).get(
+
+        teacherId
+
+    );
+
+}
+
     module.exports = {
 
         getAllResults,
         getAnalytics,
         getPerformanceDistribution,
-        getDashboardAnalytics
+        getDashboardAnalytics,
+        getTeacherAnalytics
 
     };

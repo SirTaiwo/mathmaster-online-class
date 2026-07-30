@@ -66,7 +66,9 @@ exports.dashboard = (req, res) => {
     };
 
     const analytics =
-    Gradebook.getDashboardAnalytics();
+    Gradebook.getTeacherAnalytics(
+        teacherId
+    );
 
 
     res.render(
