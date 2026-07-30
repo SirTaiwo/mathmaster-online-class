@@ -70,17 +70,41 @@ exports.dashboard = (req, res) => {
         teacherId
     );
 
-
-    res.render(
-        "teacher-dashboard",
-        {
-            user: teacher,
-
-            stats,
-
-            analytics
-        }
+    const passRate =
+    Gradebook.getPassRate(
+        teacherId
     );
+
+
+const distribution =
+    Gradebook.getTeacherPerformanceDistribution(
+        teacherId
+    );
+
+
+const topStudents =
+    Gradebook.getTopStudents(
+        teacherId
+    );
+
+
+res.render(
+    "teacher-dashboard",
+    {
+        user: teacher,
+
+        stats,
+
+        analytics,
+
+        passRate,
+
+        distribution,
+
+        topStudents
+
+    }
+);
 
 };
 // ========================================

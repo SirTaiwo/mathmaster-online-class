@@ -220,6 +220,128 @@ View Students
         📊 Teacher Analytics
     </h2>
 
+    <div class="dashboard-card">
+
+<h3>
+✅ Pass Rate
+</h3>
+
+<h2>
+<%= passRate.pass_rate || 0 %>%
+</h2>
+
+<p>
+Students passing assessments
+</p>
+
+</div>
+<section>
+
+<h2>
+📊 Performance Distribution
+</h2>
+
+
+<div class="dashboard-grid">
+
+
+<div class="dashboard-card">
+
+<h3>
+🌟 Excellent
+</h3>
+
+<h2>
+<%= distribution.excellent %>
+</h2>
+
+</div>
+
+
+
+<div class="dashboard-card">
+
+<h3>
+👍 Good
+</h3>
+
+<h2>
+<%= distribution.good %>
+</h2>
+
+</div>
+
+
+
+<div class="dashboard-card">
+
+<h3>
+📘 Satisfactory
+</h3>
+
+<h2>
+<%= distribution.satisfactory %>
+</h2>
+
+</div>
+
+
+
+<div class="dashboard-card">
+
+<h3>
+⚠️ Needs Support
+</h3>
+
+<h2>
+<%= distribution.support %>
+</h2>
+
+</div>
+
+
+</div>
+
+</section>
+
+<section>
+
+<h2>
+🏆 Top Students
+</h2>
+
+
+<% topStudents.forEach(student => { %>
+
+
+<div class="dashboard-card">
+
+
+<h3>
+👨‍🎓
+<%= student.first_name %>
+<%= student.last_name %>
+</h3>
+
+
+<p>
+Average Score:
+
+<strong>
+<%= student.average_score %>%
+</strong>
+
+</p>
+
+
+</div>
+
+
+<% }) %>
+
+
+</section>
+
     <div class="stats-grid">
 
         <div class="stat-card">
