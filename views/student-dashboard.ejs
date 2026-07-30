@@ -343,6 +343,59 @@ Submitted:
 
 </div>
 
+<section>
+
+<h2>
+👨‍🏫 Teacher Feedback
+</h2>
+
+
+<% if(feedback.length === 0){ %>
+
+<p>
+No feedback from your teacher yet.
+</p>
+
+
+<% } else { %>
+
+
+<% feedback.forEach(item => { %>
+
+
+<div class="dashboard-card">
+
+
+<h3>
+Teacher:
+<%= item.teacher_first %>
+<%= item.teacher_last %>
+</h3>
+
+
+<p>
+<%= item.feedback %>
+</p>
+
+
+<p>
+<small>
+<%= item.created_at %>
+</small>
+</p>
+
+
+</div>
+
+
+<% }) %>
+
+
+<% } %>
+
+
+</section>
+
 </div>
 
 </main>

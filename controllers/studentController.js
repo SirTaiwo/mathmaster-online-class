@@ -18,6 +18,9 @@ const Course =
     const AssessmentResult =
     require("../models/AssessmentResult");
 
+    const StudentFeedback =
+    require("../models/StudentFeedback");
+
 
 // ========================================
 // STUDENT DASHBOARD
@@ -91,6 +94,11 @@ const assessments =
         req.session.student.id
     );
 
+    const feedback =
+    StudentFeedback.findByStudent(
+        req.session.student.id
+    );
+
 
 res.render(
     "student-dashboard",
@@ -100,11 +108,14 @@ res.render(
         stats,
 
         summary,
+
         assessments,
 
         results,
-        
-        performance
+
+        performance,
+
+        feedback
         
     }
 );

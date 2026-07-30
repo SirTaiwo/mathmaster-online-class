@@ -173,5 +173,33 @@ db.prepare(`
     )
 `).run();
 
+// ========================================
+// CREATE STUDENT FEEDBACK TABLE
+// ========================================
+
+db.prepare(`
+
+    CREATE TABLE IF NOT EXISTS student_feedback (
+
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+        student_id INTEGER NOT NULL,
+
+        teacher_id INTEGER NOT NULL,
+
+        feedback TEXT NOT NULL,
+
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+        FOREIGN KEY(student_id)
+            REFERENCES students(id),
+
+        FOREIGN KEY(teacher_id)
+            REFERENCES students(id)
+
+    )
+
+`).run();
+
 
 module.exports = db;

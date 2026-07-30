@@ -25,5 +25,23 @@ router.get(
 
 );
 
+const studentFeedbackController =
+    require("../controllers/studentFeedbackController");
+
+
+// ========================================
+// SAVE STUDENT FEEDBACK
+// ========================================
+
+router.post(
+
+    "/teacher/students/:id/feedback",
+
+    requireRole("teacher"),
+
+    studentFeedbackController.saveFeedback
+
+);
+
 
 module.exports = router;

@@ -195,7 +195,50 @@ Submitted:
 
 <% }) %>
 
+<h2>
+👨‍🏫 Teacher Feedback
+</h2>
 
+
+<form
+
+method="POST"
+
+action="/teacher/students/<%= student.id %>/feedback"
+
+class="form-card">
+
+
+<label>
+Write Feedback
+</label>
+
+
+<textarea
+
+name="feedback"
+
+rows="5"
+
+placeholder="Write feedback for this student..."
+
+required>
+
+</textarea>
+
+
+<button
+
+class="btn primary"
+
+type="submit">
+
+Save Feedback
+
+</button>
+
+
+</form>
 
 </main>
 
