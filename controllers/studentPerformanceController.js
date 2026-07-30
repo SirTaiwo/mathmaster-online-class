@@ -47,7 +47,9 @@ exports.viewPerformance = (req, res) => {
 
             results,
 
-            performance
+            performance,
+
+            status
 
         }
 
@@ -55,3 +57,51 @@ exports.viewPerformance = (req, res) => {
 
 
 };
+
+// ========================================
+// PERFORMANCE STATUS
+// ========================================
+
+let status =
+    {
+        label: "Needs Support",
+        icon: "🔴"
+    };
+
+
+const average =
+    performance.average_percentage || 0;
+
+
+if (average >= 80) {
+
+    status = {
+
+        label: "Excellent",
+        icon: "🟢"
+
+    };
+
+}
+
+else if (average >= 60) {
+
+    status = {
+
+        label: "Good",
+        icon: "🔵"
+
+    };
+
+}
+
+else if (average >= 40) {
+
+    status = {
+
+        label: "Needs Improvement",
+        icon: "🟡"
+
+    };
+
+}
