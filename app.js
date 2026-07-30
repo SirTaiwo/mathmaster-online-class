@@ -49,6 +49,9 @@ const adminRoutes =
     const studentPerformanceRoutes =
     require("./routes/studentPerformance");
 
+    const parentRoutes =
+    require("./routes/parent");
+
 
 
 
@@ -206,6 +209,10 @@ app.use(
 
 app.use(
     studentPerformanceRoutes
+);
+
+app.use(
+    parentRoutes
 );
 
 // ========================================

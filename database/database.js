@@ -201,5 +201,35 @@ db.prepare(`
 
 `).run();
 
+// ========================================
+// CREATE PARENT-STUDENT RELATIONSHIP TABLE
+// ========================================
+
+db.prepare(`
+
+    CREATE TABLE IF NOT EXISTS parent_students (
+
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+        parent_id INTEGER NOT NULL,
+
+        student_id INTEGER NOT NULL,
+
+        relationship TEXT,
+
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+
+        FOREIGN KEY(parent_id)
+            REFERENCES students(id),
+
+
+        FOREIGN KEY(student_id)
+            REFERENCES students(id)
+
+    )
+
+`).run();
+
 
 module.exports = db;

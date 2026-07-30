@@ -229,7 +229,16 @@ if (student.role === "teacher") {
 }
 
 
-res.redirect(
+if (student.role === "parent") {
+
+    return res.redirect(
+        "/parent/dashboard"
+    );
+
+}
+
+
+return res.redirect(
     "/student/dashboard"
 );
 
