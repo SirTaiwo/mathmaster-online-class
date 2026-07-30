@@ -96,6 +96,9 @@ exports.assessmentGradebook = (req, res) => {
     const analytics =
         Gradebook.getAnalytics();
 
+        const performance =
+    Gradebook.getPerformanceDistribution();
+
 
     res.render(
 
@@ -108,7 +111,8 @@ exports.assessmentGradebook = (req, res) => {
 
             results,
 
-            analytics
+            analytics,
+            performance
 
         }
 

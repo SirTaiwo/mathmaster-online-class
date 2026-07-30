@@ -88,10 +88,74 @@ function getAnalytics() {
     `).get();
 
 }
+// ========================================
+// PERFORMANCE DISTRIBUTION
+// ========================================
+
+function getPerformanceDistribution() {
+
+    const results =
+        db.prepare(`
+
+            SELECT percentage
+
+            FROM assessment_results
+
+        `).all();
+
+
+    let distribution = {
+
+        excellent: 0,
+
+        good: 0,
+
+        satisfactory: 0,
+
+        support: 0
+
+    };
+
+
+    results.forEach(result => {
+
+
+        if (result.percentage >= 80) {
+
+            distribution.excellent++;
+
+        }
+
+        else if (result.percentage >= 70) {
+
+            distribution.good++;
+
+        }
+
+        else if (result.percentage >= 50) {
+
+            distribution.satisfactory++;
+
+        }
+
+        else {
+
+            distribution.support++;
+
+        }
+
+
+    });
+
+
+    return distribution;
+
+}
 
 module.exports = {
 
     getAllResults,
-    getAnalytics
+    getAnalytics,
+    getPerformanceDistribution
 
 };

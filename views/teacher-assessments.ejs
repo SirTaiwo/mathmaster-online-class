@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>
+Teacher Assessments
+</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<h1>
+📋 My Assessments
+</h1>
+
+
+<p>
+Manage your created assessments.
+</p>
+
+
+
+<% assessments.forEach(a => { %>
+
+
+<div class="stat-card">
+
+
+<div>
+
+
+<h2>
+<%= a.title %>
+</h2>
+
+
+<p>
+Course:
+<%= a.course_title %>
+</p>
+
+
+<p>
+Lesson:
+<%= a.lesson_title %>
+</p>
+
+
+<p>
+Total Marks:
+<%= a.total_marks %>
+</p>
+
+
+<a href="/teacher/assessments/<%= a.id %>/questions">
+Manage Questions
+</a>
+
+
+</div>
+
+
+</div>
+
+
+<% }) %>
+
+
+</div>
+
+
+</body>
+
+</html>

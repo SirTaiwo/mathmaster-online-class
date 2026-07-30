@@ -196,6 +196,11 @@ app.use(
     require("./routes/assessmentGradebook")
 );
 
+app.use(
+    "/",
+    require("./routes/assessmentManagement")
+);
+
 // ========================================
 // STUDENT ASSESSMENT ROUTES
 // ========================================

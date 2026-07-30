@@ -91,25 +91,43 @@ function findById(
 
 }
 // ========================================
-// FIND ALL ASSESSMENTS FOR A LESSON
+// FIND ALL ASSESSMENTS
 // ========================================
 
-function findByLesson(lessonId) {
+function findAll() {
 
     return db.prepare(`
 
-        SELECT *
+        SELECT
+
+            assessments.*,
+
+            lessons.title AS lesson_title,
+
+            courses.title AS course_title
+
 
         FROM assessments
 
-        WHERE lesson_id = ?
 
-        ORDER BY created_at ASC
+        JOIN lessons
 
-    `).all(lessonId);
+        ON lessons.id =
+           assessments.lesson_id
+
+
+        JOIN courses
+
+        ON courses.id =
+           lessons.course_id
+
+
+        ORDER BY assessments.created_at DESC
+
+
+    `).all();
 
 }
-
 
 module.exports = {
 
@@ -117,6 +135,8 @@ module.exports = {
 
     findByLesson,
 
-    findById
+    findById,
+
+    findAll
 
 };

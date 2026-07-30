@@ -679,6 +679,62 @@ select {
         #f9fafb;
 
 }
+
+/* ===============================
+   PERFORMANCE STATUS BADGES
+================================ */
+
+.badge {
+
+    display: inline-block;
+
+    padding: 6px 12px;
+
+    border-radius: 20px;
+
+    font-size: 0.85rem;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+
+}
+
+
+.badge.excellent {
+
+    background: #dcfce7;
+
+    color: #166534;
+
+}
+
+
+.badge.good {
+
+    background: #dbeafe;
+
+    color: #1e40af;
+
+}
+
+
+.badge.satisfactory {
+
+    background: #fef3c7;
+
+    color: #92400e;
+
+}
+
+
+.badge.support {
+
+    background: #fee2e2;
+
+    color: #991b1b;
+
+}
 /* =========================
    ADMIN DASHBOARD
 ========================= */
@@ -821,6 +877,41 @@ select {
     background:
         #f9fafb;
 
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 12px 18px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table th {
+    font-weight: 700;
+}
+
+.admin-table tbody tr {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.admin-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.admin-table th:nth-child(3),
+.admin-table td:nth-child(3),
+.admin-table th:nth-child(4),
+.admin-table td:nth-child(4) {
+    text-align: center;
+}
+
+.percentage {
+    font-weight: 700;
 }
 
 
