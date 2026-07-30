@@ -33,6 +33,16 @@ exports.viewPerformance = (req, res) => {
             studentId
         );
 
+        const trend =
+    AssessmentResult.getProgressTrend(
+        studentId
+    );
+
+    const status =
+        AssessmentResult.getPerformanceStatus(
+            studentId
+        );
+
 
     res.render(
 
@@ -49,7 +59,9 @@ exports.viewPerformance = (req, res) => {
 
             performance,
 
-            status
+            status,
+
+            trend
 
         }
 

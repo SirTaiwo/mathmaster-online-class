@@ -309,6 +309,82 @@ function countAttempts(studentId, assessmentId) {
 
 }
 
+// ========================================
+// STUDENT PROGRESS TREND
+// ========================================
+
+function getProgressTrend(studentId) {
+
+
+    return db.prepare(`
+
+        SELECT
+
+            percentage,
+
+            submitted_at
+
+        FROM assessment_results
+
+        WHERE student_id = ?
+
+        ORDER BY submitted_at ASC
+
+
+    `).all(
+
+        studentId
+
+    );
+
+
+}// ========================================
+// PERFORMANCE STATUS
+// ========================================
+
+function getPerformanceStatus(studentId) {
+
+    const performance =
+        getStudentPerformance(studentId);
+
+
+    if (!performance || !performance.average_percentage) {
+
+        return "No Data";
+
+    }
+
+
+    const average =
+        performance.average_percentage;
+
+
+    if (average >= 80) {
+
+        return "Excellent";
+
+    }
+
+    else if (average >= 70) {
+
+        return "Good";
+
+    }
+
+    else if (average >= 50) {
+
+        return "Satisfactory";
+
+    }
+
+    else {
+
+        return "Needs Improvement";
+
+    }
+
+}
+
 
 
 module.exports = {
@@ -317,13 +393,17 @@ module.exports = {
 
     findByStudent,
 
+    getProgressTrend,
+
     findStudentAssessmentResult,
 
     findByAssessment,
 
-    getStudentPerformance,
+   getStudentPerformance,
 
-    leaderboard,
+getPerformanceStatus,
+
+leaderboard,
 
     deleteByAssessment,
 

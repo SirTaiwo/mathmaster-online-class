@@ -117,6 +117,40 @@ Logout
 
 </div>
 
+<h2>
+📈 Progress Trend
+</h2>
+
+
+<% trend.forEach((item, index) => { %>
+
+
+<div class="dashboard-card">
+
+
+<h3>
+Attempt <%= index + 1 %>
+</h3>
+
+
+<h2>
+
+<%= item.percentage %>%
+
+</h2>
+
+
+<p>
+
+<%= item.submitted_at %>
+
+</p>
+
+
+</div>
+
+
+<% }) %>
 
 </div>
 
