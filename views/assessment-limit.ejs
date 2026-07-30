@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>
+        Assessment Limit Reached
+    </title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>
+        🚫 Assessment Locked
+    </h1>
+
+    <p>
+
+        You have already used all
+
+        <strong>
+
+            <%= assessment.max_attempts %>
+
+        </strong>
+
+        allowed attempt(s) for this assessment.
+
+    </p>
+
+    <p>
+
+        Attempts used:
+
+        <strong>
+
+            <%= attempts %>
+
+        </strong>
+
+    </p>
+
+    <a href="/student/dashboard">
+
+        ⬅ Return to Dashboard
+
+    </a>
+
+</div>
+
+</body>
+
+</html>

@@ -42,18 +42,59 @@ exports.takeAssessment = (req, res) => {
             req.params.assessmentId
         );
 
+    const studentId =
+        req.session.student.id;
+
+    const attempts =
+        AssessmentResult.countAttempts(
+
+            studentId,
+
+            req.params.assessmentId
+
+        );
+
+
+    if (attempts.attempts >= assessment.max_attempts) {
+
+        return res.render(
+
+            "assessment-limit",
+
+            {
+
+                user: req.session.student,
+
+                assessment,
+
+                attempts: attempts.attempts
+
+            }
+
+        );
+
+    }
+
+
     const questions =
         AssessmentQuestion.findByAssessment(
             req.params.assessmentId
         );
 
     res.render(
+
         "student-assessment",
+
         {
+
             user: req.session.student,
+
             assessment,
+
             questions
+
         }
+
     );
 
 };

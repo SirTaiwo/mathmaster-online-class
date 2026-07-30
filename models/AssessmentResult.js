@@ -283,6 +283,32 @@ function deleteByAssessment(assessmentId) {
 
 }
 
+// ========================================
+// COUNT STUDENT ATTEMPTS
+// ========================================
+
+function countAttempts(studentId, assessmentId) {
+
+    return db.prepare(`
+
+        SELECT COUNT(*) AS attempts
+
+        FROM assessment_results
+
+        WHERE student_id = ?
+
+        AND assessment_id = ?
+
+    `).get(
+
+        studentId,
+
+        assessmentId
+
+    );
+
+}
+
 
 
 module.exports = {
@@ -295,8 +321,12 @@ module.exports = {
 
     findByAssessment,
 
+    getStudentPerformance,
+
     leaderboard,
 
-    deleteByAssessment
+    deleteByAssessment,
+
+    countAttempts
 
 };

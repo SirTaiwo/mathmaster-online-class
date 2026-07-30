@@ -152,10 +152,52 @@ function getPerformanceDistribution() {
 
 }
 
-module.exports = {
+// ========================================
+// TEACHER DASHBOARD ANALYTICS
+// ========================================
 
-    getAllResults,
-    getAnalytics,
-    getPerformanceDistribution
+function getDashboardAnalytics() {
 
-};
+    return db.prepare(`
+
+        SELECT
+
+            COUNT(*) AS total_attempts,
+
+            ROUND(
+                AVG(percentage),
+                2
+            ) AS average_score,
+
+            MAX(percentage) AS highest_score,
+
+            MIN(percentage) AS lowest_score,
+
+            SUM(
+                CASE
+                    WHEN percentage >= 50 THEN 1
+                    ELSE 0
+                END
+            ) AS passed,
+
+            SUM(
+                CASE
+                    WHEN percentage < 50 THEN 1
+                    ELSE 0
+                END
+            ) AS failed
+
+        FROM assessment_results
+
+    `).get();
+
+}
+
+    module.exports = {
+
+        getAllResults,
+        getAnalytics,
+        getPerformanceDistribution,
+        getDashboardAnalytics
+
+    };

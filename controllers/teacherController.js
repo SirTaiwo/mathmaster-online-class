@@ -7,6 +7,9 @@ const Enrollment =
 const Course =
     require("../models/Course");
 
+    const Gradebook =
+    require("../models/Gradebook");
+
 
 // ========================================
 // TEACHER DASHBOARD
@@ -62,13 +65,18 @@ exports.dashboard = (req, res) => {
 
     };
 
+    const analytics =
+    Gradebook.getDashboardAnalytics();
+
 
     res.render(
         "teacher-dashboard",
         {
             user: teacher,
 
-            stats
+            stats,
+
+            analytics
         }
     );
 
