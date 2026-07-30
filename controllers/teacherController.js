@@ -7,8 +7,12 @@ const Enrollment =
 const Course =
     require("../models/Course");
 
-    const Gradebook =
+const Gradebook =
     require("../models/Gradebook");
+
+const AssessmentResult =
+    require("../models/AssessmentResult");
+
 
 
 // ========================================
@@ -87,6 +91,11 @@ const topStudents =
         teacherId
     );
 
+    const progressTrend =
+    AssessmentResult.getProgressTrend(
+        1
+    );
+
 
 res.render(
     "teacher-dashboard",
@@ -97,11 +106,15 @@ res.render(
 
         analytics,
 
+        progressTrend,
+
         passRate,
 
         distribution,
 
-        topStudents
+        topStudents,
+
+        progressTrend
 
     }
 );

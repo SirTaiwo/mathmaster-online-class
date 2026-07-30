@@ -216,6 +216,37 @@ function getStudentPerformance(studentId) {
 
 
 }
+
+// ========================================
+// STUDENT PROGRESS TREND
+// ========================================
+
+function getProgressTrend(studentId) {
+
+
+    return db.prepare(`
+
+        SELECT
+
+            percentage,
+
+            submitted_at
+
+        FROM assessment_results
+
+        WHERE student_id = ?
+
+        ORDER BY submitted_at ASC
+
+
+    `).all(
+
+        studentId
+
+    );
+
+
+}
 // ========================================
 // STUDENT LEADERBOARD
 // ========================================
@@ -395,15 +426,15 @@ module.exports = {
 
     getProgressTrend,
 
+    getPerformanceStatus,
+
     findStudentAssessmentResult,
 
     findByAssessment,
 
-   getStudentPerformance,
+    getStudentPerformance,
 
-getPerformanceStatus,
-
-leaderboard,
+    leaderboard,
 
     deleteByAssessment,
 

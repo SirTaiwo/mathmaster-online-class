@@ -17,6 +17,7 @@
         href="/css/style.css"
     >
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -458,7 +459,159 @@ Average Score:
 
     </div>
 
+    <section>
+
+<h2>
+📊 Performance Chart
+</h2>
+
+
+<div class="dashboard-card">
+
+<canvas id="performanceChart"></canvas>
+
+</div>
+
+
+</section>
+
+<section>
+
+<h2>
+📈 Student Progress Trend
+</h2>
+
+
+<div class="dashboard-card">
+
+<canvas id="progressChart"></canvas>
+
+</div>
+
+
+</section>
 </main>
+
+<script>
+
+const progressCtx =
+document.getElementById(
+    "progressChart"
+);
+
+
+new Chart(progressCtx, {
+
+    type: "line",
+
+
+    data: {
+
+
+        labels: [
+
+            <% progressTrend.forEach((item, index) => { %>
+
+                "Attempt <%= index + 1 %>",
+
+            <% }) %>
+
+        ],
+
+
+        datasets: [{
+
+            label: "Percentage",
+
+
+            data: [
+
+                <% progressTrend.forEach(item => { %>
+
+                    <%= item.percentage %>,
+
+                <% }) %>
+
+            ],
+
+
+            tension: 0.3
+
+        }]
+
+
+    },
+
+
+    options: {
+
+        scales: {
+
+            y: {
+
+                beginAtZero: true,
+
+                max: 100
+
+            }
+
+        }
+
+    }
+
+
+});
+
+</script>
+
+<script>
+
+const ctx =
+document.getElementById(
+    "performanceChart"
+);
+
+
+new Chart(ctx, {
+
+    type: "doughnut",
+
+    data: {
+
+        labels: [
+
+            "Excellent",
+
+            "Good",
+
+            "Satisfactory",
+
+            "Needs Support"
+
+        ],
+
+
+        datasets: [{
+
+            data: [
+
+                <%= distribution.excellent %>,
+
+                <%= distribution.good %>,
+
+                <%= distribution.satisfactory %>,
+
+                <%= distribution.support %>
+
+            ]
+
+        }]
+
+    }
+
+});
+
+</script>
 
 </body>
 
