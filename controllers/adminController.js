@@ -13,7 +13,9 @@ exports.dashboard = (req, res) => {
     const users =
         Student.findAll();
 
-        recentUsers
+    const recentUsers =
+        Student.getRecentUsers();
+
 
     res.render(
         "admin-dashboard",
@@ -23,7 +25,9 @@ exports.dashboard = (req, res) => {
 
             stats,
 
-            users
+            users,
+
+            recentUsers
         }
     );
 

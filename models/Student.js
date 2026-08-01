@@ -388,7 +388,7 @@ module.exports = {
     findByEmail,
     findById,
     createStudent,
-    findAll: findAllStudents,
+    findAll,
     findAllStudents,
     createTeacher,
     getStatistics,
@@ -397,6 +397,5 @@ module.exports = {
     updateStudent,
     deleteUser,
     findAllTeachers
-    
 };
    

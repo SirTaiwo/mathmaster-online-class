@@ -423,5 +423,61 @@ CREATE TABLE IF NOT EXISTS attendance (
 )
 `).run();
 
+// ========================================
+// CREATE CLASSES TABLE
+// ========================================
+
+db.prepare(`
+
+CREATE TABLE IF NOT EXISTS classes (
+
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    class_name TEXT NOT NULL,
+
+    grade TEXT NOT NULL,
+
+    teacher_id INTEGER,
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+
+    FOREIGN KEY(teacher_id)
+        REFERENCES students(id)
+
+)
+
+`).run();
+
+
+
+// ========================================
+// CREATE CLASS STUDENTS TABLE
+// ========================================
+
+db.prepare(`
+
+CREATE TABLE IF NOT EXISTS class_students (
+
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    class_id INTEGER NOT NULL,
+
+    student_id INTEGER NOT NULL,
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+
+    FOREIGN KEY(class_id)
+        REFERENCES classes(id),
+
+
+    FOREIGN KEY(student_id)
+        REFERENCES students(id)
+
+)
+
+`).run();
+
 
 module.exports = db;

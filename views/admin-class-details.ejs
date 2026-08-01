@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Class Details</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+
+<body>
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+Math<span>Master</span>
+</div>
+
+<div class="nav-links">
+
+<a href="/admin/classes">
+Classes
+</a>
+
+<a href="/logout">
+Logout
+</a>
+
+</div>
+
+</nav>
+
+</header>
+
+
+
+<div class="admin-layout">
+
+
+<aside class="sidebar">
+
+<div class="sidebar-logo">
+Math<span>Master</span>
+</div>
+
+
+<ul class="sidebar-menu">
+
+<li>
+<a href="/admin/dashboard">
+🏠 Dashboard
+</a>
+</li>
+
+<li>
+<a href="/admin/classes">
+📚 Classes
+</a>
+</li>
+
+</ul>
+
+</aside>
+
+
+
+<main class="main-content">
+
+
+<div class="dashboard-header">
+
+<p class="eyebrow">
+CLASS DETAILS
+</p>
+
+
+<h1>
+<%= classInfo.class_name %>
+</h1>
+
+
+<p>
+Grade:
+<strong>
+<%= classInfo.grade %>
+</strong>
+</p>
+
+</div>
+
+
+
+
+<section class="dashboard-card">
+
+
+<h2>
+Students in Class
+</h2>
+
+
+<table class="admin-table">
+
+<thead>
+
+<tr>
+
+<th>
+Student
+</th>
+
+<th>
+Email
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+
+<% students.forEach(function(student){ %>
+
+<tr>
+
+<td>
+<%= student.first_name %>
+<%= student.last_name %>
+</td>
+
+
+<td>
+<%= student.email %>
+</td>
+
+
+</tr>
+
+<% }) %>
+
+
+</tbody>
+
+</table>
+
+
+</section>
+
+
+
+
+
+<section class="dashboard-card">
+
+
+<h2>
+Add Student
+</h2>
+
+
+<form method="POST"
+action="/admin/classes/<%= classInfo.id %>/student">
+
+
+<select name="student_id">
+
+
+<option value="">
+Select Student
+</option>
+
+
+<% availableStudents.forEach(function(student){ %>
+
+
+<option value="<%= student.id %>">
+
+<%= student.first_name %>
+<%= student.last_name %>
+
+</option>
+
+
+<% }) %>
+
+
+</select>
+
+
+<button type="submit">
+Add Student
+</button>
+
+
+</form>
+
+
+</section>
+
+
+
+</main>
+
+
+</div>
+
+
+</body>
+
+</html>

@@ -28,6 +28,9 @@ const studentRoutes =
 const adminRoutes =
     require("./routes/admin");
 
+    const adminClassRoutes =
+    require("./routes/adminClasses");
+
     const courseRoutes =
     require("./routes/course");
 
@@ -179,8 +182,18 @@ app.use(
 
 app.use(
     "/",
-    adminRoutes
+    adminRoutes    
 );
+
+// ========================================
+// ADMIN CLASS ROUTES
+// ========================================
+
+app.use(
+    "/",
+    adminClassRoutes
+);
+
 app.use(
     "/",
     courseRoutes

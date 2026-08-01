@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Class Management</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+Math<span>Master</span>
+</div>
+
+<div class="nav-links">
+
+<a href="/admin/dashboard">
+Dashboard
+</a>
+
+<a href="/logout">
+Logout
+</a>
+
+</div>
+
+</nav>
+
+</header>
+
+
+
+<div class="admin-layout">
+
+
+<aside class="sidebar">
+
+<div class="sidebar-logo">
+Math<span>Master</span>
+</div>
+
+
+<ul class="sidebar-menu">
+
+<li>
+<a href="/admin/dashboard">
+🏠 Dashboard
+</a>
+</li>
+
+<li>
+<a href="/admin/users">
+👥 Users
+</a>
+</li>
+
+<li>
+<a href="/admin/classes">
+📚 Classes
+</a>
+</li>
+
+
+</ul>
+
+
+</aside>
+
+
+
+<main class="main-content">
+
+
+<div class="dashboard-header">
+
+<p class="eyebrow">
+ACADEMIC MANAGEMENT
+</p>
+
+
+<h1>
+Class Management
+</h1>
+
+
+<p>
+Create and manage school classes.
+</p>
+
+
+</div>
+
+
+
+
+<section class="dashboard-card">
+
+
+<h2>
+Create New Class
+</h2>
+
+
+<form method="POST" action="/admin/classes">
+
+
+<input
+type="text"
+name="class_name"
+placeholder="Class Name"
+required
+>
+
+
+<input
+type="text"
+name="grade"
+placeholder="Grade"
+required
+>
+
+
+<select name="teacher_id">
+
+
+<option value="">
+Assign Teacher
+</option>
+
+
+<% teachers.forEach(function(teacher){ %>
+
+<option value="<%= teacher.id %>">
+
+<%= teacher.first_name %>
+<%= teacher.last_name %>
+
+</option>
+
+
+<% }) %>
+
+
+</select>
+
+
+<button type="submit">
+Create Class
+</button>
+
+
+</form>
+
+
+</section>
+
+
+
+
+
+<section class="dashboard-card">
+
+
+<h2>
+Existing Classes
+</h2>
+
+
+
+<table class="admin-table">
+
+
+<thead>
+
+<tr>
+
+<th>
+Class
+</th>
+
+
+<th>
+Grade
+</th>
+
+
+<th>
+Teacher
+</th>
+
+
+<th>
+Action
+</th>
+
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+
+<% classes.forEach(function(item){ %>
+
+
+<tr>
+
+
+<td>
+<%= item.class_name %>
+</td>
+
+
+<td>
+<%= item.grade %>
+</td>
+
+
+<td>
+
+<%= item.first_name || "Not Assigned" %>
+
+<%= item.last_name || "" %>
+
+</td>
+
+
+<td>
+
+<a href="/admin/classes/<%= item.id %>">
+View
+</a>
+
+<a href="/admin/classes/delete/<%= item.id %>">
+Delete
+</a>
+
+</td>
+
+
+</tr>
+
+
+<% }) %>
+
+
+</tbody>
+
+
+</table>
+
+
+</section>
+
+
+
+</main>
+
+
+</div>
+
+
+</body>
+
+</html>
