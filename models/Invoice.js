@@ -126,6 +126,97 @@ function findById(id) {
 
 }
 
+// ========================================
+// UPDATE INVOICE AFTER PAYMENT
+// ========================================
+
+function updatePaymentStatus(invoice_id) {
+
+
+    const invoice =
+        db.prepare(`
+
+        SELECT amount
+
+        FROM invoices
+
+        WHERE id = ?
+
+        `).get(invoice_id);
+
+
+
+    const payment =
+        db.prepare(`
+
+        SELECT SUM(amount_paid) AS total_paid
+
+        FROM payments
+
+        WHERE invoice_id = ?
+
+        `).get(invoice_id);
+
+
+
+    const totalPaid =
+        payment.total_paid || 0;
+
+
+
+    const balance =
+        invoice.amount - totalPaid;
+
+
+
+    let status =
+        "Outstanding";
+
+
+    if (balance <= 0) {
+
+        status = "Paid";
+
+    }
+
+    else if (totalPaid > 0) {
+
+        status = "Partially Paid";
+
+    }
+
+
+
+    return db.prepare(`
+
+        UPDATE invoices
+
+        SET
+
+        amount_paid = ?,
+
+        balance = ?,
+
+        status = ?
+
+
+        WHERE id = ?
+
+
+    `).run(
+
+        totalPaid,
+
+        balance,
+
+        status,
+
+        invoice_id
+
+    );
+
+}
+
 
 
 module.exports = {
@@ -136,6 +227,8 @@ module.exports = {
 
     findByStudent,
 
-    findById
+    findById,
+
+    updatePaymentStatus
 
 };

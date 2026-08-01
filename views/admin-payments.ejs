@@ -1,0 +1,140 @@
+<h1>
+💳 Payment Management
+</h1>
+
+
+<div class="dashboard-card">
+
+
+<h3>
+Record Payment
+</h3>
+
+
+<form method="POST"
+action="/admin/payments">
+
+
+<input
+name="invoice_id"
+placeholder="Invoice ID"
+>
+
+
+<input
+name="student_id"
+placeholder="Student ID"
+>
+
+
+<input
+type="number"
+name="amount_paid"
+placeholder="Amount"
+step="0.01"
+required
+>
+
+
+<input
+name="payment_method"
+placeholder="Method"
+>
+
+
+<input
+name="reference_number"
+placeholder="Reference"
+>
+
+
+<button>
+Record Payment
+</button>
+
+
+</form>
+
+
+</div>
+
+
+
+<h2>
+Existing Payments
+</h2>
+
+
+<div class="dashboard-card">
+
+
+<table class="admin-table">
+
+
+<tr>
+
+<th>
+Invoice
+</th>
+
+<th>
+Student
+</th>
+
+<th>
+Amount
+</th>
+
+<th>
+Method
+</th>
+
+<th>
+Reference
+</th>
+
+</tr>
+
+
+
+<% payments.forEach(payment => { %>
+
+
+<tr>
+
+<td>
+<%= payment.invoice_number %>
+</td>
+
+
+<td>
+<%= payment.first_name %>
+<%= payment.last_name %>
+</td>
+
+
+<td>
+R<%= payment.amount_paid %>
+</td>
+
+
+<td>
+<%= payment.payment_method %>
+</td>
+
+
+<td>
+<%= payment.reference_number %>
+</td>
+
+
+</tr>
+
+
+<% }) %>
+
+
+</table>
+
+
+</div>

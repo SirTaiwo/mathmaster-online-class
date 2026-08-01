@@ -249,6 +249,66 @@ Status:
 
 </div>
 
+<h3>
+💳 Payment History
+</h3>
+
+
+<div class="dashboard-card">
+
+
+<% child.payments.forEach(payment => { %>
+
+
+<p>
+
+<strong>
+<%= payment.invoice_number %>
+</strong>
+
+<br>
+
+
+Amount Paid:
+
+R<%= payment.amount_paid %>
+
+
+<br>
+
+
+Method:
+
+<%= payment.payment_method %>
+
+
+<br>
+
+
+Reference:
+
+<%= payment.reference_number %>
+
+
+<br>
+
+
+Date:
+
+<%= payment.payment_date %>
+
+
+</p>
+
+
+<hr>
+
+
+<% }) %>
+
+
+</div>
+
 <h3>💬 Teacher Feedback</h3>
 
 <div class="dashboard-card">

@@ -16,6 +16,9 @@ const StudentFeedback =
     const Invoice =
     require("../models/Invoice");
 
+    const Payment =
+    require("../models/Payment");
+
 
 // ========================================
 // PARENT DASHBOARD
@@ -69,6 +72,9 @@ const assessmentHistory =
     const invoices =
     Invoice.findByStudent(child.id);
 
+    const payments =
+    Payment.findByStudent(child.id);
+
 const courses =
     Enrollment.findCoursesByStudent(
         child.id
@@ -93,7 +99,9 @@ return {
 
     feedback,
 
-    invoices
+    invoices,
+
+    payments
 
 };
 

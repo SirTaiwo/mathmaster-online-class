@@ -329,5 +329,41 @@ CREATE TABLE IF NOT EXISTS invoices (
 
 `).run();
 
+// ========================================
+// CREATE PAYMENTS TABLE
+// ========================================
+
+db.prepare(`
+
+CREATE TABLE IF NOT EXISTS payments (
+
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    invoice_id INTEGER NOT NULL,
+
+    student_id INTEGER NOT NULL,
+
+    amount_paid REAL NOT NULL,
+
+    payment_method TEXT,
+
+    reference_number TEXT,
+
+    payment_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+
+    FOREIGN KEY(invoice_id)
+        REFERENCES invoices(id),
+
+
+    FOREIGN KEY(student_id)
+        REFERENCES students(id)
+
+)
+
+`).run();
+
 
 module.exports = db;
