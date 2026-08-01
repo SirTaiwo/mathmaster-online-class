@@ -167,6 +167,84 @@ function updateAttendance(
 
 }
 
+// ===============================
+// OVERALL ATTENDANCE SUMMARY
+// ===============================
+
+function getAttendanceSummary() {
+
+    return db.prepare(`
+
+        SELECT
+
+            status,
+
+            COUNT(*) AS total
+
+        FROM attendance
+
+        GROUP BY status
+
+    `).all();
+
+}
+
+
+
+// ===============================
+// STUDENT ATTENDANCE SUMMARY
+// ===============================
+
+function getStudentAttendanceSummary(student_id) {
+
+    return db.prepare(`
+
+        SELECT
+
+            COUNT(*) AS total,
+
+            SUM(status = 'Present') AS present,
+
+            SUM(status = 'Absent') AS absent,
+
+            SUM(status = 'Late') AS late,
+
+            SUM(status = 'Excused') AS excused
+
+        FROM attendance
+
+        WHERE student_id = ?
+
+    `).get(student_id);
+
+}
+
+
+
+// ===============================
+// DAILY ATTENDANCE SUMMARY
+// ===============================
+
+function getDailyAttendanceSummary(date) {
+
+    return db.prepare(`
+
+        SELECT
+
+            status,
+
+            COUNT(*) AS total
+
+        FROM attendance
+
+        WHERE attendance_date = ?
+
+        GROUP BY status
+
+    `).all(date);
+
+}
+
 
 
 module.exports = {
@@ -179,6 +257,12 @@ module.exports = {
 
     findByDate,
 
-    updateAttendance
+    updateAttendance,
+
+    getAttendanceSummary,
+
+    getStudentAttendanceSummary,
+
+    getDailyAttendanceSummary
 
 };

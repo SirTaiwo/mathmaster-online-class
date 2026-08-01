@@ -64,6 +64,9 @@ const adminRoutes =
     const attendanceRoutes =
     require("./routes/attendance");
 
+    const adminAttendanceRoutes =
+require("./routes/adminAttendance");
+
 
 
 
@@ -243,6 +246,8 @@ app.use(
 );
 
 app.use(attendanceRoutes);
+
+app.use(adminAttendanceRoutes);
 
 // ========================================
 // STUDENT ASSESSMENT ROUTES
