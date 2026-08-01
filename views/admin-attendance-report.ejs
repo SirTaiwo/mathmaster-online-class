@@ -230,6 +230,163 @@ Today's Attendance
 
 </div>
 
+<div class="dashboard-grid">
+
+
+<!-- =========================
+     ATTENDANCE LEADERS
+========================= -->
+
+
+<div class="dashboard-card analytics-success">
+
+
+<h3>
+🏆 Attendance Leaders
+</h3>
+
+
+
+<% if(ranking.length){ %>
+
+
+<% ranking.forEach((student, index) => { %>
+
+
+<p>
+
+
+<strong>
+
+<%= index + 1 %>.
+
+<%= student.first_name %>
+
+<%= student.last_name %>
+
+</strong>
+
+
+<br>
+
+
+Attendance:
+
+<%= student.attendance_rate %>%
+
+
+<br>
+
+
+Present:
+
+<%= student.present %>
+
+/
+
+<%= student.total %>
+
+
+</p>
+
+
+<hr>
+
+
+<% }) %>
+
+
+<% } else { %>
+
+
+<p>
+No attendance records available.
+</p>
+
+
+<% } %>
+
+
+
+</div>
+
+
+
+
+
+<!-- =========================
+     LOW ATTENDANCE ALERTS
+========================= -->
+
+
+<div class="dashboard-card analytics-danger">
+
+
+<h3>
+⚠ Students Needing Attention
+</h3>
+
+
+
+
+<% if(lowAttendance.length){ %>
+
+
+
+<% lowAttendance.forEach(student => { %>
+
+
+<p>
+
+
+<strong>
+
+<%= student.first_name %>
+
+<%= student.last_name %>
+
+</strong>
+
+
+<br>
+
+
+Attendance:
+
+<%= student.attendance_rate %>%
+
+
+</p>
+
+
+<hr>
+
+
+<% }) %>
+
+
+
+<% } else { %>
+
+
+<p>
+
+✅ No students below 75%.
+
+</p>
+
+
+
+<% } %>
+
+
+
+</div>
+
+
+
+</div>
+
 
 
 </main>

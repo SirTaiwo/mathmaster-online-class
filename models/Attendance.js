@@ -245,6 +245,101 @@ function getDailyAttendanceSummary(date) {
 
 }
 
+// ===============================
+// STUDENT ATTENDANCE RANKING
+// ===============================
+
+function getStudentAttendanceRanking() {
+
+    return db.prepare(`
+
+        SELECT
+
+            students.first_name,
+
+            students.last_name,
+
+            COUNT(attendance.id) AS total,
+
+            SUM(attendance.status = 'Present') AS present,
+
+            ROUND(
+
+                (SUM(attendance.status = 'Present') * 100.0)
+
+                /
+
+                COUNT(attendance.id)
+
+            ,1) AS attendance_rate
+
+
+        FROM attendance
+
+
+        JOIN students
+
+            ON attendance.student_id = students.id
+
+
+        GROUP BY attendance.student_id
+
+
+        ORDER BY attendance_rate DESC
+
+
+    `).all();
+
+}
+
+// ===============================
+// LOW ATTENDANCE STUDENTS
+// ===============================
+
+function getLowAttendanceStudents() {
+
+    return db.prepare(`
+
+        SELECT
+
+            students.first_name,
+
+            students.last_name,
+
+            COUNT(attendance.id) AS total,
+
+            ROUND(
+
+                (SUM(attendance.status = 'Present') * 100.0)
+
+                /
+
+                COUNT(attendance.id)
+
+            ,1) AS attendance_rate
+
+
+        FROM attendance
+
+
+        JOIN students
+
+            ON attendance.student_id = students.id
+
+
+        GROUP BY attendance.student_id
+
+
+        HAVING attendance_rate < 75
+
+
+        ORDER BY attendance_rate ASC
+
+
+    `).all();
+
+}
+
 
 
 module.exports = {
@@ -263,6 +358,10 @@ module.exports = {
 
     getStudentAttendanceSummary,
 
-    getDailyAttendanceSummary
+    getDailyAttendanceSummary,
+
+    getStudentAttendanceRanking,
+
+    getLowAttendanceStudents
 
 };

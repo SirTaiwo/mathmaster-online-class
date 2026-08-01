@@ -24,6 +24,13 @@ exports.report = (req, res) => {
             today
         );
 
+        const ranking =
+    Attendance.getStudentAttendanceRanking();
+
+
+const lowAttendance =
+    Attendance.getLowAttendanceStudents();
+
 
     // =========================
     // ATTENDANCE ANALYTICS
@@ -100,7 +107,11 @@ exports.report = (req, res) => {
 
             absentPercentage,
 
-            latePercentage
+            latePercentage,
+
+            ranking,
+
+            lowAttendance
 
         }
     );
