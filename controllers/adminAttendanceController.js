@@ -25,13 +25,85 @@ exports.report = (req, res) => {
         );
 
 
+    // =========================
+    // ATTENDANCE ANALYTICS
+    // =========================
+
+    const totalRecords =
+        summary.reduce(
+            (total, item) =>
+                total + item.total,
+            0
+        );
+
+
+    let presentPercentage = 0;
+    let absentPercentage = 0;
+    let latePercentage = 0;
+
+
+    if (totalRecords > 0) {
+
+
+        summary.forEach(item => {
+
+
+            const percentage =
+                Math.round(
+                    (item.total / totalRecords) * 100
+                );
+
+
+            if (item.status === "Present") {
+
+                presentPercentage =
+                    percentage;
+
+            }
+
+
+            if (item.status === "Absent") {
+
+                absentPercentage =
+                    percentage;
+
+            }
+
+
+            if (item.status === "Late") {
+
+                latePercentage =
+                    percentage;
+
+            }
+
+
+        });
+
+    }
+
+
+
     res.render(
         "admin-attendance-report",
         {
+
             summary,
+
             daily,
-            today
+
+            today,
+
+            totalRecords,
+
+            presentPercentage,
+
+            absentPercentage,
+
+            latePercentage
+
         }
     );
+
 
 };
