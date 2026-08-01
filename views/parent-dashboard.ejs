@@ -309,6 +309,62 @@ Date:
 
 </div>
 
+<h3>
+📅 Attendance
+</h3>
+
+
+<div class="dashboard-card">
+
+
+<p>
+Total Records:
+
+<%= child.attendance.length %>
+
+</p>
+
+
+<% child.attendance.forEach(record => { %>
+
+
+<p>
+
+<strong>
+
+<%= record.attendance_date %>
+
+</strong>
+
+
+<br>
+
+
+Status:
+
+<%= record.status %>
+
+
+<br>
+
+
+Remarks:
+
+<%= record.remarks || "-" %>
+
+
+</p>
+
+
+<hr>
+
+
+<% }) %>
+
+
+</div>
+
+
 <h3>💬 Teacher Feedback</h3>
 
 <div class="dashboard-card">

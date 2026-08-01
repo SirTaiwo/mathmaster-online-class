@@ -5,6 +5,8 @@ const Payment =
 const Invoice =
     require("../models/Invoice");
 
+    const Receipt = require("../models/Receipt");
+
 
 // ========================================
 // VIEW PAYMENTS
@@ -54,24 +56,28 @@ exports.create = (req, res) => {
 
 
 
-  Payment.createPayment(
+ const paymentResult = Payment.createPayment(
     invoice_id,
     student_id,
-    Number(
-        amount_paid.replace(/\s/g, "")
-    ),
+    amount_paid,
     payment_method,
     reference_number
 );
 
+Invoice.updatePaymentStatus(invoice_id);
 
-    Invoice.updatePaymentStatus(
-        invoice_id
-    );
+// Generate receipt number
+const receiptNumber =
+    "REC-" +
+    String(paymentResult.lastInsertRowid).padStart(6, "0");
 
+Receipt.createReceipt(
+    receiptNumber,
+    paymentResult.lastInsertRowid,
+    student_id,
+    amount_paid
+);
 
-    res.redirect(
-        "/admin/payments"
-    );
+res.redirect("/admin/payments");
 
 };

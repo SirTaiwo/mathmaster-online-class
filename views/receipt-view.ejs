@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Receipt <%= receipt.receipt_number %></title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+
+        .receipt{
+
+            max-width:700px;
+
+            margin:40px auto;
+
+            padding:30px;
+
+            border:2px solid #444;
+
+            background:#fff;
+
+        }
+
+        table{
+
+            width:100%;
+
+            border-collapse:collapse;
+
+        }
+
+        td{
+
+            padding:10px 0;
+
+        }
+
+        .title{
+
+            text-align:center;
+
+            margin-bottom:25px;
+
+        }
+
+        .print-btn{
+
+            margin-top:30px;
+
+            text-align:center;
+
+        }
+
+        @media print{
+
+            .print-btn{
+
+                display:none;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="receipt">
+
+<div class="title">
+
+<h1>MathMaster Online Class</h1>
+
+<h2>PAYMENT RECEIPT</h2>
+
+</div>
+
+<table>
+
+<tr>
+<td><strong>Receipt Number</strong></td>
+<td><%= receipt.receipt_number %></td>
+</tr>
+
+<tr>
+<td><strong>Invoice</strong></td>
+<td><%= receipt.invoice_number %></td>
+</tr>
+
+<tr>
+<td><strong>Student</strong></td>
+<td>
+<%= receipt.first_name %>
+<%= receipt.last_name %>
+</td>
+</tr>
+
+<tr>
+<td><strong>Amount Received</strong></td>
+<td>R<%= receipt.amount %></td>
+</tr>
+
+<tr>
+<td><strong>Payment Method</strong></td>
+<td><%= receipt.payment_method %></td>
+</tr>
+
+<tr>
+<td><strong>Reference</strong></td>
+<td><%= receipt.reference_number %></td>
+</tr>
+
+<tr>
+<td><strong>Date</strong></td>
+<td><%= receipt.created_at %></td>
+</tr>
+
+</table>
+
+<div class="print-btn">
+
+<button onclick="window.print()">
+
+🖨 Print Receipt
+
+</button>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>
+Receipt Management
+</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+
+<body>
+
+
+<h1>
+🧾 Receipt Management
+</h1>
+
+
+<div class="dashboard-card">
+
+
+<h3>
+Generate Receipt
+</h3>
+
+
+<form method="POST"
+action="/admin/receipts/create">
+
+
+<label>
+Receipt Number
+</label>
+
+<input
+type="text"
+name="receipt_number"
+value="REC-000002"
+required
+>
+
+
+<label>
+Payment ID
+</label>
+
+<input
+type="number"
+name="payment_id"
+value="1"
+required
+>
+
+
+<label>
+Student ID
+</label>
+
+<input
+type="number"
+name="student_id"
+value="1"
+required
+>
+
+
+<label>
+Amount
+</label>
+
+<input
+type="number"
+name="amount"
+value="5000"
+required
+>
+
+
+<button type="submit">
+Generate Receipt
+</button>
+
+
+</form>
+
+
+</div>
+
+
+
+<h2>
+Existing Receipts
+</h2>
+
+
+<div class="dashboard-card">
+
+
+<table class="admin-table">
+
+
+<thead>
+
+<tr>
+
+<th>
+Receipt No
+</th>
+
+<th>
+Student
+</th>
+
+<th>
+Amount
+</th>
+
+<th>
+Method
+</th>
+
+<th>
+Reference
+</th>
+
+<th>
+Action
+</th>
+
+</tr>
+
+</thead>
+
+
+
+<tbody>
+
+
+<% receipts.forEach(receipt => { %>
+
+
+<tr>
+
+
+<td>
+<%= receipt.receipt_number %>
+</td>
+
+
+<td>
+
+<%= receipt.first_name %>
+
+<%= receipt.last_name %>
+
+</td>
+
+
+<td>
+R<%= receipt.amount %>
+</td>
+
+
+<td>
+<%= receipt.payment_method %>
+</td>
+
+
+<td>
+<%= receipt.reference_number %>
+</td>
+
+
+<td>
+
+<a href="/admin/receipts/<%= receipt.id %>">
+View
+</a>
+
+</td>
+
+
+</tr>
+
+
+<% }) %>
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+</body>
+
+</html>

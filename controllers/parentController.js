@@ -19,6 +19,11 @@ const StudentFeedback =
     const Payment =
     require("../models/Payment");
 
+    const Receipt = require("../models/Receipt");
+
+    const Attendance =
+    require("../models/Attendance");
+
 
 // ========================================
 // PARENT DASHBOARD
@@ -53,6 +58,10 @@ exports.dashboard = (req, res) => {
     const childrenData =
         children.map(child => {
 
+const attendance =
+    Attendance.findByStudent(
+        child.id
+    );
 
             const performance =
     AssessmentResult.getStudentPerformance(
@@ -74,6 +83,13 @@ const assessmentHistory =
 
     const payments =
     Payment.findByStudent(child.id);
+
+    const receipts =
+Receipt.findAll()
+.filter(
+    receipt =>
+        receipt.student_id === child.id
+);
 
 const courses =
     Enrollment.findCoursesByStudent(
@@ -101,7 +117,11 @@ return {
 
     invoices,
 
-    payments
+    payments,
+
+    receipts,
+
+    attendance
 
 };
 
@@ -109,20 +129,13 @@ return {
 
 
 
-    res.render(
-
-        "parent-dashboard",
-
-        {
-
-            user: parent,
-
-            children:
-                childrenData
-
-        }
-
-    );
+res.render(
+    "parent-dashboard",
+    {
+        children: childrenData,
+        user: parent
+    }
+);
 
 
 };

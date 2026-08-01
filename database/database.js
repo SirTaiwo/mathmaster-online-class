@@ -365,5 +365,63 @@ CREATE TABLE IF NOT EXISTS payments (
 
 `).run();
 
+// ========================================
+// CREATE RECEIPTS TABLE
+// ========================================
+
+db.prepare(`
+
+CREATE TABLE IF NOT EXISTS receipts (
+
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    receipt_number TEXT NOT NULL UNIQUE,
+
+    payment_id INTEGER NOT NULL,
+
+    student_id INTEGER NOT NULL,
+
+    amount REAL NOT NULL,
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+
+    FOREIGN KEY(payment_id)
+        REFERENCES payments(id),
+
+
+    FOREIGN KEY(student_id)
+        REFERENCES students(id)
+
+)
+
+`).run();
+
+db.prepare(`
+CREATE TABLE IF NOT EXISTS attendance (
+
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    student_id INTEGER NOT NULL,
+
+    course_id INTEGER,
+
+    attendance_date DATE NOT NULL,
+
+    status TEXT NOT NULL,
+
+    remarks TEXT,
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY(student_id)
+        REFERENCES students(id),
+
+    FOREIGN KEY(course_id)
+        REFERENCES courses(id)
+
+)
+`).run();
+
 
 module.exports = db;
