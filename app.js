@@ -55,6 +55,9 @@ const adminRoutes =
     const financeRoutes =
     require("./routes/finance");
 
+    const studentFeeRoutes =
+    require("./routes/studentFee");
+
 
 
 
@@ -229,6 +232,10 @@ app.use(
 app.use(
     "/",
     studentAssessmentRoutes
+);
+
+app.use(
+    studentFeeRoutes
 );
 
 

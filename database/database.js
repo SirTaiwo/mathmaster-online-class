@@ -253,5 +253,41 @@ CREATE TABLE IF NOT EXISTS fee_structures (
 
 `).run();
 
+// ========================================
+// CREATE STUDENT FEES TABLE
+// ========================================
+
+db.prepare(`
+
+CREATE TABLE IF NOT EXISTS student_fees (
+
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    student_id INTEGER NOT NULL,
+
+    fee_structure_id INTEGER NOT NULL,
+
+    term TEXT NOT NULL,
+
+    year INTEGER NOT NULL,
+
+    amount_due REAL NOT NULL,
+
+    amount_paid REAL DEFAULT 0,
+
+    status TEXT DEFAULT 'Outstanding',
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY(student_id)
+        REFERENCES students(id),
+
+    FOREIGN KEY(fee_structure_id)
+        REFERENCES fee_structures(id)
+
+)
+
+`).run();
+
 
 module.exports = db;

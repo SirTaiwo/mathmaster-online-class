@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>
+Student Fee Accounts
+</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+
+<body>
+
+
+<nav class="navbar">
+
+<div class="logo">
+Math<span>Master</span>
+</div>
+
+
+<div class="nav-links">
+
+<a href="/admin/dashboard">
+Dashboard
+</a>
+
+<a href="/logout">
+Logout
+</a>
+
+</div>
+
+</nav>
+
+
+
+<main class="dashboard">
+
+
+<h1>
+💰 Student Fee Accounts
+</h1>
+
+
+
+<div class="dashboard-card">
+
+
+<h2>
+Assign Fee To Student
+</h2>
+
+
+
+<form method="POST"
+action="/admin/student-fees/create">
+
+
+<label>
+Student
+</label>
+
+
+<select name="student_id" required>
+
+
+<%
+
+students.forEach(student => {
+
+%>
+
+
+<option value="<%= student.id %>">
+
+<%= student.first_name %>
+<%= student.last_name %>
+
+(
+<%= student.grade %>
+)
+
+</option>
+
+
+<%
+
+});
+
+%>
+
+
+</select>
+
+
+
+<label>
+Fee Structure
+</label>
+
+
+<select name="fee_structure_id" required>
+
+
+<%
+
+feeStructures.forEach(fee => {
+
+%>
+
+
+<option value="<%= fee.id %>">
+
+<%= fee.grade %>
+
+-
+R<%= fee.amount %>
+
+</option>
+
+
+<%
+
+});
+
+%>
+
+
+</select>
+
+
+
+<label>
+Term
+</label>
+
+
+<select name="term">
+
+
+<option>
+Term 1
+</option>
+
+<option>
+Term 2
+</option>
+
+<option>
+Term 3
+</option>
+
+
+</select>
+
+
+
+<label>
+Year
+</label>
+
+
+<input
+
+type="number"
+
+name="year"
+
+value="2026"
+
+required>
+
+
+<button type="submit">
+
+Create Account
+
+</button>
+
+
+</form>
+
+
+</div>
+
+
+
+
+
+<h2>
+Existing Student Accounts
+</h2>
+
+
+
+<div class="dashboard-grid">
+
+
+<%
+
+fees.forEach(fee => {
+
+%>
+
+
+<div class="dashboard-card">
+
+
+<h3>
+
+<%= fee.first_name %>
+<%= fee.last_name %>
+
+</h3>
+
+
+<p>
+Grade:
+<%= fee.grade %>
+</p>
+
+
+<p>
+Fee:
+<%= fee.description %>
+</p>
+
+
+<p>
+Term:
+<%= fee.term %>
+</p>
+
+
+<p>
+Amount Due:
+
+R<%= fee.amount_due %>
+
+</p>
+
+
+<p>
+Status:
+
+<%= fee.status %>
+
+</p>
+
+
+</div>
+
+
+<%
+
+});
+
+%>
+
+
+</div>
+
+
+</main>
+
+
+</body>
+
+</html>
