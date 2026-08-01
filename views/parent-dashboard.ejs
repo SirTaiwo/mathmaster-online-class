@@ -187,6 +187,68 @@ Percentage:
 
 </div>
 
+<h3>
+💰 Fees & Payments
+</h3>
+
+
+<div class="dashboard-card">
+
+
+<% child.invoices.forEach(invoice => { %>
+
+
+<p>
+
+<strong>
+🧾 <%= invoice.invoice_number %>
+</strong>
+
+<br>
+
+
+<%= invoice.description %>
+
+
+<br>
+
+Amount:
+
+R<%= invoice.amount %>
+
+
+<br>
+
+Paid:
+
+R<%= invoice.amount_paid %>
+
+
+<br>
+
+Balance:
+
+R<%= invoice.balance %>
+
+
+<br>
+
+Status:
+
+<%= invoice.status %>
+
+
+</p>
+
+
+<hr>
+
+
+<% }) %>
+
+
+</div>
+
 <h3>💬 Teacher Feedback</h3>
 
 <div class="dashboard-card">

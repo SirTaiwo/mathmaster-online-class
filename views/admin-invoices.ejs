@@ -1,0 +1,108 @@
+<h1>
+🧾 Invoice Management
+</h1>
+
+
+<div class="dashboard-card">
+
+<h3>
+All Invoices
+</h3>
+
+
+<table class="admin-table">
+
+<thead>
+
+<tr>
+
+<th>
+Invoice
+</th>
+
+<th>
+Student
+</th>
+
+<th>
+Description
+</th>
+
+<th>
+Amount
+</th>
+
+<th>
+Paid
+</th>
+
+<th>
+Balance
+</th>
+
+<th>
+Status
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+
+<% invoices.forEach(invoice => { %>
+
+
+<tr>
+
+<td>
+<%= invoice.invoice_number %>
+</td>
+
+
+<td>
+<%= invoice.first_name %>
+<%= invoice.last_name %>
+</td>
+
+
+<td>
+<%= invoice.description %>
+</td>
+
+
+<td>
+R <%= invoice.amount %>
+</td>
+
+
+<td>
+R <%= invoice.amount_paid %>
+</td>
+
+
+<td>
+R <%= invoice.balance %>
+</td>
+
+
+<td>
+<%= invoice.status %>
+</td>
+
+
+</tr>
+
+
+<% }) %>
+
+
+</tbody>
+
+
+</table>
+
+
+</div>

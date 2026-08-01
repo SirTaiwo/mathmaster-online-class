@@ -214,6 +214,11 @@ app.use(
 );
 
 app.use(
+    "/",
+    require("./routes/invoice")
+);
+
+app.use(
     studentPerformanceRoutes
 );
 

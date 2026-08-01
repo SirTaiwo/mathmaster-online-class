@@ -289,5 +289,45 @@ CREATE TABLE IF NOT EXISTS student_fees (
 
 `).run();
 
+// ========================================
+// CREATE INVOICES TABLE
+// ========================================
+
+db.prepare(`
+
+CREATE TABLE IF NOT EXISTS invoices (
+
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    invoice_number TEXT NOT NULL UNIQUE,
+
+    student_id INTEGER NOT NULL,
+
+    student_fee_id INTEGER NOT NULL,
+
+    description TEXT NOT NULL,
+
+    amount REAL NOT NULL,
+
+    amount_paid REAL DEFAULT 0,
+
+    balance REAL NOT NULL,
+
+    status TEXT DEFAULT 'Outstanding',
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+
+    FOREIGN KEY(student_id)
+        REFERENCES students(id),
+
+
+    FOREIGN KEY(student_fee_id)
+        REFERENCES student_fees(id)
+
+)
+
+`).run();
+
 
 module.exports = db;
