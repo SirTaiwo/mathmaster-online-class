@@ -13,6 +13,8 @@ exports.dashboard = (req, res) => {
     const users =
         Student.findAll();
 
+        recentUsers
+
     res.render(
         "admin-dashboard",
         {
@@ -33,11 +35,11 @@ exports.dashboard = (req, res) => {
 
 exports.users = (req, res) => {
 
-    const users =
-        Student.findAll();
+  const stats = Student.getStatistics();
 
-    const stats =
-        Student.getStatistics();
+const users = Student.findAll();
+
+const recentUsers = Student.getRecentUsers();
 
     res.render(
         "admin-users",
@@ -278,6 +280,46 @@ exports.deleteUser = (req, res) => {
 
     res.redirect(
         "/admin/users"
+    );
+
+};
+
+// ========================================
+// STUDENT MANAGEMENT
+// ========================================
+
+exports.students = (req, res) => {
+
+    const students =
+        Student.findAllStudents();
+
+    res.render(
+        "admin-students",
+        {
+            user: req.session.student,
+            students
+        }
+    );
+
+};
+
+
+
+// ========================================
+// TEACHER MANAGEMENT
+// ========================================
+
+exports.teachers = (req, res) => {
+
+    const teachers =
+        Student.findAllTeachers();
+
+    res.render(
+        "admin-teachers",
+        {
+            user: req.session.student,
+            teachers
+        }
     );
 
 };

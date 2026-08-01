@@ -9,6 +9,8 @@ Attendance Report
 
 <link rel="stylesheet" href="/css/style.css">
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 
@@ -387,9 +389,93 @@ Attendance:
 
 </div>
 
+<div class="dashboard-card">
+
+<h3>
+📈 Monthly Attendance Trend
+</h3>
+
+
+<canvas id="attendanceChart"></canvas>
+
+
+</div>
 
 
 </main>
+
+<script>
+
+const attendanceData =
+    <%- JSON.stringify(monthlyTrend) %>;
+
+    console.log("Attendance Chart Data:", attendanceData);
+
+
+const labels =
+    attendanceData.map(
+        item => item.month
+    );
+
+
+const values =
+    attendanceData.map(
+        item => item.attendance_rate
+    );
+
+
+new Chart(
+
+    document.getElementById(
+        "attendanceChart"
+    ),
+
+    {
+
+        type: "bar",
+
+        data: {
+
+            labels: labels,
+
+           datasets: [
+
+{
+
+label: "Attendance Rate (%)",
+
+data: values
+
+}
+
+]
+        },
+
+
+        options: {
+
+            responsive: true,
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true,
+
+                    max: 100
+
+                }
+
+            }
+
+        }
+
+    }
+
+);
+
+
+</script>
 
 
 </body>

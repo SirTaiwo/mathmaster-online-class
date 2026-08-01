@@ -340,6 +340,41 @@ function getLowAttendanceStudents() {
 
 }
 
+// ===============================
+// MONTHLY ATTENDANCE TREND
+// ===============================
+
+function getMonthlyAttendanceTrend() {
+
+    return db.prepare(`
+
+        SELECT
+
+            strftime('%Y-%m', attendance_date) AS month,
+
+            COUNT(*) AS total,
+
+            SUM(status = 'Present') AS present,
+
+            ROUND(
+                (SUM(status = 'Present') * 100.0)
+                /
+                COUNT(*),
+                2
+            ) AS attendance_rate
+
+
+        FROM attendance
+
+        GROUP BY month
+
+        ORDER BY month ASC
+
+
+    `).all();
+
+}
+
 
 
 module.exports = {
@@ -362,6 +397,8 @@ module.exports = {
 
     getStudentAttendanceRanking,
 
-    getLowAttendanceStudents
+    getLowAttendanceStudents,
+
+    getMonthlyAttendanceTrend
 
 };

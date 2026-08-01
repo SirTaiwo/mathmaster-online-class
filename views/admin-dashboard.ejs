@@ -123,10 +123,240 @@
 
         </div>
 
-        <!-- Keep your existing dashboard-grid here -->
+        <!-- Dashboard Statistics -->
 
-        <!-- Keep your Recent Users section here -->
+<div class="dashboard-grid">
 
+
+    <div class="stat-card">
+
+        <h3>
+            Total Users
+        </h3>
+
+        <p>
+            <%= stats.total %>
+        </p>
+
+    </div>
+
+
+
+    <div class="stat-card">
+
+        <h3>
+            Students
+        </h3>
+
+        <p>
+            <%= stats.students %>
+        </p>
+
+    </div>
+
+
+
+    <div class="stat-card">
+
+        <h3>
+            Teachers
+        </h3>
+
+        <p>
+            <%= stats.teachers %>
+        </p>
+
+    </div>
+
+
+
+    <div class="stat-card">
+
+        <h3>
+            Admins
+        </h3>
+
+        <p>
+            <%= stats.admins %>
+        </p>
+
+    </div>
+
+
+</div>
+
+
+
+
+<!-- Management Modules -->
+
+<section class="module-section">
+
+
+<h2>
+    Management Modules
+</h2>
+
+
+
+<div class="admin-module-grid">
+
+
+    <div class="module-card">
+
+        <h3>
+            👥 User Management
+        </h3>
+
+        <p>
+            Manage system users
+        </p>
+
+        <a href="/admin/users">
+            Open Module
+        </a>
+
+    </div>
+
+    <section class="recent-activity">
+
+    <h2>Recent Activity</h2>
+
+    <% if (recentUsers && recentUsers.length > 0) { %>
+
+        <% recentUsers.forEach(member => { %>
+
+            <div class="activity-item">
+
+                <strong>
+                    <%= member.first_name %>
+                    <%= member.last_name %>
+                </strong>
+
+                <br>
+
+                <span>
+                    <%= member.role %>
+                </span>
+
+                <br>
+
+                <small>
+                    Registered:
+                    <%= member.created_at %>
+                </small>
+
+            </div>
+
+        <% }) %>
+
+    <% } else { %>
+
+        <p>No recent activity.</p>
+
+    <% } %>
+
+</section>
+
+
+
+    <div class="module-card">
+
+        <h3>
+            🎓 Student Management
+        </h3>
+
+        <p>
+            Manage learners
+        </p>
+
+        <a href="/admin/students">
+    Open Module
+</a>
+
+    </div>
+
+
+
+
+    <div class="module-card">
+
+        <h3>
+            👨‍🏫 Teacher Management
+        </h3>
+
+        <p>
+            Manage teachers
+        </p>
+
+        <a href="/admin/teachers">
+    Open Module
+</a>
+
+    </div>
+
+
+
+
+    <div class="module-card">
+
+        <h3>
+            📅 Attendance Management
+        </h3>
+
+        <p>
+            Track attendance
+        </p>
+
+        <a href="/admin/attendance">
+            Open Module
+        </a>
+
+    </div>
+
+
+
+
+    <div class="module-card">
+
+        <h3>
+            📝 Assessment & Gradebook
+        </h3>
+
+        <p>
+            Manage assessments
+        </p>
+
+        <a href="#">
+            Open Module
+        </a>
+
+    </div>
+
+
+
+
+    <div class="module-card">
+
+        <h3>
+            📊 Reports & Analytics
+        </h3>
+
+        <p>
+            View reports
+        </p>
+
+        <a href="#">
+            Open Module
+        </a>
+
+    </div>
+
+
+</div>
+
+
+</section>
     </main>
 
 </div>

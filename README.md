@@ -1,30 +1,30 @@
 # MathMaster Online Class
 
-MathMaster Online Class is a web-based mathematics learning platform designed to connect administrators, teachers, and students in an online classroom environment.
+MathMaster Online Class is a web-based Learning Management System (LMS) designed to support online mathematics education by connecting administrators, teachers, and students through a secure, role-based platform.
 
-The platform is built using modern web technologies and provides role-based access, course management, student enrollment, and lesson management features.
+The system provides tools for managing users, learners, teachers, attendance, assessments, and academic activities in a structured online classroom environment.
 
 ---
 
-## 🚀 Project Status
+# 🚀 Project Status
 
-**Current Version: Phase 1 Completed**
+## Current Version: v0.2.0 (In Development)
 
-The foundation of the Learning Management System (LMS) has been successfully developed.
+The project has progressed from the initial LMS foundation into a functional school administration platform.
 
-Completed features include:
+Current completed modules include:
 
-- User authentication
-- Role-based access control
-- Admin dashboard
-- Teacher dashboard
-- Student dashboard
-- Teacher registration
-- Student management
-- Course creation and management
-- Student course enrollment
-- Teacher student tracking
-- Lesson management foundation
+✅ User authentication  
+✅ Role-based access control  
+✅ Administrator dashboard  
+✅ User management  
+✅ Student management  
+✅ Teacher management  
+✅ Attendance management  
+✅ Attendance reporting dashboard  
+✅ Dashboard analytics  
+✅ Recent activity monitoring  
+✅ Responsive administration interface  
 
 ---
 
@@ -32,43 +32,48 @@ Completed features include:
 
 ## 👨‍💼 Administrator
 
+Administrators can:
+
 - Secure administrator login
-- View and manage users
-- Create students
-- Create teachers
-- Edit user information
-- Delete users
-- Monitor platform activities
+- Access the Admin Control Centre
+- View system statistics
+- Manage users
+- Create teacher accounts
+- Manage student records
+- Manage teacher records
+- Monitor attendance information
+- View recent system activity
 
 ---
 
 ## 👨‍🏫 Teacher
 
-Teachers can:
+Teachers will be able to:
 
 - Access teacher dashboard
-- Create mathematics courses
-- Manage courses
-- View enrolled students
-- Create lessons
-- Manage lesson content
-- Monitor learner participation
+- Manage assigned classes
+- Create assessments
+- Record learner marks
+- Monitor student progress
+- Manage learning materials
 
 ---
 
 ## 👨‍🎓 Student
 
-Students can:
+Students will be able to:
 
 - Register and login
 - Access student dashboard
-- Browse available mathematics courses
-- Enroll in courses
-- Access learning materials
+- Join mathematics classes
+- View learning materials
+- Submit assignments
+- View assessment results
+- Monitor academic progress
 
 ---
 
-# 🛠️ Technologies Used
+# 🛠️ Technology Stack
 
 ## Backend
 

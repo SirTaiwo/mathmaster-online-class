@@ -31,6 +31,9 @@ exports.report = (req, res) => {
 const lowAttendance =
     Attendance.getLowAttendanceStudents();
 
+    const monthlyTrend =
+    Attendance.getMonthlyAttendanceTrend();
+
 
     // =========================
     // ATTENDANCE ANALYTICS
@@ -111,7 +114,9 @@ const lowAttendance =
 
             ranking,
 
-            lowAttendance
+            lowAttendance,
+
+            monthlyTrend
 
         }
     );

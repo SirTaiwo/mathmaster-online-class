@@ -112,6 +112,28 @@ function findAllStudents() {
 
 }
 
+// ========================================
+// GET ALL TEACHERS ONLY
+// ========================================
+
+function findAllTeachers() {
+
+    return db.prepare(`
+        SELECT
+            id,
+            first_name,
+            last_name,
+            email,
+            grade,
+            role,
+            created_at
+        FROM students
+        WHERE role = 'teacher'
+        ORDER BY created_at DESC
+    `).all();
+
+}
+
 
 // ========================================
 // CREATE TEACHER
@@ -374,6 +396,7 @@ module.exports = {
     updateUser,
     updateStudent,
     deleteUser,
+    findAllTeachers
     
 };
    

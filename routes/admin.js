@@ -69,6 +69,28 @@ router.post(
     adminController.updateUser
 );
 
+// ========================================
+// STUDENT MANAGEMENT
+// ========================================
+
+router.get(
+    "/admin/students",
+    requireRole("admin"),
+    adminController.students
+);
+
+
+
+// ========================================
+// TEACHER MANAGEMENT
+// ========================================
+
+router.get(
+    "/admin/teachers",
+    requireRole("admin"),
+    adminController.teachers
+);
+
 
 
 module.exports = router;
