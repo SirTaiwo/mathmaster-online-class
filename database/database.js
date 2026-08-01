@@ -231,5 +231,27 @@ db.prepare(`
 
 `).run();
 
+// ========================================
+// CREATE FEE STRUCTURES TABLE
+// ========================================
+
+db.prepare(`
+
+CREATE TABLE IF NOT EXISTS fee_structures (
+
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    grade TEXT NOT NULL UNIQUE,
+
+    amount REAL NOT NULL,
+
+    description TEXT,
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+
+)
+
+`).run();
+
 
 module.exports = db;

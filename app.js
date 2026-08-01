@@ -52,6 +52,9 @@ const adminRoutes =
     const parentRoutes =
     require("./routes/parent");
 
+    const financeRoutes =
+    require("./routes/finance");
+
 
 
 
@@ -213,6 +216,10 @@ app.use(
 
 app.use(
     parentRoutes
+);
+
+app.use(
+    financeRoutes
 );
 
 // ========================================

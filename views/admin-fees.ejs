@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>
+Fee Management
+</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+Math<span>Master</span>
+</div>
+
+
+<div class="nav-links">
+
+<a href="/admin/dashboard">
+Dashboard
+</a>
+
+<a href="/logout">
+Logout
+</a>
+
+</div>
+
+</nav>
+
+</header>
+
+
+
+<main class="dashboard">
+
+
+<h1>
+💰 Fee Management
+</h1>
+
+
+
+<div class="dashboard-card">
+
+
+<h2>
+Add Fee Structure
+</h2>
+
+
+<form method="POST" action="/admin/finance/create">
+
+
+<label>
+Grade
+</label>
+
+
+<input
+type="text"
+name="grade"
+placeholder="Grade 12"
+required>
+
+
+
+<label>
+Amount
+</label>
+
+
+<input
+type="number"
+name="amount"
+placeholder="10000"
+required>
+
+
+
+<label>
+Description
+</label>
+
+
+<input
+type="text"
+name="description"
+placeholder="Annual school fees">
+
+
+
+<button type="submit">
+Add Fee
+</button>
+
+
+</form>
+
+
+</div>
+
+
+
+<h2>
+Existing Fees
+</h2>
+
+
+
+<div class="dashboard-grid">
+
+
+<% fees.forEach(fee => { %>
+
+
+<div class="dashboard-card">
+
+
+<h3>
+<%= fee.grade %>
+</h3>
+
+
+<p>
+Amount:
+R <%= fee.amount %>
+</p>
+
+
+<p>
+<%= fee.description || "" %>
+</p>
+
+
+
+<form method="POST"
+action="/admin/finance/delete/<%= fee.id %>">
+
+
+<button>
+Delete
+</button>
+
+
+</form>
+
+
+</div>
+
+
+<% }) %>
+
+
+</div>
+
+
+</main>
+
+
+</body>
+
+</html>

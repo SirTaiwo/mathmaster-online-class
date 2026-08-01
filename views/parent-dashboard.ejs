@@ -127,9 +127,129 @@ Highest Score:
 </div>
 
 
+
+<h3>📈 Progress Trend</h3>
+
+<div class="dashboard-card">
+
+<% child.progressTrend.forEach((attempt, index) => { %>
+
+<p>
+
+<strong>
+Attempt <%= index + 1 %>
+</strong>
+
+—
+
+<%= attempt.percentage %>%
+
+<br>
+
+<small>
+<%= attempt.submitted_at %>
+</small>
+
+</p>
+
 <% }) %>
 
+</div>
 
+<h3>📝 Assessment History</h3>
+
+<div class="dashboard-card">
+
+<% child.assessmentHistory.forEach(result => { %>
+
+<p>
+
+<strong>
+<%= result.assessment_title %>
+</strong>
+
+<br>
+
+Score:
+<%= result.score %> /
+<%= result.total_marks %>
+
+<br>
+
+Percentage:
+<%= result.percentage %>%
+
+</p>
+
+<hr>
+
+<% }) %>
+
+</div>
+
+<h3>💬 Teacher Feedback</h3>
+
+<div class="dashboard-card">
+
+<% if(child.feedback.length){ %>
+
+<% child.feedback.forEach(item => { %>
+
+<p>
+
+<%= item.feedback %>
+
+<br>
+
+<small>
+
+<%= item.created_at %>
+
+</small>
+
+</p>
+
+<hr>
+
+<% }) %>
+
+<% } else { %>
+
+<p>No feedback available.</p>
+
+<% } %>
+
+</div>
+
+<h3>📚 Enrolled Courses</h3>
+
+<div class="dashboard-card">
+
+<% if(child.courses.length){ %>
+
+<ul>
+
+<% child.courses.forEach(course => { %>
+
+<li>
+
+<%= course.title %>
+
+</li>
+
+<% }) %>
+
+</ul>
+
+<% } else { %>
+
+<p>No courses enrolled.</p>
+
+<% } %>
+
+</div>
+
+<% }) %>
 
 </div>
 

@@ -7,6 +7,12 @@ const Parent =
 const AssessmentResult =
     require("../models/AssessmentResult");
 
+    const Enrollment =
+    require("../models/Enrollment");
+
+const StudentFeedback =
+    require("../models/StudentFeedback");
+
 
 // ========================================
 // PARENT DASHBOARD
@@ -43,19 +49,45 @@ exports.dashboard = (req, res) => {
 
 
             const performance =
-                AssessmentResult.getStudentPerformance(
-                    child.id
-                );
+    AssessmentResult.getStudentPerformance(
+        child.id
+    );
 
+const progressTrend =
+    AssessmentResult.getProgressTrend(
+        child.id
+    );
 
-            return {
+const assessmentHistory =
+    AssessmentResult.findByStudent(
+        child.id
+    );
 
-                ...child,
+const courses =
+    Enrollment.findCoursesByStudent(
+        child.id
+    );
 
-                performance
+const feedback =
+    StudentFeedback.findByStudent(
+        child.id
+    );
 
-            };
+return {
 
+    ...child,
+
+    performance,
+
+    progressTrend,
+
+    assessmentHistory,
+
+    courses,
+
+    feedback
+
+};
 
         });
 
