@@ -211,22 +211,28 @@ function clearCanvas(){
 
 }
 
+let pointA = {
+    x:100,
+    y:200
+};
+
+
+let pointB = {
+    x:400,
+    y:200
+};
+
+
+let draggingPoint = null;
+
+
+
 function drawRuler(){
 
     clearCanvas();
 
 
-    const pointA = {
-        x:100,
-        y:200
-    };
-
-
-    const pointB = {
-        x:400,
-        y:200
-    };
-
+    // Draw line
 
     ctx.beginPath();
 
@@ -243,44 +249,57 @@ function drawRuler(){
     ctx.stroke();
 
 
+
+    // Draw points
+
     ctx.beginPath();
 
     ctx.arc(
         pointA.x,
         pointA.y,
-        6,
+        8,
         0,
         Math.PI * 2
     );
+
 
     ctx.arc(
         pointB.x,
         pointB.y,
-        6,
+        8,
         0,
         Math.PI * 2
     );
 
+
     ctx.fill();
 
 
+
+    // Calculate distance
+
     const distance =
     Math.sqrt(
+
         Math.pow(
             pointB.x - pointA.x,
             2
         )
+
         +
+
         Math.pow(
             pointB.y - pointA.y,
             2
         )
+
     );
 
 
     document.getElementById(
         "distanceResult"
     ).innerHTML =
+
     "Distance: "
     +
     distance.toFixed(2)
@@ -288,6 +307,122 @@ function drawRuler(){
     " pixels";
 
 }
+
+
+// Initial drawing
+
+drawRuler();
+
+
+
+// Mouse down
+
+canvas.addEventListener(
+"mousedown",
+function(event){
+
+
+    const rect =
+    canvas.getBoundingClientRect();
+
+
+    const mouseX =
+    event.clientX - rect.left;
+
+
+    const mouseY =
+    event.clientY - rect.top;
+
+
+
+    if(
+        Math.hypot(
+            mouseX - pointA.x,
+            mouseY - pointA.y
+        )
+        < 15
+    ){
+
+        draggingPoint = "A";
+
+    }
+
+
+    else if(
+
+        Math.hypot(
+            mouseX - pointB.x,
+            mouseY - pointB.y
+        )
+        < 15
+
+    ){
+
+        draggingPoint = "B";
+
+    }
+
+
+});
+
+
+
+// Mouse move
+
+canvas.addEventListener(
+"mousemove",
+function(event){
+
+
+    if(!draggingPoint)
+        return;
+
+
+    const rect =
+    canvas.getBoundingClientRect();
+
+
+    const x =
+    event.clientX - rect.left;
+
+
+    const y =
+    event.clientY - rect.top;
+
+
+
+    if(draggingPoint === "A"){
+
+        pointA.x = x;
+        pointA.y = y;
+
+    }
+
+
+    if(draggingPoint === "B"){
+
+        pointB.x = x;
+        pointB.y = y;
+
+    }
+
+
+    drawRuler();
+
+
+});
+
+
+
+// Mouse release
+
+canvas.addEventListener(
+"mouseup",
+function(){
+
+    draggingPoint = null;
+
+});
 
 </script>
 
