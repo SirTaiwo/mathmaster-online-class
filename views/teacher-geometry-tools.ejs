@@ -112,13 +112,81 @@ class="btn primary">
 
 </button>
 
-<button
-onclick="clearWorkspace()"
-class="btn">
+<div class="dashboard-card">
 
-🧹 Clear Workspace
+<h2>
+📍 Point Plotter
+</h2>
+
+
+<p>
+Plot a point on the coordinate grid.
+</p>
+
+
+<label>
+X Coordinate:
+</label>
+
+
+<input
+type="number"
+id="pointX"
+value="3"
+>
+
+
+<br><br>
+
+
+<label>
+Y Coordinate:
+</label>
+
+
+<input
+type="number"
+id="pointY"
+value="2"
+>
+
+
+<br><br>
+
+
+<label>
+Label:
+</label>
+
+
+<input
+type="text"
+id="pointLabel"
+value="A"
+>
+
+
+<br><br>
+
+
+<button
+onclick="plotPoint()"
+class="btn primary">
+
+📍 Plot Point
 
 </button>
+
+
+<p id="pointResult">
+
+Point:
+
+</p>
+
+
+</div>
+
 
 
 <br><br>
@@ -238,10 +306,77 @@ document.getElementById(
 "geometryCanvas"
 );
 
-
 const ctx =
 canvas.getContext("2d");
 
+let plottedPoints = [];
+
+// =======================
+// RULER VARIABLES
+// =======================
+
+let pointA = {
+    x:100,
+    y:200
+};
+
+
+let pointB = {
+    x:400,
+    y:200
+};
+
+
+let draggingPoint = null;
+
+
+
+// =======================
+// PROTRACTOR VARIABLES
+// =======================
+
+let vertex = {
+    x:250,
+    y:200
+};
+
+
+let armA = {
+    x:120,
+    y:300
+};
+
+
+let armB = {
+    x:400,
+    y:100
+};
+
+
+let draggingAnglePoint = null;
+
+
+
+// =======================
+// TRIANGLE VARIABLES
+// =======================
+
+let trianglePointA = {
+    x:250,
+    y:80
+};
+
+
+let trianglePointB = {
+    x:100,
+    y:300
+};
+
+
+let trianglePointC = {
+    x:400,
+    y:300
+};
 
 
 function drawCircle(){
@@ -285,20 +420,6 @@ function clearCanvas(){
 
 }
 
-let pointA = {
-    x:100,
-    y:200
-};
-
-
-let pointB = {
-    x:400,
-    y:200
-};
-
-
-let draggingPoint = null;
-
 function clearWorkspace(){
 
     clearCanvas();
@@ -321,89 +442,6 @@ function clearWorkspace(){
     ).innerHTML =
     "Triangle Information:";
 
-
-}
-
-
-
-function drawRuler(){
-
-    clearCanvas();
-
-
-    // Draw line
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        pointA.x,
-        pointA.y
-    );
-
-    ctx.lineTo(
-        pointB.x,
-        pointB.y
-    );
-
-    ctx.stroke();
-
-
-
-    // Draw points
-
-    ctx.beginPath();
-
-    ctx.arc(
-        pointA.x,
-        pointA.y,
-        8,
-        0,
-        Math.PI * 2
-    );
-
-
-    ctx.arc(
-        pointB.x,
-        pointB.y,
-        8,
-        0,
-        Math.PI * 2
-    );
-
-
-    ctx.fill();
-
-
-
-    // Calculate distance
-
-    const distance =
-    Math.sqrt(
-
-        Math.pow(
-            pointB.x - pointA.x,
-            2
-        )
-
-        +
-
-        Math.pow(
-            pointB.y - pointA.y,
-            2
-        )
-
-    );
-
-
-    document.getElementById(
-        "distanceResult"
-    ).innerHTML =
-
-    "Distance: "
-    +
-    distance.toFixed(2)
-    +
-    " pixels";
 
 }
 
@@ -524,6 +562,318 @@ function drawGrid(){
 
 }
 
+function plotPoint(){
+
+    const x =
+    Number(
+        document.getElementById(
+            "pointX"
+        ).value
+    );
+
+
+    const y =
+    Number(
+        document.getElementById(
+            "pointY"
+        ).value
+    );
+
+
+    const label =
+    document.getElementById(
+        "pointLabel"
+    ).value;
+
+
+
+    plottedPoints.push({
+
+        x,
+        y,
+        label
+
+    });
+
+
+
+    drawGrid();
+
+
+    plottedPoints.forEach(point => {
+
+
+        const canvasX =
+        canvas.width / 2
+        +
+        point.x * 40;
+
+
+        const canvasY =
+        canvas.height / 2
+        -
+        point.y * 40;
+
+
+
+        ctx.beginPath();
+
+
+        ctx.arc(
+            canvasX,
+            canvasY,
+            6,
+            0,
+            Math.PI * 2
+        );
+
+
+        ctx.fill();
+
+
+
+        ctx.font =
+        "14px Arial";
+
+
+        ctx.fillText(
+
+            point.label
+            +
+            " ("
+            +
+            point.x
+            +
+            ","
+            +
+            point.y
+            +
+            ")",
+
+            canvasX + 8,
+            canvasY - 8
+
+        );
+
+
+    });
+
+
+
+    document.getElementById(
+        "pointResult"
+    ).innerHTML =
+
+    "Point plotted: "
+    +
+    label
+    +
+    "("
+    +
+    x
+    +
+    ","
+    +
+    y
+    +
+    ")";
+
+
+}
+
+
+
+function drawRuler(){
+
+    clearCanvas();
+
+
+    // Draw line
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        pointA.x,
+        pointA.y
+    );
+
+    ctx.lineTo(
+        pointB.x,
+        pointB.y
+    );
+
+    ctx.stroke();
+
+
+
+    // Draw points
+
+    ctx.beginPath();
+
+    ctx.arc(
+        pointA.x,
+        pointA.y,
+        8,
+        0,
+        Math.PI * 2
+    );
+
+
+    ctx.arc(
+        pointB.x,
+        pointB.y,
+        8,
+        0,
+        Math.PI * 2
+    );
+
+
+    ctx.fill();
+
+
+
+    // Calculate distance
+
+    const distance =
+    Math.sqrt(
+
+        Math.pow(
+            pointB.x - pointA.x,
+            2
+        )
+
+        +
+
+        Math.pow(
+            pointB.y - pointA.y,
+            2
+        )
+
+    );
+
+
+    document.getElementById(
+        "distanceResult"
+    ).innerHTML =
+
+    "Distance: "
+    +
+    distance.toFixed(2)
+    +
+    " pixels";
+
+}
+
+function drawTriangle(){
+
+    clearCanvas();
+
+
+    // Draw triangle sides
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        pointA.x,
+        pointA.y
+    );
+
+    ctx.lineTo(
+        pointB.x,
+        pointB.y
+    );
+
+
+    ctx.lineTo(
+        pointC.x,
+        pointC.y
+    );
+
+
+    ctx.closePath();
+
+    ctx.stroke();
+
+
+
+    // Draw vertices
+
+    [
+        pointA,
+        pointB,
+        pointC
+
+    ].forEach(point => {
+
+
+        ctx.beginPath();
+
+
+        ctx.arc(
+
+            point.x,
+
+            point.y,
+
+            7,
+
+            0,
+
+            Math.PI * 2
+
+        );
+
+
+        ctx.fill();
+
+
+    });
+
+
+
+    // Side lengths
+
+    const AB =
+    Math.hypot(
+        pointB.x - pointA.x,
+        pointB.y - pointA.y
+    );
+
+
+    const BC =
+    Math.hypot(
+        pointC.x - pointB.x,
+        pointC.y - pointB.y
+    );
+
+
+    const CA =
+    Math.hypot(
+        pointA.x - pointC.x,
+        pointA.y - pointC.y
+    );
+
+
+
+    document.getElementById(
+        "triangleResult"
+    ).innerHTML =
+
+
+    `
+    AB: ${AB.toFixed(1)} px
+    <br>
+
+    BC: ${BC.toFixed(1)} px
+    <br>
+
+    CA: ${CA.toFixed(1)} px
+    `;
+
+
+}
+
+
 
 // Initial drawing
 
@@ -580,27 +930,6 @@ function(event){
 
 
 });
-
-let vertex = {
-    x:250,
-    y:200
-};
-
-
-let armA = {
-    x:120,
-    y:300
-};
-
-
-let armB = {
-    x:400,
-    y:100
-};
-
-
-let draggingAnglePoint = null;
-
 
 
 function drawAngle(){
@@ -780,132 +1109,9 @@ ctx.fillText(
 
 }
 
- let trianglePointA = {
-    x:250,
-    y:80
-};
-
-let trianglePointB = {
-    x:100,
-    y:300
-};
-
-let trianglePointC = {
-    x:400,
-    y:300
-};
-
- function drawTriangle(){
-
-    clearCanvas();
 
 
-    // Draw triangle sides
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        trianglePointA.x,
-        trianglePointA.y
-    );
-
-  ctx.lineTo(
-    trianglePointB.x,
-    trianglePointB.y
-);
-
-
-ctx.lineTo(
-    trianglePointC.x,
-    trianglePointC.y
-);
-
-
-    ctx.closePath();
-
-    ctx.stroke();
-
-
-
-    // Draw vertices
-
-    [
-        trianglePointA,
-        trianglePointB,
-        trianglePointC
-
-    ].forEach(point => {
-
-
-        ctx.beginPath();
-
-
-        ctx.arc(
-
-            point.x,
-
-            point.y,
-
-            7,
-
-            0,
-
-            Math.PI * 2
-
-        );
-
-
-        ctx.fill();
-
-
-    });
-
-
-
-    // Side lengths
-
-    const AB =
-Math.hypot(
-    trianglePointB.x - trianglePointA.x,
-    trianglePointB.y - trianglePointA.y
-);
-
-
-const BC =
-Math.hypot(
-    trianglePointC.x - trianglePointB.x,
-    trianglePointC.y - trianglePointB.y
-);
-
-
-const CA =
-Math.hypot(
-    trianglePointA.x - trianglePointC.x,
-    trianglePointA.y - trianglePointC.y
-);
-
-
-
-    document.getElementById(
-        "triangleResult"
-    ).innerHTML =
-
-
-    `
-    AB: ${AB.toFixed(1)} px
-    <br>
-
-    BC: ${BC.toFixed(1)} px
-    <br>
-
-    CA: ${CA.toFixed(1)} px
-    `;
-
-
-}
-
-
-
+ 
 canvas.addEventListener(
 "mousedown",
 function(event){
