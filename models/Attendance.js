@@ -39,6 +39,14 @@ function createAttendance(
 
         VALUES (?, ?, ?, ?, ?)
 
+        ON CONFLICT(student_id, attendance_date)
+
+        DO UPDATE SET
+
+            status = excluded.status,
+
+            remarks = excluded.remarks
+
     `).run(
 
         student_id,
@@ -54,7 +62,6 @@ function createAttendance(
     );
 
 }
-
 
 
 // ===============================
@@ -408,16 +415,27 @@ function getStudentsByClass(classId) {
 function createClassAttendance(records) {
 
     const insert = db.prepare(`
-        INSERT INTO attendance
-        (
-            student_id,
-            course_id,
-            attendance_date,
-            status,
-            remarks
-        )
-        VALUES (?, ?, ?, ?, ?)
-    `);
+
+    INSERT INTO attendance
+    (
+        student_id,
+        course_id,
+        attendance_date,
+        status,
+        remarks
+    )
+
+    VALUES (?, ?, ?, ?, ?)
+
+    ON CONFLICT(student_id, attendance_date)
+
+    DO UPDATE SET
+
+        status = excluded.status,
+
+        remarks = excluded.remarks
+
+`);
 
     const transaction = db.transaction((rows) => {
 

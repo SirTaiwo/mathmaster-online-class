@@ -424,6 +424,20 @@ CREATE TABLE IF NOT EXISTS attendance (
 `).run();
 
 // ========================================
+// ATTENDANCE DUPLICATE PROTECTION
+// ========================================
+
+db.prepare(`
+CREATE UNIQUE INDEX IF NOT EXISTS
+unique_student_attendance_date
+
+ON attendance(
+    student_id,
+    attendance_date
+)
+`).run();
+
+// ========================================
 // CREATE CLASSES TABLE
 // ========================================
 
