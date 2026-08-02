@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>
+Geometry Workspace
+</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+Math<span>Master</span>
+</div>
+
+
+<div class="nav-links">
+
+<a href="/teacher/math-tools">
+Math Tools
+</a>
+
+<a href="/logout">
+Logout
+</a>
+
+</div>
+
+</nav>
+
+</header>
+
+
+
+<main class="dashboard">
+
+
+<div class="dashboard-header">
+
+<h1>
+📐 Geometry Workspace
+</h1>
+
+<p>
+Interactive construction tools for mathematics lessons.
+</p>
+
+</div>
+
+
+
+<div class="dashboard-card">
+
+
+<h2>
+⭕ Compass Tool
+</h2>
+
+
+<p>
+Select a radius and draw a circle.
+</p>
+
+
+<label>
+Radius:
+</label>
+
+
+<input 
+type="number"
+id="radius"
+value="50"
+min="10"
+max="200"
+>
+
+
+
+<button 
+onclick="drawCircle()"
+class="btn primary">
+
+Draw Circle
+
+</button>
+
+
+<button 
+onclick="clearCanvas()"
+class="btn">
+
+Clear
+
+</button>
+
+
+<br><br>
+
+
+<canvas
+id="geometryCanvas"
+width="500"
+height="400"
+style="border:1px solid black;">
+</canvas>
+
+
+</div>
+
+
+</main>
+
+
+
+<script>
+
+const canvas =
+document.getElementById(
+"geometryCanvas"
+);
+
+
+const ctx =
+canvas.getContext("2d");
+
+
+
+function drawCircle(){
+
+    clearCanvas();
+
+
+    const radius =
+    document.getElementById(
+        "radius"
+    ).value;
+
+
+    ctx.beginPath();
+
+
+    ctx.arc(
+        250,
+        200,
+        radius,
+        0,
+        Math.PI * 2
+    );
+
+
+    ctx.stroke();
+
+
+}
+
+
+
+function clearCanvas(){
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
