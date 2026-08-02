@@ -149,6 +149,37 @@ Distance:
 
 </div>
 
+<div class="dashboard-card">
+
+
+<h2>
+📐 Protractor Tool
+</h2>
+
+
+<p>
+Measure angles between two lines.
+</p>
+
+
+<button
+onclick="drawAngle()"
+class="btn primary">
+
+Create Angle
+
+</button>
+
+
+<p id="angleResult">
+
+Angle:
+
+</p>
+
+
+</div>
+
 </div>
 
 
@@ -364,6 +395,111 @@ function(event){
 
 
 });
+
+function drawAngle(){
+
+    clearCanvas();
+
+
+    const vertex = {
+        x:250,
+        y:200
+    };
+
+
+    const pointA = {
+        x:120,
+        y:300
+    };
+
+
+    const pointB = {
+        x:400,
+        y:100
+    };
+
+
+    // first ray
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        vertex.x,
+        vertex.y
+    );
+
+    ctx.lineTo(
+        pointA.x,
+        pointA.y
+    );
+
+    ctx.stroke();
+
+
+
+    // second ray
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        vertex.x,
+        vertex.y
+    );
+
+    ctx.lineTo(
+        pointB.x,
+        pointB.y
+    );
+
+    ctx.stroke();
+
+
+
+    // vertex point
+
+    ctx.beginPath();
+
+    ctx.arc(
+        vertex.x,
+        vertex.y,
+        8,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+
+    const angle =
+    Math.atan2(
+        pointB.y - vertex.y,
+        pointB.x - vertex.x
+    )
+    -
+    Math.atan2(
+        pointA.y - vertex.y,
+        pointA.x - vertex.x
+    );
+
+
+    let degrees =
+    Math.abs(
+        angle * 180 / Math.PI
+    );
+
+
+    document.getElementById(
+        "angleResult"
+    ).innerHTML =
+
+    "Angle: "
+    +
+    degrees.toFixed(1)
+    +
+    "°";
+
+}
 
 
 
