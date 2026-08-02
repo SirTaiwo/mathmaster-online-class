@@ -272,6 +272,52 @@ Reflection:
 
 <div class="dashboard-card">
 
+<h2>
+➡️ Translation Tool
+</h2>
+
+<p>
+Translate a point by a given horizontal and vertical distance.
+</p>
+
+<label>X Translation (Δx):</label>
+
+<input
+type="number"
+id="translateX"
+value="2"
+>
+
+<br><br>
+
+<label>Y Translation (Δy):</label>
+
+<input
+type="number"
+id="translateY"
+value="2"
+>
+
+<br><br>
+
+<button
+onclick="translatePoint()"
+class="btn primary">
+
+Translate Point
+
+</button>
+
+<p id="translationResult">
+
+Translation:
+
+</p>
+
+</div>
+
+<div class="dashboard-card">
+
 
 <h2>
 📏 Ruler Tool
@@ -378,6 +424,12 @@ const ctx =
 canvas.getContext("2d");
 
 let plottedPoints = [];
+
+// =======================
+// TRANSLATION VARIABLES
+// =======================
+
+let translatedPoints = [];
 
 // =======================
 // RULER VARIABLES
@@ -738,6 +790,184 @@ function plotPoint(){
 
 
 }
+
+// =======================
+// TRANSLATION TOOL
+// =======================
+
+function translatePoint(){
+
+    if(plottedPoints.length === 0){
+
+        document.getElementById(
+            "translationResult"
+        ).innerHTML =
+        "Please plot a point first.";
+
+        return;
+
+    }
+
+    const dx =
+    Number(
+        document.getElementById(
+            "translateX"
+        ).value
+    );
+
+    const dy =
+    Number(
+        document.getElementById(
+            "translateY"
+        ).value
+    );
+
+    const original =
+    plottedPoints[
+        plottedPoints.length - 1
+    ];
+
+    const translated = {
+
+        x: original.x + dx,
+
+        y: original.y + dy,
+
+        label: original.label + "'"
+
+    };
+
+    translatedPoints.push(
+        translated
+    );
+
+    drawGrid();
+
+    // Draw original points
+    plottedPoints.forEach(point => {
+
+        const canvasX =
+        canvas.width / 2 + point.x * 40;
+
+        const canvasY =
+        canvas.height / 2 - point.y * 40;
+
+        ctx.beginPath();
+        ctx.arc(canvasX, canvasY, 6, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillText(
+            point.label,
+            canvasX + 8,
+            canvasY - 8
+        );
+
+    });
+
+    // Draw translated points
+    translatedPoints.forEach(point => {
+
+        const canvasX =
+        canvas.width / 2 + point.x * 40;
+
+        const canvasY =
+        canvas.height / 2 - point.y * 40;
+
+        ctx.beginPath();
+        ctx.arc(canvasX, canvasY, 6, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillText(
+            point.label,
+            canvasX + 8,
+            canvasY - 8
+        );
+
+    });
+
+    document.getElementById(
+        "translationResult"
+    ).innerHTML =
+
+    original.label +
+    "(" +
+    original.x +
+    "," +
+    original.y +
+    ") → " +
+
+    translated.label +
+    "(" +
+    translated.x +
+    "," +
+    translated.y +
+    ")";
+
+}
+
+// Draw translation vector
+
+const startX =
+canvas.width / 2 +
+original.x * 40;
+
+const startY =
+canvas.height / 2 -
+original.y * 40;
+
+const endX =
+canvas.width / 2 +
+translated.x * 40;
+
+const endY =
+canvas.height / 2 -
+translated.y * 40;
+
+ctx.beginPath();
+
+ctx.moveTo(
+    startX,
+    startY
+);
+
+ctx.lineTo(
+    endX,
+    endY
+);
+
+ctx.stroke();
+
+const angle =
+Math.atan2(
+    endY - startY,
+    endX - startX
+);
+
+const head = 10;
+
+ctx.beginPath();
+
+ctx.moveTo(
+    endX,
+    endY
+);
+
+ctx.lineTo(
+    endX - head * Math.cos(angle - Math.PI / 6),
+    endY - head * Math.sin(angle - Math.PI / 6)
+);
+
+ctx.moveTo(
+    endX,
+    endY
+);
+
+ctx.lineTo(
+    endX - head * Math.cos(angle + Math.PI / 6),
+    endY - head * Math.sin(angle + Math.PI / 6)
+);
+
+ctx.stroke();
 
 
 
