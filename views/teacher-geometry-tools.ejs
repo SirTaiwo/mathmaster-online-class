@@ -525,7 +525,79 @@ function drawAngle(){
     +
     "°";
 
+    // Draw angle arc
+
+const radius = 50;
+
+
+ctx.beginPath();
+
+
+ctx.arc(
+
+    vertex.x,
+
+    vertex.y,
+
+    radius,
+
+    angle1,
+
+    angle2
+
+);
+
+
+ctx.stroke();
+
+
+
+// Draw angle label
+
+const midAngle =
+(
+    angle1 + angle2
+)
+/
+2;
+
+
+const labelX =
+vertex.x
++
+Math.cos(midAngle)
+*
+80;
+
+
+const labelY =
+vertex.y
++
+Math.sin(midAngle)
+*
+80;
+
+
+
+ctx.font =
+"18px Arial";
+
+
+ctx.fillText(
+
+    degrees.toFixed(1)
+    +
+    "°",
+
+    labelX,
+
+    labelY
+
+);
+
 }
+
+
 
 canvas.addEventListener(
 "mousedown",
