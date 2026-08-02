@@ -118,6 +118,40 @@ style="border:1px solid black;">
 
 </div>
 
+<div class="dashboard-card">
+
+
+<h2>
+📏 Ruler Tool
+</h2>
+
+
+<p>
+Measure the distance between two points.
+</p>
+
+
+<button
+onclick="drawRuler()"
+class="btn primary">
+
+Draw Ruler
+
+</button>
+
+
+<p id="distanceResult">
+
+Distance:
+
+</p>
+
+
+</div>
+
+</div>
+
+
 
 </main>
 
@@ -177,6 +211,83 @@ function clearCanvas(){
 
 }
 
+function drawRuler(){
+
+    clearCanvas();
+
+
+    const pointA = {
+        x:100,
+        y:200
+    };
+
+
+    const pointB = {
+        x:400,
+        y:200
+    };
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        pointA.x,
+        pointA.y
+    );
+
+    ctx.lineTo(
+        pointB.x,
+        pointB.y
+    );
+
+    ctx.stroke();
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        pointA.x,
+        pointA.y,
+        6,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.arc(
+        pointB.x,
+        pointB.y,
+        6,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+    const distance =
+    Math.sqrt(
+        Math.pow(
+            pointB.x - pointA.x,
+            2
+        )
+        +
+        Math.pow(
+            pointB.y - pointA.y,
+            2
+        )
+    );
+
+
+    document.getElementById(
+        "distanceResult"
+    ).innerHTML =
+    "Distance: "
+    +
+    distance.toFixed(2)
+    +
+    " pixels";
+
+}
 
 </script>
 
