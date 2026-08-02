@@ -432,7 +432,7 @@ new Chart(
 
     {
 
-        type: "bar",
+        type: "line",
 
         data: {
 
@@ -444,7 +444,11 @@ new Chart(
 
 label: "Attendance Rate (%)",
 
-data: values
+data: values,
+
+tension: 0.3,
+
+fill: false
 
 }
 
