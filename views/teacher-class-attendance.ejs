@@ -1,0 +1,122 @@
+
+<div class="admin-container">
+
+<h1>📅 Class Attendance Register</h1>
+
+<p>Select a class to load enrolled students.</p>
+
+<form method="GET" action="/teacher/class-attendance">
+
+    <select name="class_id" onchange="this.form.submit()">
+
+        <option value="">
+            Select Class
+        </option>
+
+        <% classes.forEach(function(item){ %>
+
+            <option
+                value="<%= item.id %>"
+                <%= selectedClass == item.id ? "selected" : "" %>>
+                <%= item.class_name %>
+            </option>
+
+        <% }) %>
+
+    </select>
+
+</form>
+
+<% if (students.length > 0) { %>
+
+<form
+    method="POST"
+    action="/teacher/class-attendance">
+
+<input
+    type="date"
+    name="attendance_date"
+    required
+>
+
+<table class="admin-table">
+
+<thead>
+
+<tr>
+
+<th>Student</th>
+
+<th>Status</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<% students.forEach(function(student){ %>
+
+<tr>
+
+<td>
+
+<%= student.first_name %>
+<%= student.last_name %>
+
+<input
+    type="hidden"
+    name="student_id[]"
+    value="<%= student.id %>"
+>
+
+</td>
+
+<td>
+
+<select
+    name="status[]"
+    required>
+
+<option value="Present">
+Present
+</option>
+
+<option value="Absent">
+Absent
+</option>
+
+<option value="Late">
+Late
+</option>
+
+<option value="Excused">
+Excused
+</option>
+
+</select>
+
+</td>
+
+</tr>
+
+<% }) %>
+
+</tbody>
+
+</table>
+
+<br>
+
+<button type="submit">
+
+Save Attendance
+
+</button>
+
+</form>
+
+<% } %>
+
+</div>
+

@@ -38,6 +38,35 @@ router.post(
 
 );
 
+// ========================================
+// CLASS ATTENDANCE
+// ========================================
+
+router.get(
+
+    "/teacher/class-attendance",
+
+    requireRole("teacher", "admin"),
+
+    controller.classAttendance
+
+);
+
+
+// ========================================
+// SAVE CLASS ATTENDANCE
+// ========================================
+
+router.post(
+
+    "/teacher/class-attendance",
+
+    requireRole("teacher", "admin"),
+
+    controller.saveClassAttendance
+
+);
+
 
 
 module.exports = router;

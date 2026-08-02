@@ -375,6 +375,70 @@ function getMonthlyAttendanceTrend() {
 
 }
 
+// ===============================
+// GET STUDENTS BY CLASS
+// ===============================
+
+function getStudentsByClass(classId) {
+
+    return db.prepare(`
+        SELECT
+            students.id,
+            students.first_name,
+            students.last_name,
+            students.email
+        FROM class_students
+
+        JOIN students
+            ON class_students.student_id = students.id
+
+        WHERE class_students.class_id = ?
+
+        ORDER BY
+            students.first_name,
+            students.last_name
+    `).all(classId);
+
+}
+
+// ===============================
+// CLASS ATTENDANCE
+// ===============================
+
+function createClassAttendance(records) {
+
+    const insert = db.prepare(`
+        INSERT INTO attendance
+        (
+            student_id,
+            course_id,
+            attendance_date,
+            status,
+            remarks
+        )
+        VALUES (?, ?, ?, ?, ?)
+    `);
+
+    const transaction = db.transaction((rows) => {
+
+        rows.forEach(row => {
+
+            insert.run(
+                row.student_id,
+                null,
+                row.attendance_date,
+                row.status,
+                row.remarks || ""
+            );
+
+        });
+
+    });
+
+    transaction(records);
+
+}
+
 
 
 module.exports = {
@@ -399,6 +463,10 @@ module.exports = {
 
     getLowAttendanceStudents,
 
-    getMonthlyAttendanceTrend
+    getMonthlyAttendanceTrend,
+
+    getStudentsByClass,
+
+    createClassAttendance
 
 };
