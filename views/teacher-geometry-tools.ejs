@@ -206,6 +206,74 @@ style="border:1px solid black;">
 
 
 <h2>
+🔄 Reflection Tool
+</h2>
+
+
+<p>
+Reflect a point across the coordinate axes.
+</p>
+
+
+<label>
+X Coordinate:
+</label>
+
+<input
+type="number"
+id="reflectX"
+value="3"
+>
+
+
+<br><br>
+
+
+<label>
+Y Coordinate:
+</label>
+
+<input
+type="number"
+id="reflectY"
+value="2"
+>
+
+
+<br><br>
+
+
+<button
+onclick="reflectXaxis()"
+class="btn primary">
+
+Reflect X-Axis
+
+</button>
+
+
+<button
+onclick="reflectYaxis()"
+class="btn primary">
+
+Reflect Y-Axis
+
+</button>
+
+
+<p id="reflectionResult">
+
+Reflection:
+
+</p>
+
+
+</div>
+
+<div class="dashboard-card">
+
+
+<h2>
 📏 Ruler Tool
 </h2>
 
@@ -315,16 +383,7 @@ let plottedPoints = [];
 // RULER VARIABLES
 // =======================
 
-let pointA = {
-    x:100,
-    y:200
-};
 
-
-let pointB = {
-    x:400,
-    y:200
-};
 
 
 let draggingPoint = null;
@@ -377,7 +436,6 @@ let trianglePointC = {
     x:400,
     y:300
 };
-
 
 function drawCircle(){
 
@@ -693,13 +751,13 @@ function drawRuler(){
     ctx.beginPath();
 
     ctx.moveTo(
-        pointA.x,
-        pointA.y
+        trianglePointA.x,
+        trianglePointA.y
     );
 
     ctx.lineTo(
-        pointB.x,
-        pointB.y
+        trianglePointB.x,
+        trianglePointB.y
     );
 
     ctx.stroke();
@@ -711,8 +769,8 @@ function drawRuler(){
     ctx.beginPath();
 
     ctx.arc(
-        pointA.x,
-        pointA.y,
+        trianglePointA.x,
+        trianglePointA.y,
         8,
         0,
         Math.PI * 2
@@ -720,8 +778,8 @@ function drawRuler(){
 
 
     ctx.arc(
-        pointB.x,
-        pointB.y,
+        trianglePointB.x,
+        trianglePointB.y,
         8,
         0,
         Math.PI * 2
@@ -738,14 +796,14 @@ function drawRuler(){
     Math.sqrt(
 
         Math.pow(
-            pointB.x - pointA.x,
+            trianglePointB.x - trianglePointA.x,
             2
         )
 
         +
 
         Math.pow(
-            pointB.y - pointA.y,
+            trianglePointB.y - trianglePointA.y,
             2
         )
 
@@ -774,20 +832,19 @@ function drawTriangle(){
     ctx.beginPath();
 
     ctx.moveTo(
-        pointA.x,
-        pointA.y
-    );
+    trianglePointA.x,
+    trianglePointA.y
+);
 
-    ctx.lineTo(
-        pointB.x,
-        pointB.y
-    );
+ctx.lineTo(
+    trianglePointB.x,
+    trianglePointB.y
+);
 
-
-    ctx.lineTo(
-        pointC.x,
-        pointC.y
-    );
+ctx.lineTo(
+    trianglePointC.x,
+    trianglePointC.y
+);
 
 
     ctx.closePath();
@@ -798,12 +855,11 @@ function drawTriangle(){
 
     // Draw vertices
 
-    [
-        pointA,
-        pointB,
-        pointC
-
-    ].forEach(point => {
+   [
+    trianglePointA,
+    trianglePointB,
+    trianglePointC
+].forEach(point => {
 
 
         ctx.beginPath();
@@ -834,24 +890,24 @@ function drawTriangle(){
     // Side lengths
 
     const AB =
-    Math.hypot(
-        pointB.x - pointA.x,
-        pointB.y - pointA.y
-    );
+Math.hypot(
+    trianglePointB.x - trianglePointA.x,
+    trianglePointB.y - trianglePointA.y
+);
 
 
     const BC =
-    Math.hypot(
-        pointC.x - pointB.x,
-        pointC.y - pointB.y
-    );
+Math.hypot(
+    trianglePointC.x - trianglePointB.x,
+    trianglePointC.y - trianglePointB.y
+);
 
 
-    const CA =
-    Math.hypot(
-        pointA.x - pointC.x,
-        pointA.y - pointC.y
-    );
+  const CA =
+Math.hypot(
+    trianglePointA.x - trianglePointC.x,
+    trianglePointA.y - trianglePointC.y
+);
 
 
 
@@ -903,8 +959,8 @@ function(event){
 
     if(
         Math.hypot(
-            mouseX - pointA.x,
-            mouseY - pointA.y
+            mouseX - trianglePointA.x,
+            mouseY - trianglePointA.y
         )
         < 15
     ){
@@ -917,8 +973,8 @@ function(event){
     else if(
 
         Math.hypot(
-            mouseX - pointB.x,
-            mouseY - pointB.y
+            mouseX - trianglePointB.x,
+            mouseY - trianglePointB.y
         )
         < 15
 
@@ -1231,16 +1287,16 @@ function(event){
 
     if(draggingPoint === "A"){
 
-        pointA.x = x;
-        pointA.y = y;
+        trianglePointA.x = x;
+        trianglePointA.y = y;
 
     }
 
 
     if(draggingPoint === "B"){
 
-        pointB.x = x;
-        pointB.y = y;
+        trianglePointB.x = x;
+        trianglePointB.y = y;
 
     }
 
