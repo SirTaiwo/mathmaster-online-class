@@ -104,6 +104,14 @@ Clear
 
 </button>
 
+<button
+onclick="clearWorkspace()"
+class="btn">
+
+🧹 Clear Workspace
+
+</button>
+
 
 <br><br>
 
@@ -180,9 +188,36 @@ Angle:
 
 </div>
 
+<div class="dashboard-card">
+
+
+<h2>
+🔺 Triangle Constructor
+</h2>
+
+
+<p>
+Create and analyse a triangle.
+</p>
+
+
+<button
+onclick="drawTriangle()"
+class="btn primary">
+
+Create Triangle
+
+</button>
+
+
+<p id="triangleResult">
+
+Triangle Information:
+
+</p>
+
+
 </div>
-
-
 
 </main>
 
@@ -255,6 +290,31 @@ let pointB = {
 
 
 let draggingPoint = null;
+
+function clearWorkspace(){
+
+    clearCanvas();
+
+
+    document.getElementById(
+        "distanceResult"
+    ).innerHTML =
+    "Distance:";
+
+
+    document.getElementById(
+        "angleResult"
+    ).innerHTML =
+    "Angle:";
+
+
+    document.getElementById(
+        "triangleResult"
+    ).innerHTML =
+    "Triangle Information:";
+
+
+}
 
 
 
@@ -478,9 +538,7 @@ function drawAngle(){
 
     });
 
-
-
-    // Calculate angle
+       // Calculate angle
 
     const angle1 =
     Math.atan2(
@@ -594,6 +652,130 @@ ctx.fillText(
     labelY
 
 );
+
+}
+
+ let trianglePointA = {
+    x:250,
+    y:80
+};
+
+let trianglePointB = {
+    x:100,
+    y:300
+};
+
+let trianglePointC = {
+    x:400,
+    y:300
+};
+
+ function drawTriangle(){
+
+    clearCanvas();
+
+
+    // Draw triangle sides
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        trianglePointA.x,
+        trianglePointA.y
+    );
+
+  ctx.lineTo(
+    trianglePointB.x,
+    trianglePointB.y
+);
+
+
+ctx.lineTo(
+    trianglePointC.x,
+    trianglePointC.y
+);
+
+
+    ctx.closePath();
+
+    ctx.stroke();
+
+
+
+    // Draw vertices
+
+    [
+        trianglePointA,
+        trianglePointB,
+        trianglePointC
+
+    ].forEach(point => {
+
+
+        ctx.beginPath();
+
+
+        ctx.arc(
+
+            point.x,
+
+            point.y,
+
+            7,
+
+            0,
+
+            Math.PI * 2
+
+        );
+
+
+        ctx.fill();
+
+
+    });
+
+
+
+    // Side lengths
+
+    const AB =
+Math.hypot(
+    trianglePointB.x - trianglePointA.x,
+    trianglePointB.y - trianglePointA.y
+);
+
+
+const BC =
+Math.hypot(
+    trianglePointC.x - trianglePointB.x,
+    trianglePointC.y - trianglePointB.y
+);
+
+
+const CA =
+Math.hypot(
+    trianglePointA.x - trianglePointC.x,
+    trianglePointA.y - trianglePointC.y
+);
+
+
+
+    document.getElementById(
+        "triangleResult"
+    ).innerHTML =
+
+
+    `
+    AB: ${AB.toFixed(1)} px
+    <br>
+
+    BC: ${BC.toFixed(1)} px
+    <br>
+
+    CA: ${CA.toFixed(1)} px
+    `;
+
 
 }
 
