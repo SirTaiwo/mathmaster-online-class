@@ -318,6 +318,44 @@ Translation:
 
 <div class="dashboard-card">
 
+<h2>
+🔄 Rotation Tool
+</h2>
+
+<p>
+Rotate the last plotted point about the origin.
+</p>
+
+<label>
+Rotation Angle (°):
+</label>
+
+<input
+type="number"
+id="rotationAngle"
+value="90"
+>
+
+<br><br>
+
+<button
+onclick="rotatePoint()"
+class="btn primary">
+
+Rotate Point
+
+</button>
+
+<p id="rotationResult">
+
+Rotation:
+
+</p>
+
+</div>
+
+<div class="dashboard-card">
+
 
 <h2>
 📏 Ruler Tool
@@ -435,6 +473,16 @@ let translatedPoints = [];
 // RULER VARIABLES
 // =======================
 
+let rulerPointA = {
+    x:100,
+    y:200
+};
+
+
+let rulerPointB = {
+    x:400,
+    y:200
+};
 
 
 
@@ -976,47 +1024,49 @@ function drawRuler(){
     clearCanvas();
 
 
-    // Draw line
+   // Draw line
 
-    ctx.beginPath();
+ctx.beginPath();
 
-    ctx.moveTo(
-        trianglePointA.x,
-        trianglePointA.y
-    );
-
-    ctx.lineTo(
-        trianglePointB.x,
-        trianglePointB.y
-    );
-
-    ctx.stroke();
+ctx.moveTo(
+    rulerPointA.x,
+    rulerPointA.y
+);
 
 
-
-    // Draw points
-
-    ctx.beginPath();
-
-    ctx.arc(
-        trianglePointA.x,
-        trianglePointA.y,
-        8,
-        0,
-        Math.PI * 2
-    );
+ctx.lineTo(
+    rulerPointB.x,
+    rulerPointB.y
+);
 
 
-    ctx.arc(
-        trianglePointB.x,
-        trianglePointB.y,
-        8,
-        0,
-        Math.PI * 2
-    );
+ctx.stroke();
 
 
-    ctx.fill();
+
+// Draw points
+
+ctx.beginPath();
+
+ctx.arc(
+    rulerPointA.x,
+    rulerPointA.y,
+    8,
+    0,
+    Math.PI * 2
+);
+
+
+ctx.arc(
+    rulerPointB.x,
+    rulerPointB.y,
+    8,
+    0,
+    Math.PI * 2
+);
+
+
+ctx.fill();
 
 
 
@@ -1026,14 +1076,14 @@ function drawRuler(){
     Math.sqrt(
 
         Math.pow(
-            trianglePointB.x - trianglePointA.x,
+            rulerPointB.x - rulerPointA.x,
             2
         )
 
         +
 
         Math.pow(
-            trianglePointB.y - trianglePointA.y,
+            rulerPointB.y - rulerPointA.y,
             2
         )
 
@@ -1161,12 +1211,6 @@ Math.hypot(
 
 
 
-// Initial drawing
-
-drawRuler();
-
-
-
 // Mouse down
 
 canvas.addEventListener(
@@ -1187,32 +1231,65 @@ function(event){
 
 
 
-    if(
-        Math.hypot(
-            mouseX - trianglePointA.x,
-            mouseY - trianglePointA.y
-        )
-        < 15
-    ){
+   // ======================
+// RULER DRAGGING
+// ======================
 
-        draggingPoint = "A";
+if(
+    Math.hypot(
+        mouseX - rulerPointA.x,
+        mouseY - rulerPointA.y
+    )
+    < 15
+){
 
-    }
+    draggingPoint = "rulerA";
+
+}
 
 
-    else if(
+else if(
+    Math.hypot(
+        mouseX - rulerPointB.x,
+        mouseY - rulerPointB.y
+    )
+    < 15
+){
 
-        Math.hypot(
-            mouseX - trianglePointB.x,
-            mouseY - trianglePointB.y
-        )
-        < 15
+    draggingPoint = "rulerB";
 
-    ){
+}
 
-        draggingPoint = "B";
 
-    }
+
+// ======================
+// TRIANGLE DRAGGING
+// ======================
+
+else if(
+    Math.hypot(
+        mouseX - trianglePointA.x,
+        mouseY - trianglePointA.y
+    )
+    < 15
+){
+
+    draggingPoint = "A";
+
+}
+
+
+else if(
+    Math.hypot(
+        mouseX - trianglePointB.x,
+        mouseY - trianglePointB.y
+    )
+    < 15
+){
+
+    draggingPoint = "B";
+
+}
 
 
 });
@@ -1445,9 +1522,6 @@ canvas.addEventListener(
 "mousemove",
 function(event){
 
-    if(!draggingAnglePoint)
-        return;
-
 
     const rect =
     canvas.getBoundingClientRect();
@@ -1462,23 +1536,83 @@ function(event){
 
 
 
-    if(draggingAnglePoint === "A"){
+    // ======================
+    // RULER + TRIANGLE
+    // ======================
 
-        armA.x = x;
-        armA.y = y;
+    if(draggingPoint){
+
+
+        if(draggingPoint === "rulerA"){
+
+            rulerPointA.x = x;
+            rulerPointA.y = y;
+
+            drawRuler();
+
+        }
+
+
+        if(draggingPoint === "rulerB"){
+
+            rulerPointB.x = x;
+            rulerPointB.y = y;
+
+            drawRuler();
+
+        }
+
+
+        if(draggingPoint === "A"){
+
+            trianglePointA.x = x;
+            trianglePointA.y = y;
+
+            drawTriangle();
+
+        }
+
+
+        if(draggingPoint === "B"){
+
+            trianglePointB.x = x;
+            trianglePointB.y = y;
+
+            drawTriangle();
+
+        }
 
     }
 
 
-    if(draggingAnglePoint === "B"){
 
-        armB.x = x;
-        armB.y = y;
+    // ======================
+    // ANGLE TOOL
+    // ======================
+
+    if(draggingAnglePoint){
+
+
+        if(draggingAnglePoint === "A"){
+
+            armA.x = x;
+            armA.y = y;
+
+        }
+
+
+        if(draggingAnglePoint === "B"){
+
+            armB.x = x;
+            armB.y = y;
+
+        }
+
+
+        drawAngle();
 
     }
 
-
-    drawAngle();
 
 });
 
@@ -1492,50 +1626,6 @@ function(){
 
 
 // Mouse move
-
-canvas.addEventListener(
-"mousemove",
-function(event){
-
-
-    if(!draggingPoint)
-        return;
-
-
-    const rect =
-    canvas.getBoundingClientRect();
-
-
-    const x =
-    event.clientX - rect.left;
-
-
-    const y =
-    event.clientY - rect.top;
-
-
-
-    if(draggingPoint === "A"){
-
-        trianglePointA.x = x;
-        trianglePointA.y = y;
-
-    }
-
-
-    if(draggingPoint === "B"){
-
-        trianglePointB.x = x;
-        trianglePointB.y = y;
-
-    }
-
-
-    drawRuler();
-
-
-});
-
 
 
 // Mouse release
