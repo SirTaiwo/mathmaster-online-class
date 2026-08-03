@@ -35,6 +35,18 @@ let rulerPointB = {
 let draggingPoint = null;
 
 // =======================
+// RULER ROTATION
+// =======================
+
+let rulerRotationHandle = {
+    x:250,
+    y:150
+};
+
+
+let rotatingRuler = false;
+
+// =======================
 // ACTIVE TOOL
 // =======================
 
@@ -690,6 +702,40 @@ for(
 
     ctx.restore();
 
+    // ======================
+// ROTATION HANDLE
+// ======================
+
+const centerX =
+(
+    rulerPointA.x +
+    rulerPointB.x
+) / 2;
+
+
+const centerY =
+(
+    rulerPointA.y +
+    rulerPointB.y
+) / 2;
+
+
+rulerRotationHandle.x = centerX;
+rulerRotationHandle.y = centerY - 50;
+
+
+ctx.beginPath();
+
+ctx.arc(
+    rulerRotationHandle.x,
+    rulerRotationHandle.y,
+    8,
+    0,
+    Math.PI * 2
+);
+
+ctx.fill();
+
 
 
     // ======================
@@ -872,35 +918,58 @@ function(event){
 
 
 
-   // ======================
-// RULER DRAGGING
-// ======================
+ if(activeTool === "ruler"){
 
-if(
-    Math.hypot(
-        mouseX - rulerPointA.x,
-        mouseY - rulerPointA.y
-    )
-    < 15
-){
 
-    draggingPoint = "rulerA";
+    // ======================
+    // ROTATION HANDLE
+    // ======================
+
+    if(
+        Math.hypot(
+            mouseX - rulerRotationHandle.x,
+            mouseY - rulerRotationHandle.y
+        ) < 15
+    ){
+
+        draggingPoint = "rulerRotate";
+
+    }
+
+
+    // ======================
+    // RULER ENDPOINT A
+    // ======================
+
+    else if(
+        Math.hypot(
+            mouseX - rulerPointA.x,
+            mouseY - rulerPointA.y
+        ) < 15
+    ){
+
+        draggingPoint = "rulerA";
+
+    }
+
+
+    // ======================
+    // RULER ENDPOINT B
+    // ======================
+
+    else if(
+        Math.hypot(
+            mouseX - rulerPointB.x,
+            mouseY - rulerPointB.y
+        ) < 15
+    ){
+
+        draggingPoint = "rulerB";
+
+    }
+
 
 }
-
-
-else if(
-    Math.hypot(
-        mouseX - rulerPointB.x,
-        mouseY - rulerPointB.y
-    )
-    < 15
-){
-
-    draggingPoint = "rulerB";
-
-}
-
 
 
 // ======================
@@ -1193,6 +1262,67 @@ function(event){
 
         }
 
+        // ======================
+// RULER ROTATION HANDLE
+// ======================
+
+if(draggingPoint === "rulerRotate"){
+
+    const centerX =
+    (
+        rulerPointA.x +
+        rulerPointB.x
+    ) / 2;
+
+
+    const centerY =
+    (
+        rulerPointA.y +
+        rulerPointB.y
+    ) / 2;
+
+
+    const angle =
+    Math.atan2(
+        y - centerY,
+        x - centerX
+    );
+
+
+    const length =
+    Math.hypot(
+        rulerPointB.x - rulerPointA.x,
+        rulerPointB.y - rulerPointA.y
+    );
+
+
+    rulerPointA.x =
+    centerX -
+    Math.cos(angle) *
+    length / 2;
+
+
+    rulerPointA.y =
+    centerY -
+    Math.sin(angle) *
+    length / 2;
+
+
+    rulerPointB.x =
+    centerX +
+    Math.cos(angle) *
+    length / 2;
+
+
+    rulerPointB.y =
+    centerY +
+    Math.sin(angle) *
+    length / 2;
+
+
+    drawRuler();
+
+}
 
         if(draggingPoint === "rulerB"){
 
