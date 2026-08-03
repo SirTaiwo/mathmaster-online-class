@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>
+Geometry Workspace
+</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+Math<span>Master</span>
+</div>
+
+
+<div class="nav-links">
+
+<a href="/teacher/math-tools">
+Math Tools
+</a>
+
+<a href="/logout">
+Logout
+</a>
+
+</div>
+
+</nav>
+
+</header>
+
+
+
+<main class="dashboard">
+
+
+<div class="dashboard-header">
+
+<h1>
+📐 Geometry Workspace
+</h1>
+
+<p>
+Interactive construction tools for mathematics lessons.
+</p>
+
+</div>
+
+
+
+<div class="dashboard-card">
+
+
+<h2>
+⭕ Compass Tool
+</h2>
+
+
+<p>
+Select a radius and draw a circle.
+</p>
+
+
+<label>
+Radius:
+</label>
+
+
+<input 
+type="number"
+id="radius"
+value="50"
+min="10"
+max="200"
+>
+
+
+
+<button 
+onclick="drawCircle()"
+class="btn primary">
+
+Draw Circle
+
+</button>
+
+
+<button 
+onclick="clearCanvas()"
+class="btn">
+
+Clear
+
+</button>
+
+<button
+onclick="drawGrid()"
+class="btn primary">
+
+📊 Draw Coordinate Grid
+
+</button>
+
+<div class="dashboard-card">
+
+<h2>
+📍 Point Plotter
+</h2>
+
+
+<p>
+Plot a point on the coordinate grid.
+</p>
+
+
+<label>
+X Coordinate:
+</label>
+
+
+<input
+type="number"
+id="pointX"
+value="3"
+>
+
+
+<br><br>
+
+
+<label>
+Y Coordinate:
+</label>
+
+
+<input
+type="number"
+id="pointY"
+value="2"
+>
+
+
+<br><br>
+
+
+<label>
+Label:
+</label>
+
+
+<input
+type="text"
+id="pointLabel"
+value="A"
+>
+
+
+<br><br>
+
+
+<button
+onclick="plotPoint()"
+class="btn primary">
+
+📍 Plot Point
+
+</button>
+
+
+<p id="pointResult">
+
+Point:
+
+</p>
+
+
+</div>
+
+
+
+<br><br>
+
+
+<canvas
+id="geometryCanvas"
+width="500"
+height="400"
+style="border:1px solid black;">
+</canvas>
+
+
+</div>
+
+<div class="dashboard-card">
+
+
+<h2>
+📏 Ruler Tool
+</h2>
+
+
+<p>
+Measure the distance between two points.
+</p>
+
+
+<button
+onclick="drawRuler()"
+class="btn primary">
+
+Draw Ruler
+
+</button>
+
+
+<p id="distanceResult">
+
+Distance:
+
+</p>
+
+
+</div>
+
+<div class="dashboard-card">
+
+
+<h2>
+📐 Protractor Tool
+</h2>
+
+
+<p>
+Measure angles between two lines.
+</p>
+
+
+<button
+onclick="drawAngle()"
+class="btn primary">
+
+Create Angle
+
+</button>
+
+
+<p id="angleResult">
+
+Angle:
+
+</p>
+
+
+</div>
+
+<div class="dashboard-card">
+
+
+<h2>
+🔺 Triangle Constructor
+</h2>
+
+
+<p>
+Create and analyse a triangle.
+</p>
+
+
+<button
+onclick="drawTriangle()"
+class="btn primary">
+
+Create Triangle
+
+</button>
+
+
+<p id="triangleResult">
+
+Triangle Information:
+
+</p>
+
+
+</div>
+
+</main>
+
+
+
+<script>
+
+const canvas =
+document.getElementById(
+"geometryCanvas"
+);
+
+const ctx =
+canvas.getContext("2d");
+
+let plottedPoints = [];
+
+
+
+function drawCircle(){
+
+    clearCanvas();
+
+
+    const radius =
+    document.getElementById(
+        "radius"
+    ).value;
+
+
+    ctx.beginPath();
+
+
+    ctx.arc(
+        250,
+        200,
+        radius,
+        0,
+        Math.PI * 2
+    );
+
+
+    ctx.stroke();
+
+
+}
+
+
+
+function clearCanvas(){
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+}
+
+let pointA = {
+    x:100,
+    y:200
+};
+
+
+let pointB = {
+    x:400,
+    y:200
+};
+
+
+let draggingPoint = null;
+
+function clearWorkspace(){
+
+    clearCanvas();
+
+
+    document.getElementById(
+        "distanceResult"
+    ).innerHTML =
+    "Distance:";
+
+
+    document.getElementById(
+        "angleResult"
+    ).innerHTML =
+    "Angle:";
+
+
+    document.getElementById(
+        "triangleResult"
+    ).innerHTML =
+    "Triangle Information:";
+
+
+}
+
+function drawGrid(){
+
+    clearCanvas();
+
+
+    const gridSize = 40;
+
+
+    const originX =
+    canvas.width / 2;
+
+
+    const originY =
+    canvas.height / 2;
+
+
+
+    ctx.beginPath();
+
+
+    // Vertical grid lines
+
+    for(
+        let x = 0;
+        x <= canvas.width;
+        x += gridSize
+    ){
+
+        ctx.moveTo(
+            x,
+            0
+        );
+
+        ctx.lineTo(
+            x,
+            canvas.height
+        );
+
+    }
+
+
+
+    // Horizontal grid lines
+
+    for(
+        let y = 0;
+        y <= canvas.height;
+        y += gridSize
+    ){
+
+        ctx.moveTo(
+            0,
+            y
+        );
+
+        ctx.lineTo(
+            canvas.width,
+            y
+        );
+
+    }
+
+
+    ctx.stroke();
+
+
+
+    // X-axis
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        0,
+        originY
+    );
+
+    ctx.lineTo(
+        canvas.width,
+        originY
+    );
+
+    ctx.stroke();
+
+
+
+    // Y-axis
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        originX,
+        0
+    );
+
+    ctx.lineTo(
+        originX,
+        canvas.height
+    );
+
+    ctx.stroke();
+
+
+
+    // Origin label
+
+    ctx.font =
+    "14px Arial";
+
+
+    ctx.fillText(
+        "0",
+        originX + 5,
+        originY - 5
+    );
+
+}
+
+function plotPoint(){
+
+    const x =
+    Number(
+        document.getElementById(
+            "pointX"
+        ).value
+    );
+
+
+    const y =
+    Number(
+        document.getElementById(
+            "pointY"
+        ).value
+    );
+
+
+    const label =
+    document.getElementById(
+        "pointLabel"
+    ).value;
+
+
+
+    plottedPoints.push({
+
+        x,
+        y,
+        label
+
+    });
+
+
+
+    drawGrid();
+
+
+    plottedPoints.forEach(point => {
+
+
+        const canvasX =
+        canvas.width / 2
+        +
+        point.x * 40;
+
+
+        const canvasY =
+        canvas.height / 2
+        -
+        point.y * 40;
+
+
+
+        ctx.beginPath();
+
+
+        ctx.arc(
+            canvasX,
+            canvasY,
+            6,
+            0,
+            Math.PI * 2
+        );
+
+
+        ctx.fill();
+
+
+
+        ctx.font =
+        "14px Arial";
+
+
+        ctx.fillText(
+
+            point.label
+            +
+            " ("
+            +
+            point.x
+            +
+            ","
+            +
+            point.y
+            +
+            ")",
+
+            canvasX + 8,
+            canvasY - 8
+
+        );
+
+
+    });
+
+
+
+    document.getElementById(
+        "pointResult"
+    ).innerHTML =
+
+    "Point plotted: "
+    +
+    label
+    +
+    "("
+    +
+    x
+    +
+    ","
+    +
+    y
+    +
+    ")";
+
+
+}
+
+
+
+function drawRuler(){
+
+    clearCanvas();
+
+
+    // Draw line
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        pointA.x,
+        pointA.y
+    );
+
+    ctx.lineTo(
+        pointB.x,
+        pointB.y
+    );
+
+    ctx.stroke();
+
+
+
+    // Draw points
+
+    ctx.beginPath();
+
+    ctx.arc(
+        pointA.x,
+        pointA.y,
+        8,
+        0,
+        Math.PI * 2
+    );
+
+
+    ctx.arc(
+        pointB.x,
+        pointB.y,
+        8,
+        0,
+        Math.PI * 2
+    );
+
+
+    ctx.fill();
+
+
+
+    // Calculate distance
+
+    const distance =
+    Math.sqrt(
+
+        Math.pow(
+            pointB.x - pointA.x,
+            2
+        )
+
+        +
+
+        Math.pow(
+            pointB.y - pointA.y,
+            2
+        )
+
+    );
+
+
+    document.getElementById(
+        "distanceResult"
+    ).innerHTML =
+
+    "Distance: "
+    +
+    distance.toFixed(2)
+    +
+    " pixels";
+
+}
+
+function drawTriangle(){
+
+    clearCanvas();
+
+
+    // Draw triangle sides
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        pointA.x,
+        pointA.y
+    );
+
+    ctx.lineTo(
+        pointB.x,
+        pointB.y
+    );
+
+
+    ctx.lineTo(
+        pointC.x,
+        pointC.y
+    );
+
+
+    ctx.closePath();
+
+    ctx.stroke();
+
+
+
+    // Draw vertices
+
+    [
+        pointA,
+        pointB,
+        pointC
+
+    ].forEach(point => {
+
+
+        ctx.beginPath();
+
+
+        ctx.arc(
+
+            point.x,
+
+            point.y,
+
+            7,
+
+            0,
+
+            Math.PI * 2
+
+        );
+
+
+        ctx.fill();
+
+
+    });
+
+
+
+    // Side lengths
+
+    const AB =
+    Math.hypot(
+        pointB.x - pointA.x,
+        pointB.y - pointA.y
+    );
+
+
+    const BC =
+    Math.hypot(
+        pointC.x - pointB.x,
+        pointC.y - pointB.y
+    );
+
+
+    const CA =
+    Math.hypot(
+        pointA.x - pointC.x,
+        pointA.y - pointC.y
+    );
+
+
+
+    document.getElementById(
+        "triangleResult"
+    ).innerHTML =
+
+
+    `
+    AB: ${AB.toFixed(1)} px
+    <br>
+
+    BC: ${BC.toFixed(1)} px
+    <br>
+
+    CA: ${CA.toFixed(1)} px
+    `;
+
+
+}
+
+
+
+// Initial drawing
+
+drawRuler();
+
+
+
+// Mouse down
+
+canvas.addEventListener(
+"mousedown",
+function(event){
+
+
+    const rect =
+    canvas.getBoundingClientRect();
+
+
+    const mouseX =
+    event.clientX - rect.left;
+
+
+    const mouseY =
+    event.clientY - rect.top;
+
+
+
+    if(
+        Math.hypot(
+            mouseX - pointA.x,
+            mouseY - pointA.y
+        )
+        < 15
+    ){
+
+        draggingPoint = "A";
+
+    }
+
+
+    else if(
+
+        Math.hypot(
+            mouseX - pointB.x,
+            mouseY - pointB.y
+        )
+        < 15
+
+    ){
+
+        draggingPoint = "B";
+
+    }
+
+
+});
+
+let vertex = {
+    x:250,
+    y:200
+};
+
+
+let armA = {
+    x:120,
+    y:300
+};
+
+
+let armB = {
+    x:400,
+    y:100
+};
+
+
+let draggingAnglePoint = null;
+
+
+
+function drawAngle(){
+
+    clearCanvas();
+
+
+
+    // Draw first arm
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        vertex.x,
+        vertex.y
+    );
+
+    ctx.lineTo(
+        armA.x,
+        armA.y
+    );
+
+    ctx.stroke();
+
+
+
+    // Draw second arm
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        vertex.x,
+        vertex.y
+    );
+
+    ctx.lineTo(
+        armB.x,
+        armB.y
+    );
+
+    ctx.stroke();
+
+
+
+    // Draw points
+
+    [armA, armB, vertex].forEach(point => {
+
+        ctx.beginPath();
+
+        ctx.arc(
+            point.x,
+            point.y,
+            8,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
+    });
+
+       // Calculate angle
+
+    const angle1 =
+    Math.atan2(
+        armA.y - vertex.y,
+        armA.x - vertex.x
+    );
+
+
+    const angle2 =
+    Math.atan2(
+        armB.y - vertex.y,
+        armB.x - vertex.x
+    );
+
+
+    let degrees =
+    Math.abs(
+        (angle2 - angle1)
+        *
+        180
+        /
+        Math.PI
+    );
+
+
+    if(degrees > 180){
+
+        degrees =
+        360 - degrees;
+
+    }
+
+
+
+    document.getElementById(
+        "angleResult"
+    ).innerHTML =
+
+    "Angle: "
+    +
+    degrees.toFixed(1)
+    +
+    "°";
+
+    // Draw angle arc
+
+const radius = 50;
+
+
+ctx.beginPath();
+
+
+ctx.arc(
+
+    vertex.x,
+
+    vertex.y,
+
+    radius,
+
+    angle1,
+
+    angle2
+
+);
+
+
+ctx.stroke();
+
+
+
+// Draw angle label
+
+const midAngle =
+(
+    angle1 + angle2
+)
+/
+2;
+
+
+const labelX =
+vertex.x
++
+Math.cos(midAngle)
+*
+80;
+
+
+const labelY =
+vertex.y
++
+Math.sin(midAngle)
+*
+80;
+
+
+
+ctx.font =
+"18px Arial";
+
+
+ctx.fillText(
+
+    degrees.toFixed(1)
+    +
+    "°",
+
+    labelX,
+
+    labelY
+
+);
+
+}
+
+ let trianglePointA = {
+    x:250,
+    y:80
+};
+
+let trianglePointB = {
+    x:100,
+    y:300
+};
+
+let trianglePointC = {
+    x:400,
+    y:300
+};
+
+ function drawTriangle(){
+
+    clearCanvas();
+
+
+    // Draw triangle sides
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        trianglePointA.x,
+        trianglePointA.y
+    );
+
+  ctx.lineTo(
+    trianglePointB.x,
+    trianglePointB.y
+);
+
+
+ctx.lineTo(
+    trianglePointC.x,
+    trianglePointC.y
+);
+
+
+    ctx.closePath();
+
+    ctx.stroke();
+
+
+
+    // Draw vertices
+
+    [
+        trianglePointA,
+        trianglePointB,
+        trianglePointC
+
+    ].forEach(point => {
+
+
+        ctx.beginPath();
+
+
+        ctx.arc(
+
+            point.x,
+
+            point.y,
+
+            7,
+
+            0,
+
+            Math.PI * 2
+
+        );
+
+
+        ctx.fill();
+
+
+    });
+
+
+
+    // Side lengths
+
+    const AB =
+Math.hypot(
+    trianglePointB.x - trianglePointA.x,
+    trianglePointB.y - trianglePointA.y
+);
+
+
+const BC =
+Math.hypot(
+    trianglePointC.x - trianglePointB.x,
+    trianglePointC.y - trianglePointB.y
+);
+
+
+const CA =
+Math.hypot(
+    trianglePointA.x - trianglePointC.x,
+    trianglePointA.y - trianglePointC.y
+);
+
+
+
+    document.getElementById(
+        "triangleResult"
+    ).innerHTML =
+
+
+    `
+    AB: ${AB.toFixed(1)} px
+    <br>
+
+    BC: ${BC.toFixed(1)} px
+    <br>
+
+    CA: ${CA.toFixed(1)} px
+    `;
+
+
+}
+
+
+
+canvas.addEventListener(
+"mousedown",
+function(event){
+
+    const rect =
+    canvas.getBoundingClientRect();
+
+
+    const x =
+    event.clientX - rect.left;
+
+
+    const y =
+    event.clientY - rect.top;
+
+
+
+    if(
+        Math.hypot(
+            x - armA.x,
+            y - armA.y
+        ) < 15
+    ){
+
+        draggingAnglePoint = "A";
+
+    }
+
+
+    else if(
+        Math.hypot(
+            x - armB.x,
+            y - armB.y
+        ) < 15
+    ){
+
+        draggingAnglePoint = "B";
+
+    }
+
+
+});
+
+canvas.addEventListener(
+"mousemove",
+function(event){
+
+    if(!draggingAnglePoint)
+        return;
+
+
+    const rect =
+    canvas.getBoundingClientRect();
+
+
+    const x =
+    event.clientX - rect.left;
+
+
+    const y =
+    event.clientY - rect.top;
+
+
+
+    if(draggingAnglePoint === "A"){
+
+        armA.x = x;
+        armA.y = y;
+
+    }
+
+
+    if(draggingAnglePoint === "B"){
+
+        armB.x = x;
+        armB.y = y;
+
+    }
+
+
+    drawAngle();
+
+});
+
+canvas.addEventListener(
+"mouseup",
+function(){
+
+    draggingAnglePoint = null;
+
+});
+
+
+// Mouse move
+
+canvas.addEventListener(
+"mousemove",
+function(event){
+
+
+    if(!draggingPoint)
+        return;
+
+
+    const rect =
+    canvas.getBoundingClientRect();
+
+
+    const x =
+    event.clientX - rect.left;
+
+
+    const y =
+    event.clientY - rect.top;
+
+
+
+    if(draggingPoint === "A"){
+
+        pointA.x = x;
+        pointA.y = y;
+
+    }
+
+
+    if(draggingPoint === "B"){
+
+        pointB.x = x;
+        pointB.y = y;
+
+    }
+
+
+    drawRuler();
+
+
+});
+
+
+
+// Mouse release
+
+canvas.addEventListener(
+"mouseup",
+function(){
+
+    draggingPoint = null;
+
+});
+
+</script>
+
+
+</body>
+
+</html>
