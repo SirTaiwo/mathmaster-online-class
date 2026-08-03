@@ -896,6 +896,156 @@ Math.hypot(
 
 }
 
+   // ======================
+// ANGLE TOOL
+// ======================
+
+function drawAngle(){
+
+    clearCanvas();
+
+
+    // Draw first arm
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        vertex.x,
+        vertex.y
+    );
+
+    ctx.lineTo(
+        armA.x,
+        armA.y
+    );
+
+    ctx.stroke();
+
+
+
+    // Draw second arm
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        vertex.x,
+        vertex.y
+    );
+
+    ctx.lineTo(
+        armB.x,
+        armB.y
+    );
+
+    ctx.stroke();
+
+
+
+    // Draw points
+
+    [
+        armA,
+        armB,
+        vertex
+
+    ].forEach(point => {
+
+        ctx.beginPath();
+
+        ctx.arc(
+            point.x,
+            point.y,
+            8,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
+    });
+
+
+
+    // Calculate angle
+
+    const angle1 =
+    Math.atan2(
+        armA.y - vertex.y,
+        armA.x - vertex.x
+    );
+
+
+    const angle2 =
+    Math.atan2(
+        armB.y - vertex.y,
+        armB.x - vertex.x
+    );
+
+
+    let degrees =
+    Math.abs(
+        (angle2 - angle1)
+        *
+        180
+        /
+        Math.PI
+    );
+
+
+    if(degrees > 180){
+
+        degrees =
+        360 - degrees;
+
+    }
+
+
+
+    document.getElementById(
+        "angleResult"
+    ).innerHTML =
+
+    "Angle: "
+    +
+    degrees.toFixed(1)
+    +
+    "°";
+
+
+
+    // Arc
+
+    ctx.beginPath();
+
+    ctx.arc(
+        vertex.x,
+        vertex.y,
+        80,
+        angle1,
+        angle2
+    );
+
+    ctx.stroke();
+
+
+    // Label
+
+    const midAngle =
+    (angle1 + angle2) / 2;
+
+
+    ctx.font =
+    "18px Arial";
+
+
+    ctx.fillText(
+        degrees.toFixed(1) + "°",
+        vertex.x + Math.cos(midAngle) * 100,
+        vertex.y + Math.sin(midAngle) * 100
+    );
+
+}
+
 
 
 // Mouse down
@@ -967,8 +1117,6 @@ function(event){
         draggingPoint = "rulerB";
 
     }
-
-
 }
 
 
@@ -1001,234 +1149,43 @@ else if(
 
 }
 
-
-});
-
-
-function drawAngle(){
-
-    clearCanvas();
-
-
-
-    // Draw first arm
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        vertex.x,
-        vertex.y
-    );
-
-    ctx.lineTo(
-        armA.x,
-        armA.y
-    );
-
-    ctx.stroke();
-
-
-
-    // Draw second arm
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        vertex.x,
-        vertex.y
-    );
-
-    ctx.lineTo(
-        armB.x,
-        armB.y
-    );
-
-    ctx.stroke();
-
-
-
-    // Draw points
-
-    [armA, armB, vertex].forEach(point => {
-
-        ctx.beginPath();
-
-        ctx.arc(
-            point.x,
-            point.y,
-            8,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fill();
-
-    });
-
-       // Calculate angle
-
-    const angle1 =
-    Math.atan2(
-        armA.y - vertex.y,
-        armA.x - vertex.x
-    );
-
-
-    const angle2 =
-    Math.atan2(
-        armB.y - vertex.y,
-        armB.x - vertex.x
-    );
-
-
-    let degrees =
-    Math.abs(
-        (angle2 - angle1)
-        *
-        180
-        /
-        Math.PI
-    );
-
-
-    if(degrees > 180){
-
-        degrees =
-        360 - degrees;
-
-    }
-
-
-
-    document.getElementById(
-        "angleResult"
-    ).innerHTML =
-
-    "Angle: "
-    +
-    degrees.toFixed(1)
-    +
-    "°";
-
-    // Draw angle arc
-
-const radius = 50;
-
-
-ctx.beginPath();
-
-
-ctx.arc(
-
-    vertex.x,
-
-    vertex.y,
-
-    radius,
-
-    angle1,
-
-    angle2
-
-);
-
-
-ctx.stroke();
-
-
-
-// Draw angle label
-
-const midAngle =
-(
-    angle1 + angle2
-)
-/
-2;
-
-
-const labelX =
-vertex.x
-+
-Math.cos(midAngle)
-*
-80;
-
-
-const labelY =
-vertex.y
-+
-Math.sin(midAngle)
-*
-80;
-
-
-
-ctx.font =
-"18px Arial";
-
-
-ctx.fillText(
-
-    degrees.toFixed(1)
-    +
-    "°",
-
-    labelX,
-
-    labelY
-
-);
+// ======================
+// ANGLE TOOL DRAGGING
+// ======================
+
+else if(
+    Math.hypot(
+        mouseX - armA.x,
+        mouseY - armA.y
+    )
+    < 15
+){
+
+    draggingAnglePoint = "A";
 
 }
 
 
+else if(
+    Math.hypot(
+        mouseX - armB.x,
+        mouseY - armB.y
+    )
+    < 15
+){
 
- 
-canvas.addEventListener(
-"mousedown",
-function(event){
+    draggingAnglePoint = "B";
 
-    const rect =
-    canvas.getBoundingClientRect();
-
-
-    const x =
-    event.clientX - rect.left;
-
-
-    const y =
-    event.clientY - rect.top;
-
-
-
-    if(
-        Math.hypot(
-            x - armA.x,
-            y - armA.y
-        ) < 15
-    ){
-
-        draggingAnglePoint = "A";
-
-    }
-
-
-    else if(
-        Math.hypot(
-            x - armB.x,
-            y - armB.y
-        ) < 15
-    ){
-
-        draggingAnglePoint = "B";
-
-    }
+}
 
 
 });
 
-canvas.addEventListener(
+
+    // ======================
+    // RULER + TRIANGLE
+    // ======================
+    canvas.addEventListener(
 "mousemove",
 function(event){
 
@@ -1243,12 +1200,6 @@ function(event){
 
     const y =
     event.clientY - rect.top;
-
-
-
-    // ======================
-    // RULER + TRIANGLE
-    // ======================
 
     if(draggingPoint){
 
@@ -1346,6 +1297,8 @@ if(draggingPoint === "rulerRotate"){
 
         if(draggingPoint === "B"){
 
+
+
             trianglePointB.x = x;
             trianglePointB.y = y;
 
@@ -1355,38 +1308,13 @@ if(draggingPoint === "rulerRotate"){
 
     }
 
+    });
+
+ 
 
 
-    // ======================
-    // ANGLE TOOL
-    // ======================
 
-    if(draggingAnglePoint){
-
-
-        if(draggingAnglePoint === "A"){
-
-            armA.x = x;
-            armA.y = y;
-
-        }
-
-
-        if(draggingAnglePoint === "B"){
-
-            armB.x = x;
-            armB.y = y;
-
-        }
-
-
-        drawAngle();
-
-    }
-
-
-});
-
+    
 canvas.addEventListener(
 "mouseup",
 function(){
