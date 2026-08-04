@@ -101,19 +101,36 @@ let trianglePointC = {
     y:300
 };
 
+// ======================
+// COMPASS TOOL
+// ======================
+
+let compassCenter = {
+    x: 500,
+    y: 320
+};
+
+let compassRadiusPoint = {
+    x: 620,
+    y: 320
+};
+
+let draggingCompassPoint = null;
+
 function drawCircle(){
 
     clearCanvas();
 
 
     const radius =
-    document.getElementById(
-        "radius"
-    ).value;
+    Number(
+        document.getElementById(
+            "radius"
+        ).value
+    );
 
 
     ctx.beginPath();
-
 
     ctx.arc(
         250,
@@ -123,13 +140,90 @@ function drawCircle(){
         Math.PI * 2
     );
 
+    ctx.stroke();
+
+}
+
+// ======================
+// COMPASS DRAWING
+// ======================
+
+function drawCompass(){
+
+    clearCanvas();
+
+
+    const radius =
+    Math.hypot(
+        compassRadiusPoint.x - compassCenter.x,
+        compassRadiusPoint.y - compassCenter.y
+    );
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        compassCenter.x,
+        compassCenter.y,
+        radius,
+        0,
+        Math.PI * 2
+    );
 
     ctx.stroke();
 
 
+    ctx.beginPath();
+
+    ctx.arc(
+        compassCenter.x,
+        compassCenter.y,
+        8,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        compassCenter.x,
+        compassCenter.y
+    );
+
+    ctx.lineTo(
+        compassRadiusPoint.x,
+        compassRadiusPoint.y
+    );
+
+    ctx.stroke();
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        compassRadiusPoint.x,
+        compassRadiusPoint.y,
+        8,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+    document.getElementById(
+        "compassResult"
+    ).innerHTML =
+    "Radius: "
+    +
+    radius.toFixed(1)
+    +
+    " pixels";
+
 }
-
-
 
 function clearCanvas(){
 
@@ -141,6 +235,7 @@ function clearCanvas(){
     );
 
 }
+
 
 function clearWorkspace(){
 
@@ -1048,6 +1143,7 @@ function drawAngle(){
 
 
 
+
 // Mouse down
 
 canvas.addEventListener(
@@ -1120,35 +1216,41 @@ function(event){
 }
 
 
-// ======================
-// TRIANGLE DRAGGING
+    // ======================
+// COMPASS DRAGGING
 // ======================
 
-else if(
-    Math.hypot(
-        mouseX - trianglePointA.x,
-        mouseY - trianglePointA.y
-    )
-    < 15
-){
+else if(activeTool === "compass"){
 
-    draggingPoint = "A";
+
+    if(
+        Math.hypot(
+            mouseX - compassCenter.x,
+            mouseY - compassCenter.y
+        ) < 15
+    ){
+
+        draggingCompassPoint = "center";
+
+    }
+
+
+    else if(
+        Math.hypot(
+            mouseX - compassRadiusPoint.x,
+            mouseY - compassRadiusPoint.y
+        ) < 15
+    ){
+
+        draggingCompassPoint = "radius";
+
+    }
+
 
 }
 
 
-else if(
-    Math.hypot(
-        mouseX - trianglePointB.x,
-        mouseY - trianglePointB.y
-    )
-    < 15
-){
-
-    draggingPoint = "B";
-
-}
-
+// ======================
 // ======================
 // ANGLE TOOL DRAGGING
 // ======================
@@ -1200,6 +1302,40 @@ function(event){
 
     const y =
     event.clientY - rect.top;
+
+    if(draggingCompassPoint){
+
+
+    if(draggingCompassPoint === "center"){
+
+        const dx =
+        x - compassCenter.x;
+
+        const dy =
+        y - compassCenter.y;
+
+
+        compassCenter.x = x;
+        compassCenter.y = y;
+
+
+        compassRadiusPoint.x += dx;
+        compassRadiusPoint.y += dy;
+
+    }
+
+
+    if(draggingCompassPoint === "radius"){
+
+        compassRadiusPoint.x = x;
+        compassRadiusPoint.y = y;
+
+    }
+
+
+    drawCompass();
+
+}
 
     if(draggingPoint){
 
@@ -1334,6 +1470,8 @@ canvas.addEventListener(
 function(){
 
     draggingPoint = null;
+
+    draggingCompassPoint = null;
 
 });
 
