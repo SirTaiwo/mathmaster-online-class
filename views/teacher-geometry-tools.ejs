@@ -199,7 +199,7 @@ value="A"
 
 
 <button
-onclick="plotPoint()"
+onclick="activeTool='point'; plotPoint()"
 class="btn primary">
 
 📍 Plot Point
@@ -213,6 +213,32 @@ Point:
 
 </p>
 
+
+</div>
+
+<div class="dashboard-card">
+
+<h2>
+📍 Midpoint Tool
+</h2>
+
+<p>
+Find the midpoint between two selected points.
+</p>
+
+<button
+onclick="activeTool='midpoint'; startMidpointTool()"
+class="btn primary">
+
+Find Midpoint
+
+</button>
+
+<p id="midpointResult">
+
+No midpoint selected.
+
+</p>
 
 </div>
 

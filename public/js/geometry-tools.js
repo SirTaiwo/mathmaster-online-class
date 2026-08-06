@@ -101,6 +101,14 @@ let trianglePointC = {
     y:300
 };
 
+// =======================
+// MIDPOINT TOOL
+// =======================
+
+let midpointFirst = null;
+let midpointSecond = null;
+let midpointPoint = null;
+
 // ======================
 // COMPASS TOOL
 // ======================
@@ -223,6 +231,109 @@ function drawCompass(){
     +
     " pixels";
 
+}
+
+// ======================
+// MIDPOINT TOOL
+// ======================
+
+function startMidpointTool(){
+
+    midpointFirst = null;
+    midpointSecond = null;
+    midpointPoint = null;
+
+   
+
+}
+
+function calculateMidpoint(){
+
+    midpointPoint = {
+
+        x: (midpointFirst.x + midpointSecond.x) / 2,
+
+        y: (midpointFirst.y + midpointSecond.y) / 2
+
+    };
+
+    drawMidpoint();
+
+}
+
+function drawMidpoint(){
+
+    clearCanvas();
+
+    // first point
+    ctx.beginPath();
+    ctx.arc(midpointFirst.x, midpointFirst.y, 6, 0, Math.PI * 2);
+    ctx.fill();
+
+    // second point
+    ctx.beginPath();
+    ctx.arc(midpointSecond.x, midpointSecond.y, 6, 0, Math.PI * 2);
+    ctx.fill();
+
+    // joining line
+    ctx.beginPath();
+    ctx.moveTo(midpointFirst.x, midpointFirst.y);
+    ctx.lineTo(midpointSecond.x, midpointSecond.y);
+    ctx.stroke();
+
+    // midpoint
+    ctx.beginPath();
+    ctx.arc(midpointPoint.x, midpointPoint.y, 8, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.font = "18px Arial";
+    ctx.fillText("M", midpointPoint.x + 12, midpointPoint.y - 12);
+
+    ctx.fillText(
+    "A",
+    midpointFirst.x + 10,
+    midpointFirst.y - 10
+);
+
+
+ctx.fillText(
+    "B",
+    midpointSecond.x + 10,
+    midpointSecond.y - 10
+);
+
+const AM =
+Math.hypot(
+    midpointPoint.x - midpointFirst.x,
+    midpointPoint.y - midpointFirst.y
+);
+
+
+const MB =
+Math.hypot(
+    midpointSecond.x - midpointPoint.x,
+    midpointSecond.y - midpointPoint.y
+);
+
+
+document.getElementById(
+    "midpointResult"
+).innerHTML =
+
+`
+Midpoint: (${midpointPoint.x.toFixed(1)}, ${midpointPoint.y.toFixed(1)})
+<br>
+AM = ${AM.toFixed(1)} px
+<br>
+MB = ${MB.toFixed(1)} px
+`;
+
+    document.getElementById("midpointResult").innerHTML =
+        "Midpoint: (" +
+        midpointPoint.x.toFixed(1) +
+        ", " +
+        midpointPoint.y.toFixed(1) +
+        ")";
 }
 
 function clearCanvas(){
@@ -1162,7 +1273,41 @@ function(event){
     const mouseY =
     event.clientY - rect.top;
 
+    // ======================
+// MIDPOINT TOOL
+// ======================
 
+if(activeTool === "midpoint"){
+
+    if(midpointFirst === null){
+
+        midpointFirst = {
+
+            x: mouseX,
+            y: mouseY
+
+        };
+
+        return;
+
+    }
+
+    if(midpointSecond === null){
+
+        midpointSecond = {
+
+            x: mouseX,
+            y: mouseY
+
+        };
+
+        calculateMidpoint();
+
+        return;
+
+    }
+
+}
 
  if(activeTool === "ruler"){
 
@@ -1311,8 +1456,31 @@ else if(activeTool === "angle"){
 
 }
 
+// ======================
+// POINT PLOTTER DRAGGING
+// ======================
+
+else if(activeTool === "point"){
+
+    plottedPoints.push({
+
+        x: mouseX,
+        y: mouseY,
+
+        label:
+        document.getElementById(
+            "pointLabel"
+        ).value
+
+    });
+
+    plotPoint();
+
+}
+
 
 });
+
 
 
     // ======================
