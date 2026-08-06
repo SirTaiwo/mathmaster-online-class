@@ -432,8 +432,163 @@ function drawSegment(){
 
 }
 
-function clearCanvas(){
+// =======================
+// PARALLEL LINE TOOL
+// =======================
 
+let parallelStart = null;
+
+let parallelEnd = null;
+
+let parallelThroughPoint = null;
+
+// ======================
+// DRAW PARALLEL LINE
+// ======================
+
+function drawParallelLine(){
+
+
+    clearCanvas();
+
+
+    // Draw reference line
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        parallelStart.x,
+        parallelStart.y
+    );
+
+
+    ctx.lineTo(
+        parallelEnd.x,
+        parallelEnd.y
+    );
+
+    ctx.stroke();
+
+
+
+    // Calculate direction
+
+    const dx =
+    parallelEnd.x -
+    parallelStart.x;
+
+
+    const dy =
+    parallelEnd.y -
+    parallelStart.y;
+
+
+
+    // Draw parallel line
+    // centred on chosen point
+
+    const length =
+    Math.hypot(dx,dy);
+
+
+
+    const unitX =
+    dx / length;
+
+
+    const unitY =
+    dy / length;
+
+
+
+    const halfLength = 100;
+
+
+
+    const x1 =
+    parallelThroughPoint.x -
+    unitX * halfLength;
+
+
+    const y1 =
+    parallelThroughPoint.y -
+    unitY * halfLength;
+
+
+
+    const x2 =
+    parallelThroughPoint.x +
+    unitX * halfLength;
+
+
+    const y2 =
+    parallelThroughPoint.y +
+    unitY * halfLength;
+
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        x1,
+        y1
+    );
+
+
+    ctx.lineTo(
+        x2,
+        y2
+    );
+
+
+    ctx.stroke();
+
+
+
+    // Draw selected point
+
+    ctx.beginPath();
+
+    ctx.arc(
+        parallelThroughPoint.x,
+        parallelThroughPoint.y,
+        7,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+
+    document.getElementById(
+        "parallelResult"
+    ).innerHTML =
+    "Parallel line constructed.";
+
+}
+
+
+function clearCanvas(){
+// ======================
+// PARALLEL LINE TOOL
+// ======================
+
+function startParallelTool(){
+
+    parallelStart = null;
+
+    parallelEnd = null;
+
+    parallelThroughPoint = null;
+
+
+    document.getElementById(
+        "parallelResult"
+    ).innerHTML =
+    "Select reference line points.";
+
+}
     ctx.clearRect(
         0,
         0,
@@ -1429,6 +1584,66 @@ else if(activeTool === "segment"){
         drawSegment();
 
     }
+
+}
+
+// ======================
+// PARALLEL LINE TOOL
+// ======================
+
+else if(activeTool === "parallel"){
+
+
+    if(parallelStart === null){
+
+
+        parallelStart = {
+
+            x: mouseX,
+            y: mouseY
+
+        };
+
+
+    }
+
+
+    else if(parallelEnd === null){
+
+
+        parallelEnd = {
+
+            x: mouseX,
+            y: mouseY
+
+        };
+
+
+        document.getElementById(
+            "parallelResult"
+        ).innerHTML =
+        "Now select point for parallel line.";
+
+
+    }
+
+
+    else if(parallelThroughPoint === null){
+
+
+        parallelThroughPoint = {
+
+            x: mouseX,
+            y: mouseY
+
+        };
+
+
+        drawParallelLine();
+
+
+    }
+
 
 }
 
