@@ -336,102 +336,6 @@ MB = ${MB.toFixed(1)} px
         ")";
 }
 
-// ======================
-// LINE SEGMENT TOOL
-// ======================
-
-function drawSegment(){
-
-    clearCanvas();
-
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        segmentPointA.x,
-        segmentPointA.y
-    );
-
-
-    ctx.lineTo(
-        segmentPointB.x,
-        segmentPointB.y
-    );
-
-
-    ctx.stroke();
-
-
-
-    // Draw endpoints
-
-    ctx.beginPath();
-
-    ctx.arc(
-        segmentPointA.x,
-        segmentPointA.y,
-        7,
-        0,
-        Math.PI * 2
-    );
-
-    ctx.fill();
-
-
-
-    ctx.beginPath();
-
-    ctx.arc(
-        segmentPointB.x,
-        segmentPointB.y,
-        7,
-        0,
-        Math.PI * 2
-    );
-
-    ctx.fill();
-
-
-
-    // Labels
-
-    ctx.font = "18px Arial";
-
-
-    ctx.fillText(
-        "A",
-        segmentPointA.x + 10,
-        segmentPointA.y - 10
-    );
-
-
-    ctx.fillText(
-        "B",
-        segmentPointB.x + 10,
-        segmentPointB.y - 10
-    );
-
-
-
-    const length =
-    Math.hypot(
-        segmentPointB.x - segmentPointA.x,
-        segmentPointB.y - segmentPointA.y
-    );
-
-
-
-    document.getElementById(
-        "segmentResult"
-    ).innerHTML =
-    "Length: "
-    +
-    length.toFixed(1)
-    +
-    " pixels";
-
-}
-
 function clearCanvas(){
 
     ctx.clearRect(
@@ -1348,6 +1252,11 @@ function drawAngle(){
 
 }
 
+
+
+
+// Mouse down
+
 canvas.addEventListener(
 "mousedown",
 function(event){
@@ -1364,32 +1273,32 @@ function(event){
     const mouseY =
     event.clientY - rect.top;
 
-
-
-// ======================
+    // ======================
 // MIDPOINT TOOL
 // ======================
 
 if(activeTool === "midpoint"){
 
-
     if(midpointFirst === null){
 
         midpointFirst = {
+
             x: mouseX,
             y: mouseY
+
         };
 
         return;
 
     }
 
-
-    else if(midpointSecond === null){
+    if(midpointSecond === null){
 
         midpointSecond = {
+
             x: mouseX,
             y: mouseY
+
         };
 
         calculateMidpoint();
@@ -1400,46 +1309,12 @@ if(activeTool === "midpoint"){
 
 }
 
+ if(activeTool === "ruler"){
 
 
-// ======================
-// LINE SEGMENT TOOL
-// ======================
-
-else if(activeTool === "segment"){
-
-
-    if(segmentPointA === null){
-
-        segmentPointA = {
-            x: mouseX,
-            y: mouseY
-        };
-
-    }
-
-
-    else if(segmentPointB === null){
-
-        segmentPointB = {
-            x: mouseX,
-            y: mouseY
-        };
-
-        drawSegment();
-
-    }
-
-}
-
-
-
-// ======================
-// RULER TOOL
-// ======================
-
-else if(activeTool === "ruler"){
-
+    // ======================
+    // ROTATION HANDLE
+    // ======================
 
     if(
         Math.hypot(
@@ -1453,6 +1328,10 @@ else if(activeTool === "ruler"){
     }
 
 
+    // ======================
+    // RULER ENDPOINT A
+    // ======================
+
     else if(
         Math.hypot(
             mouseX - rulerPointA.x,
@@ -1465,6 +1344,10 @@ else if(activeTool === "ruler"){
     }
 
 
+    // ======================
+    // RULER ENDPOINT B
+    // ======================
+
     else if(
         Math.hypot(
             mouseX - rulerPointB.x,
@@ -1475,13 +1358,11 @@ else if(activeTool === "ruler"){
         draggingPoint = "rulerB";
 
     }
-
 }
 
 
-
-// ======================
-// COMPASS TOOL
+    // ======================
+// COMPASS DRAGGING
 // ======================
 
 else if(activeTool === "compass"){
@@ -1510,16 +1391,14 @@ else if(activeTool === "compass"){
 
     }
 
+
 }
 
-
-
 // ======================
-// TRIANGLE TOOL
+// TRIANGLE TOOL DRAGGING
 // ======================
 
 else if(activeTool === "triangle"){
-
 
     if(
         Math.hypot(
@@ -1531,7 +1410,6 @@ else if(activeTool === "triangle"){
         draggingPoint = "A";
 
     }
-
 
     else if(
         Math.hypot(
@@ -1547,13 +1425,12 @@ else if(activeTool === "triangle"){
 }
 
 
-
 // ======================
-// ANGLE TOOL
+// ======================
+// ANGLE TOOL DRAGGING
 // ======================
 
 else if(activeTool === "angle"){
-
 
     if(
         Math.hypot(
@@ -1565,7 +1442,6 @@ else if(activeTool === "angle"){
         draggingAnglePoint = "A";
 
     }
-
 
     else if(
         Math.hypot(
@@ -1580,19 +1456,15 @@ else if(activeTool === "angle"){
 
 }
 
-
-
 // ======================
-// POINT PLOTTER
+// POINT PLOTTER DRAGGING
 // ======================
 
 else if(activeTool === "point"){
 
-
     plottedPoints.push({
 
         x: mouseX,
-
         y: mouseY,
 
         label:
@@ -1602,13 +1474,14 @@ else if(activeTool === "point"){
 
     });
 
-
     plotPoint();
 
 }
 
 
 });
+
+
 
     // ======================
     // RULER + TRIANGLE

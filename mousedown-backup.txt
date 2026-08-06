@@ -1,0 +1,241 @@
+
+
+
+// Mouse down
+
+canvas.addEventListener(
+"mousedown",
+function(event){
+
+
+    const rect =
+    canvas.getBoundingClientRect();
+
+
+    const mouseX =
+    event.clientX - rect.left;
+
+
+    const mouseY =
+    event.clientY - rect.top;
+
+    // ======================
+// MIDPOINT TOOL
+// ======================
+
+if(activeTool === "midpoint"){
+
+    if(midpointFirst === null){
+
+        midpointFirst = {
+
+            x: mouseX,
+            y: mouseY
+
+        };
+
+        return;
+
+    }
+
+    if(midpointSecond === null){
+
+        midpointSecond = {
+
+            x: mouseX,
+            y: mouseY
+
+        };
+
+        calculateMidpoint();
+
+        return;
+
+    }
+
+}
+
+ if(activeTool === "ruler"){
+
+
+    // ======================
+    // ROTATION HANDLE
+    // ======================
+
+    if(
+        Math.hypot(
+            mouseX - rulerRotationHandle.x,
+            mouseY - rulerRotationHandle.y
+        ) < 15
+    ){
+
+        draggingPoint = "rulerRotate";
+
+    }
+
+
+    // ======================
+    // RULER ENDPOINT A
+    // ======================
+
+    else if(
+        Math.hypot(
+            mouseX - rulerPointA.x,
+            mouseY - rulerPointA.y
+        ) < 15
+    ){
+
+        draggingPoint = "rulerA";
+
+    }
+
+
+    // ======================
+    // RULER ENDPOINT B
+    // ======================
+
+    else if(
+        Math.hypot(
+            mouseX - rulerPointB.x,
+            mouseY - rulerPointB.y
+        ) < 15
+    ){
+
+        draggingPoint = "rulerB";
+
+    }
+}
+
+
+    // ======================
+// COMPASS DRAGGING
+// ======================
+
+else if(activeTool === "compass"){
+
+
+    if(
+        Math.hypot(
+            mouseX - compassCenter.x,
+            mouseY - compassCenter.y
+        ) < 15
+    ){
+
+        draggingCompassPoint = "center";
+
+    }
+
+
+    else if(
+        Math.hypot(
+            mouseX - compassRadiusPoint.x,
+            mouseY - compassRadiusPoint.y
+        ) < 15
+    ){
+
+        draggingCompassPoint = "radius";
+
+    }
+
+
+}
+
+// ======================
+// TRIANGLE TOOL DRAGGING
+// ======================
+
+else if(activeTool === "triangle"){
+
+    if(
+        Math.hypot(
+            mouseX - trianglePointA.x,
+            mouseY - trianglePointA.y
+        ) < 15
+    ){
+
+        draggingPoint = "A";
+
+    }
+
+    else if(
+        Math.hypot(
+            mouseX - trianglePointB.x,
+            mouseY - trianglePointB.y
+        ) < 15
+    ){
+
+        draggingPoint = "B";
+
+    }
+
+}
+
+
+// ======================
+// ======================
+// ANGLE TOOL DRAGGING
+// ======================
+
+else if(activeTool === "angle"){
+
+    if(
+        Math.hypot(
+            mouseX - armA.x,
+            mouseY - armA.y
+        ) < 15
+    ){
+
+        draggingAnglePoint = "A";
+
+    }
+
+    else if(
+        Math.hypot(
+            mouseX - armB.x,
+            mouseY - armB.y
+        ) < 15
+    ){
+
+        draggingAnglePoint = "B";
+
+    }
+
+}
+
+// ======================
+// POINT PLOTTER DRAGGING
+// ======================
+
+else if(activeTool === "point"){
+
+    plottedPoints.push({
+
+        x: mouseX,
+        y: mouseY,
+
+        label:
+        document.getElementById(
+            "pointLabel"
+        ).value
+
+    });
+
+    plotPoint();
+
+}
+
+
+});
+
+
+
+    // ======================
+    // RULER + TRIANGLE
+    // ======================
+    canvas.addEventListener(
+"mousemove",
+function(event){
+
+
+    const rect =
+    canvas.getBoundingClientRect();
