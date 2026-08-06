@@ -568,6 +568,143 @@ function drawParallelLine(){
 
 }
 
+// ======================
+// DRAW PERPENDICULAR LINE
+// ======================
+
+function drawPerpendicularLine(){
+
+
+    clearCanvas();
+
+
+    // Draw reference line
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        perpendicularStart.x,
+        perpendicularStart.y
+    );
+
+
+    ctx.lineTo(
+        perpendicularEnd.x,
+        perpendicularEnd.y
+    );
+
+    ctx.stroke();
+
+
+
+    // Direction of reference line
+
+    const dx =
+    perpendicularEnd.x -
+    perpendicularStart.x;
+
+
+    const dy =
+    perpendicularEnd.y -
+    perpendicularStart.y;
+
+
+
+    // Perpendicular direction
+    // Rotate vector by 90 degrees
+
+    const perpX = -dy;
+
+    const perpY = dx;
+
+
+
+    const length =
+    Math.hypot(
+        perpX,
+        perpY
+    );
+
+
+
+    const unitX =
+    perpX / length;
+
+
+    const unitY =
+    perpY / length;
+
+
+
+    const halfLength = 100;
+
+
+
+    const x1 =
+    perpendicularThroughPoint.x -
+    unitX * halfLength;
+
+
+    const y1 =
+    perpendicularThroughPoint.y -
+    unitY * halfLength;
+
+
+
+    const x2 =
+    perpendicularThroughPoint.x +
+    unitX * halfLength;
+
+
+    const y2 =
+    perpendicularThroughPoint.y +
+    unitY * halfLength;
+
+
+
+    // Draw perpendicular line
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        x1,
+        y1
+    );
+
+
+    ctx.lineTo(
+        x2,
+        y2
+    );
+
+
+    ctx.stroke();
+
+
+
+    // Draw selected point
+
+    ctx.beginPath();
+
+    ctx.arc(
+        perpendicularThroughPoint.x,
+        perpendicularThroughPoint.y,
+        7,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+
+    document.getElementById(
+        "perpendicularResult"
+    ).innerHTML =
+    "Perpendicular line constructed.";
+
+}
+
 
 function clearCanvas(){
 // ======================
@@ -1587,6 +1724,8 @@ else if(activeTool === "segment"){
 
 }
 
+
+
 // ======================
 // PARALLEL LINE TOOL
 // ======================
@@ -1644,8 +1783,80 @@ else if(activeTool === "parallel"){
 
     }
 
+    // =======================
+// PERPENDICULAR LINE TOOL
+// =======================
+
+let perpendicularStart = null;
+
+let perpendicularEnd = null;
+
+let perpendicularThroughPoint = null;
+
 
 }
+
+// ======================
+// PERPENDICULAR LINE TOOL
+// ======================
+
+else if(activeTool === "perpendicular"){
+
+
+    if(perpendicularStart === null){
+
+
+        perpendicularStart = {
+
+            x: mouseX,
+            y: mouseY
+
+        };
+
+
+    }
+
+
+    else if(perpendicularEnd === null){
+
+
+        perpendicularEnd = {
+
+            x: mouseX,
+            y: mouseY
+
+        };
+
+
+        document.getElementById(
+            "perpendicularResult"
+        ).innerHTML =
+        "Now select point for perpendicular line.";
+
+
+    }
+
+
+    else if(perpendicularThroughPoint === null){
+
+
+        perpendicularThroughPoint = {
+
+            x: mouseX,
+            y: mouseY
+
+        };
+
+
+        drawPerpendicularLine();
+
+
+    }
+
+
+}
+
+
 
 
 
@@ -1824,6 +2035,26 @@ else if(activeTool === "point"){
 
 
 });
+
+// ======================
+// PERPENDICULAR TOOL
+// ======================
+
+function startPerpendicularTool(){
+
+    perpendicularStart = null;
+
+    perpendicularEnd = null;
+
+    perpendicularThroughPoint = null;
+
+
+    document.getElementById(
+        "perpendicularResult"
+    ).innerHTML =
+    "Select reference line points.";
+
+}
 
     // ======================
     // RULER + TRIANGLE
