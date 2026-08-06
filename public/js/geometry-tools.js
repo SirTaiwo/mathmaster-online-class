@@ -1249,34 +1249,65 @@ else if(activeTool === "compass"){
 
 }
 
+// ======================
+// TRIANGLE TOOL DRAGGING
+// ======================
+
+else if(activeTool === "triangle"){
+
+    if(
+        Math.hypot(
+            mouseX - trianglePointA.x,
+            mouseY - trianglePointA.y
+        ) < 15
+    ){
+
+        draggingPoint = "A";
+
+    }
+
+    else if(
+        Math.hypot(
+            mouseX - trianglePointB.x,
+            mouseY - trianglePointB.y
+        ) < 15
+    ){
+
+        draggingPoint = "B";
+
+    }
+
+}
+
 
 // ======================
 // ======================
 // ANGLE TOOL DRAGGING
 // ======================
 
-else if(
-    Math.hypot(
-        mouseX - armA.x,
-        mouseY - armA.y
-    )
-    < 15
-){
+else if(activeTool === "angle"){
 
-    draggingAnglePoint = "A";
+    if(
+        Math.hypot(
+            mouseX - armA.x,
+            mouseY - armA.y
+        ) < 15
+    ){
 
-}
+        draggingAnglePoint = "A";
 
+    }
 
-else if(
-    Math.hypot(
-        mouseX - armB.x,
-        mouseY - armB.y
-    )
-    < 15
-){
+    else if(
+        Math.hypot(
+            mouseX - armB.x,
+            mouseY - armB.y
+        ) < 15
+    ){
 
-    draggingAnglePoint = "B";
+        draggingAnglePoint = "B";
+
+    }
 
 }
 
@@ -1431,20 +1462,43 @@ if(draggingPoint === "rulerRotate"){
         }
 
 
-        if(draggingPoint === "B"){
+       if(draggingPoint === "B"){
+
+    trianglePointB.x = x;
+    trianglePointB.y = y;
+
+    drawTriangle();
+
+}
+
+}
 
 
+// ======================
+// ANGLE TOOL MOVEMENT
+// ======================
 
-            trianglePointB.x = x;
-            trianglePointB.y = y;
+if(draggingAnglePoint){
 
-            drawTriangle();
+    if(draggingAnglePoint === "A"){
 
-        }
+        armA.x = x;
+        armA.y = y;
 
     }
 
-    });
+    else if(draggingAnglePoint === "B"){
+
+        armB.x = x;
+        armB.y = y;
+
+    }
+
+    drawAngle();
+
+}
+
+});
 
  
 
