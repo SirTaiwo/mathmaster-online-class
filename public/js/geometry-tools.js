@@ -705,6 +705,171 @@ function drawPerpendicularLine(){
 
 }
 
+// ======================
+// DRAW PERPENDICULAR BISECTOR
+// ======================
+
+function drawBisector(){
+
+
+    clearCanvas();
+
+
+    // Draw original segment
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        bisectorPointA.x,
+        bisectorPointA.y
+    );
+
+
+    ctx.lineTo(
+        bisectorPointB.x,
+        bisectorPointB.y
+    );
+
+    ctx.stroke();
+
+
+
+    // Calculate midpoint
+
+    bisectorMidpoint = {
+
+        x:
+        (
+            bisectorPointA.x +
+            bisectorPointB.x
+        ) / 2,
+
+
+        y:
+        (
+            bisectorPointA.y +
+            bisectorPointB.y
+        ) / 2
+
+    };
+
+
+
+    // Segment direction
+
+    const dx =
+    bisectorPointB.x -
+    bisectorPointA.x;
+
+
+    const dy =
+    bisectorPointB.y -
+    bisectorPointA.y;
+
+
+
+    // Rotate direction 90 degrees
+
+    const perpX = -dy;
+
+    const perpY = dx;
+
+
+
+    const length =
+    Math.hypot(
+        perpX,
+        perpY
+    );
+
+
+
+    const unitX =
+    perpX / length;
+
+
+    const unitY =
+    perpY / length;
+
+
+
+    const halfLength = 120;
+
+
+
+    const x1 =
+    bisectorMidpoint.x -
+    unitX * halfLength;
+
+
+    const y1 =
+    bisectorMidpoint.y -
+    unitY * halfLength;
+
+
+
+    const x2 =
+    bisectorMidpoint.x +
+    unitX * halfLength;
+
+
+    const y2 =
+    bisectorMidpoint.y +
+    unitY * halfLength;
+
+
+
+    // Draw bisector
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        x1,
+        y1
+    );
+
+
+    ctx.lineTo(
+        x2,
+        y2
+    );
+
+
+    ctx.stroke();
+
+
+
+    // Draw midpoint
+
+    ctx.beginPath();
+
+    ctx.arc(
+        bisectorMidpoint.x,
+        bisectorMidpoint.y,
+        7,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+
+    document.getElementById(
+        "bisectorResult"
+    ).innerHTML =
+
+    "Midpoint: (" +
+    bisectorMidpoint.x.toFixed(1)
+    +
+    ", "
+    +
+    bisectorMidpoint.y.toFixed(1)
+    +
+    ")";
+
+}
+
 
 function clearCanvas(){
 // ======================
@@ -1853,8 +2018,60 @@ else if(activeTool === "perpendicular"){
 
     }
 
+    // =======================
+// PERPENDICULAR BISECTOR TOOL
+// =======================
+
+let bisectorPointA = null;
+
+let bisectorPointB = null;
+
+let bisectorMidpoint = null;
+
 
 }
+
+// ======================
+// PERPENDICULAR BISECTOR TOOL
+// ======================
+
+else if(activeTool === "bisector"){
+
+
+    if(bisectorPointA === null){
+
+
+        bisectorPointA = {
+
+            x: mouseX,
+            y: mouseY
+
+        };
+
+
+    }
+
+
+    else if(bisectorPointB === null){
+
+
+        bisectorPointB = {
+
+            x: mouseX,
+            y: mouseY
+
+        };
+
+
+        drawBisector();
+
+
+    }
+
+
+}
+
+
 
 
 
@@ -2053,6 +2270,26 @@ function startPerpendicularTool(){
         "perpendicularResult"
     ).innerHTML =
     "Select reference line points.";
+
+}
+
+// ======================
+// BISECTOR TOOL
+// ======================
+
+function startBisectorTool(){
+
+    bisectorPointA = null;
+
+    bisectorPointB = null;
+
+    bisectorMidpoint = null;
+
+
+    document.getElementById(
+        "bisectorResult"
+    ).innerHTML =
+    "Select two segment points.";
 
 }
 
