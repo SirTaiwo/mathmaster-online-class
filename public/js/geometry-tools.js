@@ -870,6 +870,151 @@ function drawBisector(){
 
 }
 
+// ======================
+// DRAW ANGLE BISECTOR
+// ======================
+
+function drawAngleBisector(){
+
+
+    clearCanvas();
+
+
+    // Draw first ray
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        angleBisectorVertex.x,
+        angleBisectorVertex.y
+    );
+
+
+    ctx.lineTo(
+        angleBisectorPointA.x,
+        angleBisectorPointA.y
+    );
+
+    ctx.stroke();
+
+
+
+    // Draw second ray
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        angleBisectorVertex.x,
+        angleBisectorVertex.y
+    );
+
+
+    ctx.lineTo(
+        angleBisectorPointB.x,
+        angleBisectorPointB.y
+    );
+
+    ctx.stroke();
+
+
+
+    // Calculate directions
+
+    const angleA =
+    Math.atan2(
+        angleBisectorPointA.y - angleBisectorVertex.y,
+        angleBisectorPointA.x - angleBisectorVertex.x
+    );
+
+
+    const angleB =
+    Math.atan2(
+        angleBisectorPointB.y - angleBisectorVertex.y,
+        angleBisectorPointB.x - angleBisectorVertex.x
+    );
+
+
+
+    // Find middle angle
+
+    let bisectorAngle =
+    (angleA + angleB) / 2;
+
+
+
+    const length = 120;
+
+
+
+    const endX =
+    angleBisectorVertex.x +
+    Math.cos(bisectorAngle) *
+    length;
+
+
+    const endY =
+    angleBisectorVertex.y +
+    Math.sin(bisectorAngle) *
+    length;
+
+
+
+    // Draw bisector
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        angleBisectorVertex.x,
+        angleBisectorVertex.y
+    );
+
+
+    ctx.lineTo(
+        endX,
+        endY
+    );
+
+
+    ctx.stroke();
+
+
+
+    // Draw points
+
+    [
+        angleBisectorVertex,
+        angleBisectorPointA,
+        angleBisectorPointB
+
+    ].forEach(point => {
+
+
+        ctx.beginPath();
+
+
+        ctx.arc(
+            point.x,
+            point.y,
+            7,
+            0,
+            Math.PI * 2
+        );
+
+
+        ctx.fill();
+
+
+    });
+
+
+
+    document.getElementById(
+        "angleBisectorResult"
+    ).innerHTML =
+    "Angle bisector constructed.";
+
+}
+
 
 function clearCanvas(){
 // ======================
@@ -2068,6 +2213,82 @@ else if(activeTool === "bisector"){
 
     }
 
+    // =======================
+// ANGLE BISECTOR TOOL
+// =======================
+
+let angleBisectorVertex = null;
+
+let angleBisectorPointA = null;
+
+let angleBisectorPointB = null;
+
+
+}
+
+// ======================
+// ANGLE BISECTOR TOOL
+// ======================
+
+else if(activeTool === "angleBisector"){
+
+
+    if(angleBisectorVertex === null){
+
+
+        angleBisectorVertex = {
+
+            x: mouseX,
+            y: mouseY
+
+        };
+
+
+        document.getElementById(
+            "angleBisectorResult"
+        ).innerHTML =
+        "Select first ray point.";
+
+
+    }
+
+
+    else if(angleBisectorPointA === null){
+
+
+        angleBisectorPointA = {
+
+            x: mouseX,
+            y: mouseY
+
+        };
+
+
+        document.getElementById(
+            "angleBisectorResult"
+        ).innerHTML =
+        "Select second ray point.";
+
+
+    }
+
+
+    else if(angleBisectorPointB === null){
+
+
+        angleBisectorPointB = {
+
+            x: mouseX,
+            y: mouseY
+
+        };
+
+
+        drawAngleBisector();
+
+
+    }
+
 
 }
 
@@ -2290,6 +2511,26 @@ function startBisectorTool(){
         "bisectorResult"
     ).innerHTML =
     "Select two segment points.";
+
+}
+
+// ======================
+// ANGLE BISECTOR TOOL
+// ======================
+
+function startAngleBisectorTool(){
+
+    angleBisectorVertex = null;
+
+    angleBisectorPointA = null;
+
+    angleBisectorPointB = null;
+
+
+    document.getElementById(
+        "angleBisectorResult"
+    ).innerHTML =
+    "Select vertex point.";
 
 }
 
