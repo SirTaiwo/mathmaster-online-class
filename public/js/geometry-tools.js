@@ -1171,6 +1171,52 @@ for(
 
 }
 
+// ======================
+// CALCULATE AREA
+// ======================
+
+let area = 0;
+
+
+for(
+
+    let i = 0;
+
+    i < polygonPoints.length;
+
+    i++
+
+){
+
+    const current =
+    polygonPoints[i];
+
+
+    const next =
+    polygonPoints[
+        (i + 1)
+        %
+        polygonPoints.length
+    ];
+
+
+    area +=
+
+    (
+        current.x * next.y
+    )
+
+    -
+
+    (
+        next.x * current.y
+    );
+
+}
+
+
+area =
+Math.abs(area / 2);
 
 
 document.getElementById(
@@ -1200,7 +1246,23 @@ perimeter.toFixed(1)
 
 +
 
-" px";
+" px"
+
++
+
+"<br>"
+
++
+
+"Area: "
+
++
+
+area.toFixed(1)
+
++
+
+" px²";
 
 }
 
