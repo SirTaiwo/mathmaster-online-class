@@ -1109,7 +1109,9 @@ function drawPolygon(){
 
   // Draw vertices
 
-polygonPoints.forEach(point => {
+polygonPoints.forEach((point,index) => {
+
+    // Draw vertex
 
     ctx.beginPath();
 
@@ -1129,8 +1131,31 @@ polygonPoints.forEach(point => {
 
     ctx.fill();
 
-});
 
+    // Draw label
+
+    ctx.font = "16px Arial";
+
+    ctx.fillStyle = "blue";
+
+    ctx.fillText(
+
+        String.fromCharCode(
+            65 + index
+        ),
+
+        point.x + 10,
+
+        point.y - 10
+
+    );
+
+
+    // Restore point colour
+
+    ctx.fillStyle = "black";
+
+});
 
 // ======================
 // CALCULATE PERIMETER
@@ -1218,6 +1243,105 @@ for(
 area =
 Math.abs(area / 2);
 
+// ======================
+// CALCULATE INTERIOR ANGLES
+// ======================
+
+let interiorAngles = [];
+
+
+for(
+
+    let i = 0;
+
+    i < polygonPoints.length;
+
+    i++
+
+){
+
+    const previous =
+
+    polygonPoints[
+        (
+            i -
+            1 +
+            polygonPoints.length
+        )
+        %
+        polygonPoints.length
+    ];
+
+
+    const current =
+
+    polygonPoints[i];
+
+
+    const next =
+
+    polygonPoints[
+        (
+            i + 1
+        )
+        %
+        polygonPoints.length
+    ];
+
+
+
+    const angle1 =
+
+    Math.atan2(
+
+        previous.y - current.y,
+
+        previous.x - current.x
+
+    );
+
+
+    const angle2 =
+
+    Math.atan2(
+
+        next.y - current.y,
+
+        next.x - current.x
+
+    );
+
+
+
+    let angle =
+
+    Math.abs(
+
+        angle2 - angle1
+
+    )
+
+    *
+
+    180
+
+    /
+
+    Math.PI;
+
+
+
+    if(angle > 180){
+
+        angle = 360 - angle;
+
+    }
+
+
+    interiorAngles.push(angle);
+
+}
+
 
 document.getElementById(
 
@@ -1262,8 +1386,47 @@ area.toFixed(1)
 
 +
 
-" px²";
+" px²"
 
++
+
+"<br><br>"
+
++
+
+"Interior Angles:<br>"
+
++
+
+interiorAngles
+
+.map(
+
+    (angle,index)=>
+
+    "Angle "
+
+    +
+
+    String.fromCharCode(
+        65 + index
+    )
+
+    +
+
+    ": "
+
+    +
+
+    angle.toFixed(1)
+
+    +
+
+    "°"
+
+)
+
+.join("<br>");
 }
 
 
