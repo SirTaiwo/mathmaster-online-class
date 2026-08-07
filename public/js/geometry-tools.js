@@ -106,6 +106,7 @@ let trianglePointC = {
 // =======================
 
 let polygonPoints = [];
+
 // =======================
 // MIDPOINT TOOL
 // =======================
@@ -1105,6 +1106,59 @@ function drawPolygon(){
     ctx.closePath();
 
     ctx.stroke();
+
+    // ======================
+// DRAW SIDE LENGTHS
+// ======================
+
+ctx.font = "14px Arial";
+
+ctx.fillStyle = "green";
+
+for(
+
+    let i = 0;
+
+    i < polygonPoints.length;
+
+    i++
+
+){
+
+    const current = polygonPoints[i];
+
+    const next = polygonPoints[
+        (i + 1) %
+        polygonPoints.length
+    ];
+
+    const midX =
+    (current.x + next.x) / 2;
+
+    const midY =
+    (current.y + next.y) / 2;
+
+    const length = Math.hypot(
+
+        next.x - current.x,
+
+        next.y - current.y
+
+    );
+
+    ctx.fillText(
+
+        length.toFixed(1) + " px",
+
+        midX + 5,
+
+        midY - 5
+
+    );
+
+}
+
+ctx.fillStyle = "black";
 
 
   // Draw vertices
@@ -2712,15 +2766,50 @@ else if(activeTool === "angleBisector"){
 
 else if(activeTool === "polygon"){
 
-    polygonPoints.push({
+   // First check whether a vertex is being selected
 
-        x: mouseX,
+for(
 
-        y: mouseY
+    let i = 0;
 
-    });
+    i < polygonPoints.length;
 
-    drawPolygon();
+    i++
+
+){
+
+    if(
+
+        Math.hypot(
+
+            mouseX - polygonPoints[i].x,
+
+            mouseY - polygonPoints[i].y
+
+        ) < 10
+
+    ){
+
+        draggingPolygonVertex = i;
+
+        return;
+
+    }
+
+}
+
+
+// Otherwise create a new point
+
+polygonPoints.push({
+
+    x: mouseX,
+
+    y: mouseY
+
+});
+
+drawPolygon();
 
 }
 
@@ -2984,6 +3073,19 @@ function(event){
 
     const y =
     event.clientY - rect.top;
+    // ======================
+// POLYGON VERTEX DRAGGING
+// ======================
+
+if(draggingPolygonVertex !== null){
+
+    polygonPoints[draggingPolygonVertex].x = x;
+
+    polygonPoints[draggingPolygonVertex].y = y;
+
+    drawPolygon();
+
+}
 
     if(draggingCompassPoint){
 
@@ -3183,6 +3285,7 @@ function(){
     draggingPoint = null;
 
     draggingCompassPoint = null;
+    draggingPolygonVertex = null;
 
 });
 
