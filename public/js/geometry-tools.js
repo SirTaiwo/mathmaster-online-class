@@ -102,6 +102,11 @@ let trianglePointC = {
 };
 
 // =======================
+// POLYGON BUILDER
+// =======================
+
+let polygonPoints = [];
+// =======================
 // MIDPOINT TOOL
 // =======================
 
@@ -1012,6 +1017,190 @@ function drawAngleBisector(){
         "angleBisectorResult"
     ).innerHTML =
     "Angle bisector constructed.";
+
+}
+
+// ======================
+// POLYGON TOOL
+// ======================
+
+function startPolygonTool(){
+
+    polygonPoints = [];
+
+    document.getElementById(
+        "polygonResult"
+    ).innerHTML =
+    "Click vertices. Press Finish Polygon when done.";
+
+}
+
+function finishPolygon(){
+
+    if(polygonPoints.length < 3){
+
+        document.getElementById(
+            "polygonResult"
+        ).innerHTML =
+        "Polygon needs at least 3 points.";
+
+        return;
+
+    }
+
+    drawPolygon();
+
+}
+
+// ======================
+// DRAW POLYGON
+// ======================
+
+function drawPolygon(){
+
+    clearCanvas();
+
+
+    if(polygonPoints.length === 0){
+
+        return;
+
+    }
+
+
+    // Draw edges
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+
+        polygonPoints[0].x,
+
+        polygonPoints[0].y
+
+    );
+
+
+    for(
+
+        let i = 1;
+
+        i < polygonPoints.length;
+
+        i++
+
+    ){
+
+        ctx.lineTo(
+
+            polygonPoints[i].x,
+
+            polygonPoints[i].y
+
+        );
+
+    }
+
+
+    ctx.closePath();
+
+    ctx.stroke();
+
+
+  // Draw vertices
+
+polygonPoints.forEach(point => {
+
+    ctx.beginPath();
+
+    ctx.arc(
+
+        point.x,
+
+        point.y,
+
+        6,
+
+        0,
+
+        Math.PI * 2
+
+    );
+
+    ctx.fill();
+
+});
+
+
+// ======================
+// CALCULATE PERIMETER
+// ======================
+
+let perimeter = 0;
+
+
+for(
+
+    let i = 0;
+
+    i < polygonPoints.length;
+
+    i++
+
+){
+
+    const current =
+    polygonPoints[i];
+
+
+    const next =
+    polygonPoints[
+        (i + 1)
+        %
+        polygonPoints.length
+    ];
+
+
+    perimeter += Math.hypot(
+
+        next.x - current.x,
+
+        next.y - current.y
+
+    );
+
+}
+
+
+
+document.getElementById(
+
+    "polygonResult"
+
+).innerHTML =
+
+
+"Vertices: "
+
++
+
+polygonPoints.length
+
++
+
+"<br>"
+
++
+
+"Perimeter: "
+
++
+
+perimeter.toFixed(1)
+
++
+
+" px";
 
 }
 
@@ -2289,6 +2478,24 @@ else if(activeTool === "angleBisector"){
 
     }
 
+  
+}
+
+  // ======================
+// POLYGON BUILDER
+// ======================
+
+else if(activeTool === "polygon"){
+
+    polygonPoints.push({
+
+        x: mouseX,
+
+        y: mouseY
+
+    });
+
+    drawPolygon();
 
 }
 
