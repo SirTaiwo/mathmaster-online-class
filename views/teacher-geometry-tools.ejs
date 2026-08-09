@@ -199,7 +199,7 @@ value="A"
 
 
 <button
-onclick="activeTool='point'; plotPoint()"
+onclick="activeTool='point'; triangleActive=false; plotPoint()"
 class="btn primary">
 
 📍 Plot Point
@@ -405,6 +405,14 @@ No polygon created.
 </p>
 
 </div>
+
+<button onclick="undo()">
+    ↩ Undo
+</button>
+
+<button onclick="redo()">
+    ↪ Redo
+</button>
 
 <br><br>
 
@@ -647,7 +655,7 @@ Create and analyse a triangle.
 
 
 <button
-onclick="activeTool='triangle'; drawTriangle()"
+onclick="activeTool='triangle'; triangleActive=true; saveHistory(); drawTriangle()"
 class="btn primary">
 
 Create Triangle

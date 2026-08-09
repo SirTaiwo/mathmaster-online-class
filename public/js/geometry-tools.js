@@ -107,6 +107,473 @@ let trianglePointC = {
 
 let polygonPoints = [];
 
+window.draggingPolygonVertex = null;
+
+let triangleActive = false;
+
+
+
+// ======================
+// UNDO / REDO HISTORY
+// ======================
+
+let history = [];
+
+let historyIndex = -1;
+
+saveHistory();
+
+
+// ======================
+// SAVE HISTORY
+// ======================
+
+function saveHistory(){
+
+    const snapshot = {
+
+        polygonPoints:
+        JSON.parse(
+            JSON.stringify(polygonPoints)
+        ),
+
+        plottedPoints:
+        JSON.parse(
+            JSON.stringify(plottedPoints)
+        ),
+
+        translatedPoints:
+        JSON.parse(
+            JSON.stringify(translatedPoints)
+        ),
+
+        trianglePointA:
+        JSON.parse(
+            JSON.stringify(trianglePointA)
+        ),
+
+        trianglePointB:
+        JSON.parse(
+            JSON.stringify(trianglePointB)
+        ),
+trianglePointC:
+JSON.parse(
+    JSON.stringify(trianglePointC)
+),
+
+triangleActive:
+triangleActive
+
+    };
+
+
+    history = history.slice(
+        0,
+        historyIndex + 1
+    );
+
+
+    history.push(snapshot);
+
+
+    historyIndex++;
+
+}
+
+
+// ======================
+// RESTORE HISTORY STATE
+// ======================
+
+function restoreHistoryState(state){
+
+    polygonPoints =
+    JSON.parse(
+        JSON.stringify(
+            state.polygonPoints || []
+        )
+    );
+
+
+    plottedPoints =
+    JSON.parse(
+        JSON.stringify(
+            state.plottedPoints || []
+        )
+    );
+
+
+    translatedPoints =
+    JSON.parse(
+        JSON.stringify(
+            state.translatedPoints || []
+        )
+    );
+
+
+    trianglePointA =
+    JSON.parse(
+        JSON.stringify(
+            state.trianglePointA
+        )
+    );
+
+
+    trianglePointB =
+    JSON.parse(
+        JSON.stringify(
+            state.trianglePointB
+        )
+    );
+
+
+    trianglePointC =
+JSON.parse(
+    JSON.stringify(
+        state.trianglePointC
+    )
+);
+
+triangleActive =
+state.triangleActive || false;
+
+
+    redrawWorkspace();
+
+}
+
+
+// ======================
+// DRAW PLOTTED POINTS
+// ======================
+
+function drawPlottedPoints(){
+
+    plottedPoints.forEach(point => {
+
+        const canvasX =
+        canvas.width / 2
+        +
+        point.x * 40;
+
+
+        const canvasY =
+        canvas.height / 2
+        -
+        point.y * 40;
+
+
+        ctx.beginPath();
+
+
+        ctx.arc(
+            canvasX,
+            canvasY,
+            6,
+            0,
+            Math.PI * 2
+        );
+
+
+        ctx.fill();
+
+
+        ctx.font =
+        "14px Arial";
+
+
+        ctx.fillText(
+
+            point.label
+            +
+            " ("
+            +
+            point.x
+            +
+            ","
+            +
+            point.y
+            +
+            ")",
+
+            canvasX + 8,
+            canvasY - 8
+
+        );
+
+    });
+
+}
+
+
+// ======================
+// DRAW TRANSLATED POINTS
+// ======================
+
+function drawTranslatedPoints(){
+
+    translatedPoints.forEach(point => {
+
+        const canvasX =
+        canvas.width / 2
+        +
+        point.x * 40;
+
+
+        const canvasY =
+        canvas.height / 2
+        -
+        point.y * 40;
+
+
+        ctx.beginPath();
+
+
+        ctx.arc(
+            canvasX,
+            canvasY,
+            6,
+            0,
+            Math.PI * 2
+        );
+
+
+        ctx.fill();
+
+
+        ctx.font =
+        "14px Arial";
+
+
+        ctx.fillText(
+
+            point.label,
+
+            canvasX + 8,
+            canvasY - 8
+
+        );
+
+    });
+
+}
+
+
+// ======================
+// DRAW RESTORED POLYGON
+// ======================
+
+function drawRestoredPolygon(){
+
+    if(polygonPoints.length === 0){
+
+        return;
+
+    }
+
+
+    ctx.beginPath();
+
+
+    ctx.moveTo(
+        polygonPoints[0].x,
+        polygonPoints[0].y
+    );
+
+
+    for(
+
+        let i = 1;
+
+        i < polygonPoints.length;
+
+        i++
+
+    ){
+
+        ctx.lineTo(
+            polygonPoints[i].x,
+            polygonPoints[i].y
+        );
+
+    }
+
+
+    ctx.closePath();
+
+
+    ctx.stroke();
+
+
+    polygonPoints.forEach(point => {
+
+        ctx.beginPath();
+
+
+        ctx.arc(
+            point.x,
+            point.y,
+            6,
+            0,
+            Math.PI * 2
+        );
+
+
+        ctx.fill();
+
+    });
+
+}
+
+
+// ======================
+// DRAW RESTORED TRIANGLE
+// ======================
+
+function drawRestoredTriangle(){
+
+    ctx.beginPath();
+
+
+    ctx.moveTo(
+        trianglePointA.x,
+        trianglePointA.y
+    );
+
+
+    ctx.lineTo(
+        trianglePointB.x,
+        trianglePointB.y
+    );
+
+
+    ctx.lineTo(
+        trianglePointC.x,
+        trianglePointC.y
+    );
+
+
+    ctx.closePath();
+
+
+    ctx.stroke();
+
+
+    [
+
+        trianglePointA,
+        trianglePointB,
+        trianglePointC
+
+    ].forEach(point => {
+
+        ctx.beginPath();
+
+
+        ctx.arc(
+            point.x,
+            point.y,
+            6,
+            0,
+            Math.PI * 2
+        );
+
+
+        ctx.fill();
+
+    });
+
+}
+
+
+// ======================
+// REDRAW COMPLETE WORKSPACE
+// ======================
+
+function redrawWorkspace(){
+
+    clearCanvas();
+
+
+    drawPlottedPoints();
+
+
+    drawTranslatedPoints();
+
+
+    drawRestoredPolygon();
+
+
+    if(triangleActive){
+
+    drawRestoredTriangle();
+
+}
+
+}
+
+
+// ======================
+// UNDO
+// ======================
+
+function undo(){
+
+    if(historyIndex <= 0){
+
+        return;
+
+    }
+
+
+    historyIndex--;
+
+
+    const state =
+    history[historyIndex];
+
+
+    restoreHistoryState(state);
+
+}
+
+
+// ======================
+// REDO
+// ======================
+
+function redo(){
+
+    console.log(
+        "REDO:",
+        "historyIndex =",
+        historyIndex,
+        "historyLength =",
+        history.length
+    );
+
+
+    if(
+        historyIndex >=
+        history.length - 1
+    ){
+
+        return;
+
+    }
+
+
+    historyIndex++;
+
+
+    const state =
+    history[historyIndex];
+
+
+    restoreHistoryState(state);
+
+}
+
 // =======================
 // MIDPOINT TOOL
 // =======================
@@ -130,6 +597,8 @@ let compassRadiusPoint = {
 };
 
 let draggingCompassPoint = null;
+
+
 
 function drawCircle(){
 
@@ -1689,6 +2158,8 @@ function plotPoint(){
 
     });
 
+    saveHistory();
+
 
 
     drawGrid();
@@ -2789,8 +3260,7 @@ for(
         ) < 10
 
     ){
-
-        draggingPolygonVertex = i;
+window.draggingPolygonVertex = i;
 
         return;
 
@@ -2802,12 +3272,11 @@ for(
 // Otherwise create a new point
 
 polygonPoints.push({
-
     x: mouseX,
-
     y: mouseY
-
 });
+
+saveHistory();
 
 drawPolygon();
 
@@ -3077,11 +3546,15 @@ function(event){
 // POLYGON VERTEX DRAGGING
 // ======================
 
-if(draggingPolygonVertex !== null){
+if(window.draggingPolygonVertex !== null){
 
-    polygonPoints[draggingPolygonVertex].x = x;
+    polygonPoints[
+        window.draggingPolygonVertex
+    ].x = x;
 
-    polygonPoints[draggingPolygonVertex].y = y;
+    polygonPoints[
+        window.draggingPolygonVertex
+    ].y = y;
 
     drawPolygon();
 
@@ -3285,7 +3758,7 @@ function(){
     draggingPoint = null;
 
     draggingCompassPoint = null;
-    draggingPolygonVertex = null;
+    window.draggingPolygonVertex = null;
 
 });
 
