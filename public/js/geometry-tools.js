@@ -1054,7 +1054,6 @@ function drawParallelLine(){
 
 function drawPerpendicularLine(){
 
-
     clearCanvas();
 
 
