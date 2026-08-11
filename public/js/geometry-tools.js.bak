@@ -52,11 +52,6 @@ let rotatingRuler = false;
 
 let activeTool = null;
 
-window.selectGeometryTool = function(tool){
-    activeTool = tool;
-};
-
-
 
 
 // =======================
@@ -1959,22 +1954,11 @@ interiorAngles
 
 
 function clearCanvas(){
-
-    ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
-
-}
-
-
 // ======================
 // PARALLEL LINE TOOL
 // ======================
 
-window.startParallelTool = function(){
+function startParallelTool(){
 
     parallelStart = null;
 
@@ -1982,10 +1966,19 @@ window.startParallelTool = function(){
 
     parallelThroughPoint = null;
 
+
     document.getElementById(
         "parallelResult"
     ).innerHTML =
     "Select reference line points.";
+
+}
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
 
 }
 
@@ -2896,22 +2889,6 @@ function drawAngle(){
 
 }
 
-// ======================
-// GEOMETRY TOOL STATE
-// ======================
-
-let perpendicularStart = null;
-let perpendicularEnd = null;
-let perpendicularThroughPoint = null;
-
-let bisectorPointA = null;
-let bisectorPointB = null;
-let bisectorMidpoint = null;
-
-let angleBisectorVertex = null;
-let angleBisectorPointA = null;
-let angleBisectorPointB = null;
-
 canvas.addEventListener(
 "mousedown",
 function(event){
@@ -2928,7 +2905,6 @@ function(event){
     const mouseY =
     event.clientY - rect.top;
 
-    console.log("GEOMETRY MOUSEDOWN:", activeTool, mouseX, mouseY);
 
 
 // ======================
@@ -3054,77 +3030,92 @@ else if(activeTool === "parallel"){
         drawParallelLine();
 
 
-  }
     }
 
     // =======================
+// PERPENDICULAR LINE TOOL
+// =======================
 
+let perpendicularStart = null;
+
+let perpendicularEnd = null;
+
+let perpendicularThroughPoint = null;
+
+
+}
 
 // ======================
-  // PERPENDICULAR LINE TOOL
-  // ======================
+// PERPENDICULAR LINE TOOL
+// ======================
 
-  else if(activeTool === "perpendicular"){
+else if(activeTool === "perpendicular"){
 
-      console.log("PERPENDICULAR BRANCH ENTERED");
 
-      if(perpendicularStart === null){
+    if(perpendicularStart === null){
 
-          perpendicularStart = {
-              x: mouseX,
-              y: mouseY
-          };
 
-          console.log(
-              "PERP START SET:",
-              perpendicularStart
-          );
+        perpendicularStart = {
 
-          document.getElementById(
-              "perpendicularResult"
-          ).innerHTML =
-          "First point selected. Select second point.";
+            x: mouseX,
+            y: mouseY
 
-      }
+        };
 
-      else if(perpendicularEnd === null){
 
-          perpendicularEnd = {
-              x: mouseX,
-              y: mouseY
-          };
+    }
 
-          console.log(
-              "PERP END SET:",
-              perpendicularEnd
-          );
 
-          document.getElementById(
-              "perpendicularResult"
-          ).innerHTML =
-          "Reference line selected. Now select point for perpendicular line.";
+    else if(perpendicularEnd === null){
 
-      }
 
-      else if(perpendicularThroughPoint === null){
+        perpendicularEnd = {
 
-          perpendicularThroughPoint = {
-              x: mouseX,
-              y: mouseY
-          };
+            x: mouseX,
+            y: mouseY
 
-          console.log(
-              "PERP THROUGH POINT SET:",
-              perpendicularThroughPoint
-          );
+        };
 
-          drawPerpendicularLine();
 
-      }
+        document.getElementById(
+            "perpendicularResult"
+        ).innerHTML =
+        "Now select point for perpendicular line.";
 
-  }
 
-  // ======================
+    }
+
+
+    else if(perpendicularThroughPoint === null){
+
+
+        perpendicularThroughPoint = {
+
+            x: mouseX,
+            y: mouseY
+
+        };
+
+
+        drawPerpendicularLine();
+
+
+    }
+
+    // =======================
+// PERPENDICULAR BISECTOR TOOL
+// =======================
+
+let bisectorPointA = null;
+
+let bisectorPointB = null;
+
+let bisectorMidpoint = null;
+
+
+}
+
+// ======================
 // PERPENDICULAR BISECTOR TOOL
 // ======================
 
@@ -3161,10 +3152,18 @@ else if(activeTool === "bisector"){
 
     }
 
-}
-
     // =======================
+// ANGLE BISECTOR TOOL
+// =======================
 
+let angleBisectorVertex = null;
+
+let angleBisectorPointA = null;
+
+let angleBisectorPointB = null;
+
+
+}
 
 // ======================
 // ANGLE BISECTOR TOOL
@@ -3462,15 +3461,14 @@ else if(activeTool === "point"){
 
 }
 
-}
 
-);
+});
 
 // ======================
 // PERPENDICULAR TOOL
 // ======================
 
-window.startPerpendicularTool = function(){
+function startPerpendicularTool(){
 
     perpendicularStart = null;
 
@@ -3490,7 +3488,7 @@ window.startPerpendicularTool = function(){
 // BISECTOR TOOL
 // ======================
 
-window.startBisectorTool = function(){
+function startBisectorTool(){
 
     bisectorPointA = null;
 
@@ -3510,7 +3508,7 @@ window.startBisectorTool = function(){
 // ANGLE BISECTOR TOOL
 // ======================
 
-window.startAngleBisectorTool = function(){
+function startAngleBisectorTool(){
 
     angleBisectorVertex = null;
 
