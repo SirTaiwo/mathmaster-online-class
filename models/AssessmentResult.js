@@ -356,11 +356,15 @@ function getPerformanceStatus(studentId) {
         getStudentPerformance(studentId);
 
 
-    if (!performance || !performance.average_percentage) {
+    if (
+    !performance ||
+    performance.average_percentage === null ||
+    performance.average_percentage === undefined
+) {
 
-        return "No Data";
+    return "No Data";
 
-    }
+}
 
 
     const average =

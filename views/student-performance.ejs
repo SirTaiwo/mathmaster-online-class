@@ -124,14 +124,70 @@ Logout
 
 <div class="dashboard-card" style="margin-top: 25px;">
 
-<h3>
-<%= insight.icon %>
-<%= insight.title %>
-</h3>
+    <h3>
+        <%= insight.icon %>
+        <%= insight.title %>
+    </h3>
 
-<p>
-<%= insight.message %>
-</p>
+    <p>
+        <%= insight.message %>
+    </p>
+
+    <% if (insight.latestScore !== null) { %>
+
+        <div class="dashboard-grid" style="margin-top: 20px;">
+
+            <div class="dashboard-card">
+
+                <h4>
+                    Latest Score
+                </h4>
+
+                <h2>
+                    <%= insight.latestScore %>%
+                </h2>
+
+            </div>
+
+
+            <% if (insight.previousScore !== null) { %>
+
+                <div class="dashboard-card">
+
+                    <h4>
+                        Previous Score
+                    </h4>
+
+                    <h2>
+                        <%= insight.previousScore %>%
+                    </h2>
+
+                </div>
+
+
+                <div class="dashboard-card">
+
+                    <h4>
+                        Change
+                    </h4>
+
+                    <h2>
+
+                        <% if (insight.difference > 0) { %>
+                            +<%= insight.difference %>%
+                        <% } else { %>
+                            <%= insight.difference %>%
+                        <% } %>
+
+                    </h2>
+
+                </div>
+
+            <% } %>
+
+        </div>
+
+    <% } %>
 
 </div>
 

@@ -4,6 +4,9 @@ const Student =
 const AssessmentResult =
     require("../models/AssessmentResult");
 
+const StudentFeedback =
+    require("../models/StudentFeedback");
+
 
 // ========================================
 // VIEW STUDENT PERFORMANCE
@@ -29,6 +32,12 @@ exports.viewPerformance = (req, res) => {
 
     const performance =
         AssessmentResult.getStudentPerformance(
+            studentId
+        );
+
+
+    const feedback =
+        StudentFeedback.findByStudent(
             studentId
         );
 
@@ -267,6 +276,8 @@ exports.viewPerformance = (req, res) => {
             results,
 
             performance,
+
+            feedback,
 
             status,
 
