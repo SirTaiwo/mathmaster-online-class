@@ -218,36 +218,6 @@ function getStudentPerformance(studentId) {
 }
 
 // ========================================
-// STUDENT PROGRESS TREND
-// ========================================
-
-function getProgressTrend(studentId) {
-
-
-    return db.prepare(`
-
-        SELECT
-
-            percentage,
-
-            submitted_at
-
-        FROM assessment_results
-
-        WHERE student_id = ?
-
-        ORDER BY submitted_at ASC
-
-
-    `).all(
-
-        studentId
-
-    );
-
-
-}
-// ========================================
 // STUDENT LEADERBOARD
 // ========================================
 
@@ -351,13 +321,20 @@ function getProgressTrend(studentId) {
 
         SELECT
 
-            percentage,
+            assessment_results.percentage,
 
-            submitted_at
+            assessment_results.submitted_at,
+
+            assessments.title AS assessment_title
 
         FROM assessment_results
 
-        WHERE student_id = ?
+        JOIN assessments
+
+        ON assessment_results.assessment_id =
+           assessments.id
+
+        WHERE assessment_results.student_id = ?
 
         ORDER BY submitted_at ASC
 
