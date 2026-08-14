@@ -11,7 +11,6 @@ const AssessmentResult =
 
 exports.viewPerformance = (req, res) => {
 
-
     const studentId =
         req.params.id;
 
@@ -33,16 +32,100 @@ exports.viewPerformance = (req, res) => {
             studentId
         );
 
-        const trend =
-    AssessmentResult.getProgressTrend(
-        studentId
-    );
 
-    const status =
+    const trend =
+        AssessmentResult.getProgressTrend(
+            studentId
+        );
+
+
+    const performanceStatus =
         AssessmentResult.getPerformanceStatus(
             studentId
         );
 
+
+    // ========================================
+    // DISPLAY STATUS
+    // ========================================
+
+    let status = {
+
+        label: performanceStatus,
+
+        icon: "🔴"
+
+    };
+
+
+    if (performanceStatus === "Excellent") {
+
+        status = {
+
+            label: "Excellent",
+
+            icon: "🟢"
+
+        };
+
+    }
+
+    else if (performanceStatus === "Good") {
+
+        status = {
+
+            label: "Good",
+
+            icon: "🔵"
+
+        };
+
+    }
+
+    else if (performanceStatus === "Satisfactory") {
+
+        status = {
+
+            label: "Satisfactory",
+
+            icon: "🟡"
+
+        };
+
+    }
+
+    else if (
+        performanceStatus === "Needs Improvement"
+    ) {
+
+        status = {
+
+            label: "Needs Improvement",
+
+            icon: "🔴"
+
+        };
+
+    }
+
+    else if (
+        performanceStatus === "No Data"
+    ) {
+
+        status = {
+
+            label: "No Data",
+
+            icon: "⚪"
+
+        };
+
+    }
+
+
+    // ========================================
+    // RENDER PERFORMANCE PAGE
+    // ========================================
 
     res.render(
 
@@ -67,53 +150,4 @@ exports.viewPerformance = (req, res) => {
 
     );
 
-
 };
-
-// ========================================
-// PERFORMANCE STATUS
-// ========================================
-
-let status =
-    {
-        label: "Needs Support",
-        icon: "🔴"
-    };
-
-
-const average =
-    performance.average_percentage || 0;
-
-
-if (average >= 80) {
-
-    status = {
-
-        label: "Excellent",
-        icon: "🟢"
-
-    };
-
-}
-
-else if (average >= 60) {
-
-    status = {
-
-        label: "Good",
-        icon: "🔵"
-
-    };
-
-}
-
-else if (average >= 40) {
-
-    status = {
-
-        label: "Needs Improvement",
-        icon: "🟡"
-
-    };
-
-}

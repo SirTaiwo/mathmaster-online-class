@@ -9,6 +9,8 @@ Student Performance
 
 <link rel="stylesheet" href="/css/style.css">
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 
@@ -122,35 +124,11 @@ Logout
 </h2>
 
 
-<% trend.forEach((item, index) => { %>
+<div class="dashboard-card" style="height: 350px;">
 
-
-<div class="dashboard-card">
-
-
-<h3>
-Attempt <%= index + 1 %>
-</h3>
-
-
-<h2>
-
-<%= item.percentage %>%
-
-</h2>
-
-
-<p>
-
-<%= item.submitted_at %>
-
-</p>
-
+<canvas id="studentProgressChart"></canvas>
 
 </div>
-
-
-<% }) %>
 
 </div>
 
@@ -242,6 +220,98 @@ Save Feedback
 
 </main>
 
+
+<script>
+
+const studentProgressData =
+    <%- JSON.stringify(trend) %>;
+
+
+const progressLabels =
+    studentProgressData.map(
+        (item, index) => "Attempt " + (index + 1)
+    );
+
+
+const progressValues =
+    studentProgressData.map(
+        item => item.percentage
+    );
+
+
+new Chart(
+
+    document.getElementById(
+        "studentProgressChart"
+    ),
+
+    {
+
+        type: "line",
+
+        data: {
+
+            labels:
+                progressLabels,
+
+            datasets: [
+
+                {
+
+                    label:
+                        "Percentage",
+
+                    data:
+                        progressValues,
+
+                    tension:
+                        0.3,
+
+                    fill:
+                        false
+
+                }
+
+            ]
+
+        },
+
+        options: {
+
+            responsive:
+                true,
+
+            maintainAspectRatio:
+                false,
+
+            scales: {
+
+                y: {
+
+                    min: 0,
+
+                    max: 100,
+
+                    title: {
+
+                        display: true,
+
+                        text:
+                            "Percentage (%)"
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+);
+
+</script>
 
 </body>
 
