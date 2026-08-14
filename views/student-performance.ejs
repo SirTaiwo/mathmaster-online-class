@@ -248,42 +248,99 @@ Submitted:
 </h2>
 
 
+<% if (feedback && feedback.length > 0) { %>
+
+    <h3>
+        Previous Feedback
+    </h3>
+
+    <% feedback.forEach(item => { %>
+
+        <div class="dashboard-card" style="margin-bottom: 20px;">
+
+            <h3>
+                👨‍🏫
+                <%= item.teacher_first %>
+                <%= item.teacher_last %>
+            </h3>
+
+            <p style="color: #666;">
+
+                <%= new Date(
+                    item.created_at.replace(" ", "T")
+                ).toLocaleString("en-ZA", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: false
+                }) %>
+
+            </p>
+
+            <p style="white-space: pre-line;">
+
+                <%= item.feedback %>
+
+            </p>
+
+        </div>
+
+    <% }) %>
+
+<% } else { %>
+
+    <div class="dashboard-card">
+
+        <p>
+            No teacher feedback has been recorded yet.
+        </p>
+
+    </div>
+
+<% } %>
+
+
+<h3>
+    Write New Feedback
+</h3>
+
+
 <form
 
-method="POST"
+    method="POST"
 
-action="/teacher/students/<%= student.id %>/feedback"
+    action="/teacher/students/<%= student.id %>/feedback"
 
-class="form-card">
-
-
-<label>
-Write Feedback
-</label>
+    class="form-card">
 
 
-<textarea
-
-name="feedback"
-
-rows="5"
-
-placeholder="Write feedback for this student..."
-
-required>
-
-</textarea>
+    <label>
+        Feedback
+    </label>
 
 
-<button
+    <textarea
 
-class="btn primary"
+        name="feedback"
 
-type="submit">
+        rows="5"
 
-Save Feedback
+        placeholder="Write feedback for this student..."
 
-</button>
+        required></textarea>
+
+
+    <button
+
+        class="btn primary"
+
+        type="submit">
+
+        Save Feedback
+
+    </button>
 
 
 </form>
