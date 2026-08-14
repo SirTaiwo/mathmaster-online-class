@@ -272,6 +272,87 @@ function getTeacherAnalytics(teacherId) {
 }
 
 // ========================================
+// ASSESSMENT PERFORMANCE ANALYSIS
+// ========================================
+
+function getAssessmentPerformanceAnalysis(teacherId) {
+
+    return db.prepare(`
+
+        SELECT
+
+            assessments.id
+            AS assessment_id,
+
+            assessments.title
+            AS assessment_title,
+
+            COUNT(assessment_results.id)
+            AS attempts,
+
+            ROUND(
+                AVG(assessment_results.percentage),
+                0
+            )
+            AS average_score,
+
+            MAX(
+                assessment_results.percentage
+            )
+            AS highest_score,
+
+            MIN(
+                assessment_results.percentage
+            )
+            AS lowest_score,
+
+            SUM(
+                CASE
+                    WHEN assessment_results.percentage >= 50
+                    THEN 1
+                    ELSE 0
+                END
+            )
+            AS passed,
+
+            SUM(
+                CASE
+                    WHEN assessment_results.percentage < 50
+                    THEN 1
+                    ELSE 0
+                END
+            )
+            AS failed
+
+        FROM assessment_results
+
+        JOIN assessments
+        ON assessments.id =
+           assessment_results.assessment_id
+
+        JOIN lessons
+        ON lessons.id =
+           assessments.lesson_id
+
+        JOIN courses
+        ON courses.id =
+           lessons.course_id
+
+        WHERE courses.teacher_id = ?
+
+        GROUP BY
+            assessments.id,
+            assessments.title
+
+        ORDER BY
+            average_score DESC
+
+    `).all(teacherId);
+
+}
+
+
+// ========================================
 // TEACHER PASS RATE
 // ========================================
 
@@ -440,7 +521,6 @@ function getTopStudents(teacherId) {
 
         SELECT
 
-
             students.first_name,
 
             students.last_name,
@@ -453,8 +533,36 @@ function getTopStudents(teacherId) {
 
                 0
 
-            ) AS average_score
+            ) AS average_score,
 
+
+            CASE
+
+                WHEN AVG(
+                    assessment_results.percentage
+                ) >= 80
+
+                    THEN 'Excellent'
+
+
+                WHEN AVG(
+                    assessment_results.percentage
+                ) >= 70
+
+                    THEN 'Good'
+
+
+                WHEN AVG(
+                    assessment_results.percentage
+                ) >= 50
+
+                    THEN 'Satisfactory'
+
+
+                ELSE 'Needs Support'
+
+
+            END AS performance_status
 
 
         FROM assessment_results
@@ -500,15 +608,171 @@ function getTopStudents(teacherId) {
 
 }
 
-    module.exports = {
+// ========================================
+// STUDENTS WITH ASSESSMENT RESULTS
+// ========================================
 
-        getAllResults,
-        getAnalytics,
-        getPerformanceDistribution,
-        getDashboardAnalytics,
-        getTeacherAnalytics,
-            getPassRate,
+function getStudentsWithResults(teacherId) {
+
+    return db.prepare(`
+
+        SELECT DISTINCT
+
+            students.id,
+
+            students.first_name,
+
+            students.last_name
+
+        FROM assessment_results
+
+        JOIN students
+            ON students.id =
+               assessment_results.student_id
+
+        JOIN assessments
+            ON assessments.id =
+               assessment_results.assessment_id
+
+        JOIN lessons
+            ON lessons.id =
+               assessments.lesson_id
+
+        JOIN courses
+            ON courses.id =
+               lessons.course_id
+
+        WHERE courses.teacher_id = ?
+
+        ORDER BY
+            students.first_name,
+            students.last_name
+
+    `).all(teacherId);
+
+}
+
+
+// ========================================
+// STUDENT PERFORMANCE TREND
+// ========================================
+
+function getStudentPerformanceTrend(
+    teacherId,
+    studentId
+) {
+
+    return db.prepare(`
+
+        SELECT
+
+            assessments.title
+                AS assessment_title,
+
+            assessment_results.percentage,
+
+            assessment_results.submitted_at
+
+        FROM assessment_results
+
+        JOIN students
+            ON students.id =
+               assessment_results.student_id
+
+        JOIN assessments
+            ON assessments.id =
+               assessment_results.assessment_id
+
+        JOIN lessons
+            ON lessons.id =
+               assessments.lesson_id
+
+        JOIN courses
+            ON courses.id =
+               lessons.course_id
+
+        WHERE
+            courses.teacher_id = ?
+
+            AND students.id = ?
+
+        ORDER BY
+            assessment_results.submitted_at ASC
+
+    `).all(
+        teacherId,
+        studentId
+    );
+
+}
+
+
+// ========================================
+// SELECTED STUDENT TREND ANALYTICS
+// ========================================
+
+function getStudentTrendAnalytics(
+    teacherId,
+    studentId
+) {
+
+    return db.prepare(`
+
+        SELECT
+
+            COUNT(*) AS attempts,
+
+            ROUND(
+                AVG(assessment_results.percentage),
+                0
+            ) AS average_score,
+
+            MAX(
+                assessment_results.percentage
+            ) AS highest_score,
+
+            MIN(
+                assessment_results.percentage
+            ) AS lowest_score
+
+        FROM assessment_results
+
+        JOIN assessments
+            ON assessments.id =
+               assessment_results.assessment_id
+
+        JOIN lessons
+            ON lessons.id =
+               assessments.lesson_id
+
+        JOIN courses
+            ON courses.id =
+               lessons.course_id
+
+        WHERE courses.teacher_id = ?
+
+        AND assessment_results.student_id = ?
+
+    `).get(
+        teacherId,
+        studentId
+    );
+
+}
+
+module.exports = {
+
+    getAllResults,
+    getAnalytics,
+    getPerformanceDistribution,
+    getDashboardAnalytics,
+    getTeacherAnalytics,
+    getAssessmentPerformanceAnalysis,
+    getPassRate,
     getTeacherPerformanceDistribution,
-    getTopStudents
+    getTopStudents,
+    getStudentsWithResults,
+    getStudentPerformanceTrend,
+    getStudentTrendAnalytics
 
-    };
+};

@@ -9,6 +9,8 @@
 
     <link rel="stylesheet" href="/css/style.css">
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 
@@ -122,6 +124,1570 @@
 
     </div>
 
+
+</div>
+
+
+<!-- ========================================
+     CLASS PERFORMANCE INSIGHT
+========================================= -->
+
+<div
+    class="dashboard-card"
+    style="margin-top: 25px;"
+>
+
+    <h2>
+        📈 Class Performance Insight
+    </h2>
+
+    <p>
+
+        <% if (!analytics || analytics.attempts === 0) { %>
+
+            No assessment data is available yet.
+
+        <% } else if (analytics.average_percentage >= 80) { %>
+
+            🟢
+            <strong>Excellent class performance.</strong>
+
+            The class is demonstrating a strong level of understanding,
+            with an average assessment score of
+
+            <strong>
+                <%= analytics.average_percentage %>%
+            </strong>.
+
+            Continue providing challenging activities and enrichment
+            opportunities.
+
+        <% } else if (analytics.average_percentage >= 70) { %>
+
+            🔵
+            <strong>Good class performance.</strong>
+
+            The class is performing well, with an average assessment
+            score of
+
+            <strong>
+                <%= analytics.average_percentage %>%
+            </strong>.
+
+            Continued practice and consolidation should help learners
+            progress toward excellent performance.
+
+        <% } else if (analytics.average_percentage >= 50) { %>
+
+            🟡
+            <strong>Satisfactory class performance.</strong>
+
+            The class has an average assessment score of
+
+            <strong>
+                <%= analytics.average_percentage %>%
+            </strong>.
+
+            Consider targeted revision and additional practice in areas
+            where learners are losing marks.
+
+        <% } else { %>
+
+            🔴
+            <strong>Class intervention recommended.</strong>
+
+            The current average assessment score is only
+
+            <strong>
+                <%= analytics.average_percentage %>%
+            </strong>.
+
+            Review common learning gaps, provide additional teaching
+            and revision, and monitor learner progress closely.
+
+        <% } %>
+
+    </p>
+
+</div>
+
+
+<!-- ========================================
+     PERFORMANCE DISTRIBUTION
+========================================= -->
+
+<div class="dashboard-card" style="margin-top: 25px;">
+
+    <h2>
+        📈 Performance Distribution
+    </h2>
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <div class="stat-icon">🟢</div>
+            <div>
+                <p>Excellent</p>
+                <h2><%= performance.excellent %></h2>
+                <small>80% and above</small>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">🔵</div>
+            <div>
+                <p>Good</p>
+                <h2><%= performance.good %></h2>
+                <small>70% – 79%</small>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">🟡</div>
+            <div>
+                <p>Satisfactory</p>
+                <h2><%= performance.satisfactory %></h2>
+                <small>50% – 69%</small>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">🔴</div>
+            <div>
+                <p>Needs Support</p>
+                <h2><%= performance.support %></h2>
+                <small>Below 50%</small>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ========================================
+     PERFORMANCE DISTRIBUTION CHART
+========================================= -->
+
+<div class="dashboard-card" style="margin-top: 25px;">
+
+    <h2>
+        📊 Performance Distribution Chart
+    </h2>
+
+    <div style="position: relative; height: 320px;">
+
+        <canvas id="performanceDistributionChart"></canvas>
+
+    </div>
+
+</div>
+
+<!-- ========================================
+     CLASS PERFORMANCE INSIGHT
+========================================= -->
+
+<div class="dashboard-card" style="margin-top: 25px;">
+
+    <h2>
+        📊 Class Performance Insight
+    </h2>
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                ✅
+            </div>
+
+            <div>
+
+                <p>
+                    Pass Rate
+                </p>
+
+                <h2>
+                    <%= passRate %>%
+                </h2>
+
+                <small>
+                    50% and above
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🟢
+            </div>
+
+            <div>
+
+                <p>
+                    Excellent
+                </p>
+
+                <h2>
+                    <%= performance.excellent %>
+                </h2>
+
+                <small>
+                    80% and above
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                ⚠️
+            </div>
+
+            <div>
+
+                <p>
+                    Needs Support
+                </p>
+
+                <h2>
+                    <%= supportRate %>%
+                </h2>
+
+                <small>
+                    Below 50%
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <p style="margin-top: 20px;">
+
+        <% if (analytics.attempts === 0) { %>
+
+            No assessment attempts have been recorded yet.
+
+        <% } else if (supportRate >= 50) { %>
+
+            ⚠️ A significant number of assessment attempts
+            are below 50%. Consider providing additional
+            support and revision activities.
+
+        <% } else if (passRate >= 80) { %>
+
+            🎉 The class is performing strongly, with
+            most assessment attempts achieving 50% or higher.
+
+        <% } else { %>
+
+            📚 The class is showing mixed performance.
+            Consider targeted revision for learners who
+            are below 50%.
+
+        <% } %>
+
+    </p>
+
+</div>
+
+<!-- ========================================
+     ASSESSMENT PERFORMANCE ANALYSIS
+========================================= -->
+
+<div class="dashboard-card" style="margin-top: 25px;">
+
+    <h2>
+        📋 Assessment Performance Analysis
+    </h2>
+
+    <% if (!assessmentPerformance || assessmentPerformance.length === 0) { %>
+
+        <p>
+            No assessment performance data is available yet.
+        </p>
+
+    <% } else { %>
+
+        <div style="overflow-x: auto;">
+
+            <table class="admin-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Assessment
+                        </th>
+
+                        <th>
+                            Attempts
+                        </th>
+
+                        <th>
+                            Average
+                        </th>
+
+                        <th>
+                            Highest
+                        </th>
+
+                        <th>
+                            Lowest
+                        </th>
+
+                        <th>
+                            Passed
+                        </th>
+
+                        <th>
+                            Failed
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <% assessmentPerformance.forEach((assessment) => { %>
+
+                        <tr>
+
+                            <td>
+                                <strong>
+                                    <%= assessment.assessment_title %>
+                                </strong>
+                            </td>
+
+                            <td>
+                                <%= assessment.attempts %>
+                            </td>
+
+                            <td>
+                                <strong>
+                                    <%= assessment.average_score %>%
+                                </strong>
+                            </td>
+
+                            <td>
+                                <%= assessment.highest_score %>%
+                            </td>
+
+                            <td>
+                                <%= assessment.lowest_score %>%
+                            </td>
+
+                            <td>
+                                🟢
+                                <%= assessment.passed %>
+                            </td>
+
+                            <td>
+                                🔴
+                                <%= assessment.failed %>
+                            </td>
+
+                        </tr>
+
+                    <% }) %>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    <% } %>
+
+</div>
+
+
+<!-- ========================================
+     ASSESSMENT PERFORMANCE COMPARISON
+========================================= -->
+
+<div
+    class="dashboard-card"
+    style="margin-top: 25px;"
+>
+
+    <h2>
+        📊 Assessment Performance Comparison
+    </h2>
+
+    <p>
+        Compare average, highest and lowest scores
+        across assessments.
+    </p>
+
+    <div
+        style="
+            position: relative;
+            height: 350px;
+            margin-top: 20px;
+        "
+    >
+
+        <canvas
+            id="assessmentPerformanceComparisonChart"
+        ></canvas>
+
+    </div>
+
+</div>
+
+
+<!-- ========================================
+     ASSESSMENT PERFORMANCE INSIGHT
+========================================= -->
+
+<div
+    class="dashboard-card"
+    style="margin-top: 25px;"
+>
+
+    <h2>
+        💡 Assessment Performance Insight
+    </h2>
+
+    <% if (!assessmentPerformance || assessmentPerformance.length === 0) { %>
+
+        <p>
+            No assessment insight is available yet.
+        </p>
+
+    <% } else { %>
+
+        <%
+            const bestAssessment =
+                assessmentPerformance.reduce(
+                    (best, current) =>
+                        current.average_score > best.average_score
+                            ? current
+                            : best
+                );
+
+            const weakestAssessment =
+                assessmentPerformance.reduce(
+                    (weakest, current) =>
+                        current.average_score < weakest.average_score
+                            ? current
+                            : weakest
+                );
+
+            const totalAssessmentAttempts =
+                assessmentPerformance.reduce(
+                    (total, item) =>
+                        total + Number(item.attempts || 0),
+                    0
+                );
+
+            const overallAssessmentAverage =
+                assessmentPerformance.length > 0
+                    ? Math.round(
+                        assessmentPerformance.reduce(
+                            (total, item) =>
+                                total + Number(item.average_score || 0),
+                            0
+                        ) / assessmentPerformance.length
+                    )
+                    : 0;
+        %>
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🏆
+                </div>
+
+                <div>
+
+                    <p>
+                        Best Assessment
+                    </p>
+
+                    <h3>
+                        <%= bestAssessment.assessment_title %>
+                    </h3>
+
+                    <small>
+                        Average:
+                        <strong>
+                            <%= bestAssessment.average_score %>%
+                        </strong>
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ⚠️
+                </div>
+
+                <div>
+
+                    <p>
+                        Needs Attention
+                    </p>
+
+                    <h3>
+                        <%= weakestAssessment.assessment_title %>
+                    </h3>
+
+                    <small>
+                        Average:
+                        <strong>
+                            <%= weakestAssessment.average_score %>%
+                        </strong>
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    📊
+                </div>
+
+                <div>
+
+                    <p>
+                        Overall Assessment Average
+                    </p>
+
+                    <h2>
+                        <%= overallAssessmentAverage %>%
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    📝
+                </div>
+
+                <div>
+
+                    <p>
+                        Total Attempts
+                    </p>
+
+                    <h2>
+                        <%= totalAssessmentAttempts %>
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <p style="margin-top: 20px;">
+
+            <% if (weakestAssessment.average_score < 50) { %>
+
+                🔴
+                <strong>
+                    Intervention recommended.
+                </strong>
+
+                <%= weakestAssessment.assessment_title %>
+                has an average score below 50%.
+                Consider revisiting the key concepts and
+                providing targeted revision activities.
+
+            <% } else if (overallAssessmentAverage >= 80) { %>
+
+                🟢
+                <strong>
+                    Strong assessment performance.
+                </strong>
+
+                The class is maintaining an overall assessment
+                average of
+                <strong>
+                    <%= overallAssessmentAverage %>%
+                </strong>.
+                Consider introducing enrichment and extension
+                activities.
+
+            <% } else if (overallAssessmentAverage >= 50) { %>
+
+                🟡
+                <strong>
+                    Satisfactory assessment performance.
+                </strong>
+
+                The class is achieving an overall assessment
+                average of
+                <strong>
+                    <%= overallAssessmentAverage %>%
+                </strong>.
+                Continued practice and targeted revision should
+                help improve learner outcomes.
+
+            <% } else { %>
+
+                🔴
+                <strong>
+                    Additional support is recommended.
+                </strong>
+
+                The overall assessment average is below 50%.
+                Review common learning gaps and provide
+                focused intervention.
+
+            <% } %>
+
+        </p>
+
+    <% } %>
+
+</div>
+
+
+<!-- ========================================
+     ASSESSMENT OUTCOME SUMMARY
+========================================= -->
+
+<div class="dashboard-card" style="margin-top: 25px;">
+
+    <h2>
+        📈 Assessment Outcome Summary
+    </h2>
+
+    <% if (!assessmentPerformance || assessmentPerformance.length === 0) { %>
+
+        <p>
+            No assessment outcome data is available yet.
+        </p>
+
+    <% } else { %>
+
+        <% assessmentPerformance.forEach(item => { %>
+
+            <% const passed = Number(item.passed || 0); %>
+            <% const failed = Number(item.failed || 0); %>
+            <% const attempts = Number(item.attempts || 0); %>
+
+            <% const passRate = attempts > 0 ? Math.round((passed / attempts) * 100) : 0; %>
+            <% const failureRate = attempts > 0 ? Math.round((failed / attempts) * 100) : 0; %>
+
+            <div style="margin-bottom: 25px;">
+
+                <h3>
+                    <%= item.assessment_title %>
+                </h3>
+
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+                        <div class="stat-icon">🟢</div>
+                        <div>
+                            <p>Passed</p>
+                            <h2><%= passed %></h2>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">🔴</div>
+                        <div>
+                            <p>Failed</p>
+                            <h2><%= failed %></h2>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">📈</div>
+                        <div>
+                            <p>Pass Rate</p>
+                            <h2><%= passRate %>%</h2>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">📉</div>
+                        <div>
+                            <p>Failure Rate</p>
+                            <h2><%= failureRate %>%</h2>
+                        </div>
+                    </div>
+
+                </div>
+
+                <p style="margin-top: 20px;">
+
+                    <% if (passRate >= 80) { %>
+
+                        🟢
+                        <strong>Strong assessment outcome.</strong>
+
+                        <%= passRate %>% of attempts achieved
+                        the 50% pass benchmark.
+
+                    <% } else if (passRate >= 50) { %>
+
+                        🟡
+                        <strong>Moderate assessment outcome.</strong>
+
+                        <%= passRate %>% of attempts achieved
+                        the 50% pass benchmark, while
+                        <%= failureRate %>% require additional support.
+
+                    <% } else { %>
+
+                        🔴
+                        <strong>Assessment intervention recommended.</strong>
+
+                        Fewer than half of the attempts achieved
+                        the 50% pass benchmark.
+
+                    <% } %>
+
+                </p>
+
+            </div>
+
+        <% }) %>
+
+    <% } %>
+
+</div>
+
+     TOP PERFORMING STUDENTS
+========================================= -->
+
+<div class="dashboard-card" style="margin-top: 25px;">
+
+    <h2>
+        🏆 Top Performing Students
+    </h2>
+
+    <% if (!topStudents || topStudents.length === 0) { %>
+
+        <p>
+            No student assessment results are available yet.
+        </p>
+
+    <% } else { %>
+
+        <table class="admin-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Rank
+                    </th>
+
+                    <th>
+                        Student
+                    </th>
+<th>
+    Average Score
+</th>
+
+<th>
+    Status
+</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <% topStudents.forEach((student, index) => { %>
+
+                    <tr>
+
+                        <td>
+                            <strong>
+                                <%= index + 1 %>
+                            </strong>
+                        </td>
+
+                        <td>
+                            <%= student.first_name %>
+                            <%= student.last_name %>
+                        </td>
+
+                       <td>
+    <strong>
+        <%= student.average_score %>%
+    </strong>
+</td>
+
+<td>
+
+    <% if (student.performance_status === "Excellent") { %>
+
+        🟢 Excellent
+
+    <% } else if (student.performance_status === "Good") { %>
+
+        🔵 Good
+
+    <% } else if (student.performance_status === "Satisfactory") { %>
+
+        🟡 Satisfactory
+
+    <% } else { %>
+
+        🔴 Needs Support
+
+    <% } %>
+
+</td>
+
+                    </tr>
+
+                <% }) %>
+
+            </tbody>
+
+        </table>
+
+                <!-- ========================================
+             CLASS RANKING INSIGHT
+        ========================================= -->
+
+        <div
+            class="dashboard-card"
+            style="margin-top: 20px;"
+        >
+
+            <h3>
+                📊 Ranking Insight
+            </h3>
+
+            <p>
+
+                <% if (!topStudents || topStudents.length === 0) { %>
+
+                    No ranking information is available yet.
+
+                <% } else if (topStudents.length === 1) { %>
+
+                    🏆
+                    <strong>
+                        Current leading student:
+                    </strong>
+
+                    <%= topStudents[0].first_name %>
+                    <%= topStudents[0].last_name %>
+
+                    with an average score of
+
+                    <strong>
+                        <%= topStudents[0].average_score %>%
+                    </strong>.
+
+                <% } else { %>
+
+                    🏆
+                    <strong>
+                        <%= topStudents.length %>
+                        students are currently ranked.
+                    </strong>
+
+                    The leading student is
+
+                    <strong>
+                        <%= topStudents[0].first_name %>
+                        <%= topStudents[0].last_name %>
+                    </strong>
+
+                    with an average score of
+
+                    <strong>
+                        <%= topStudents[0].average_score %>%
+                    </strong>.
+
+                <% } %>
+
+            </p>
+
+        </div>
+
+    <% } %>
+
+</div>
+
+
+<!-- ========================================
+     CLASS LEADER HIGHLIGHT
+========================================= -->
+
+<% if (topStudents && topStudents.length > 0) { %>
+
+<div
+    class="dashboard-card"
+    style="margin-top: 20px;"
+>
+
+    <h3>
+        🏆 Class Leader Highlight
+    </h3>
+
+    <p>
+
+        <strong>
+            <%= topStudents[0].first_name %>
+            <%= topStudents[0].last_name %>
+        </strong>
+
+        is currently the leading student with an average
+        assessment score of
+
+        <strong>
+            <%= topStudents[0].average_score %>%
+        </strong>.
+
+    </p>
+
+    <p>
+
+        <% if (topStudents[0].performance_status === "Excellent") { %>
+
+            🟢 The learner is demonstrating excellent performance.
+            Consider providing enrichment and extension activities.
+
+        <% } else if (topStudents[0].performance_status === "Good") { %>
+
+            🔵 The learner is performing well.
+            Continued consolidation can help move the learner toward excellence.
+
+        <% } else if (topStudents[0].performance_status === "Satisfactory") { %>
+
+            🟡 The learner is performing satisfactorily.
+            Targeted practice can help improve the average score.
+
+        <% } else { %>
+
+            🔴 Additional support is recommended.
+            Identify learning gaps and provide focused intervention.
+
+        <% } %>
+
+    </p>
+
+</div>
+
+<% } %>
+
+
+<!-- ========================================
+     STUDENT PERFORMANCE TREND
+========================================= -->
+
+<div class="dashboard-card" style="margin-top: 25px;">
+
+    <h2>
+        📈 Student Performance Trend
+    </h2>
+
+    <p>
+        Select a student to view performance
+        across assessments.
+    </p>
+
+
+    <form
+        method="GET"
+        action="/teacher/assessment-gradebook"
+        style="margin-top: 20px;"
+    >
+
+        <label for="studentId">
+            <strong>
+                Student
+            </strong>
+        </label>
+
+
+        <select
+            id="studentId"
+            name="studentId"
+            onchange="this.form.submit()"
+            style="
+                margin-left: 10px;
+                padding: 8px;
+                min-width: 250px;
+            "
+        >
+
+            <option value="">
+                -- Select Student --
+            </option>
+
+
+            <% students.forEach(student => { %>
+
+                <option
+                    value="<%= student.id %>"
+                    <%= selectedStudent &&
+                        selectedStudent.id === student.id
+                        ? "selected"
+                        : "" %>
+                >
+
+                    <%= student.first_name %>
+                    <%= student.last_name %>
+
+                </option>
+
+            <% }) %>
+
+        </select>
+
+    </form>
+
+
+    <% if (selectedStudent) { %>
+
+        <div style="margin-top: 25px;">
+
+            <h3>
+
+                <%= selectedStudent.first_name %>
+                <%= selectedStudent.last_name %>
+
+            </h3>
+
+            <div
+    class="stats-grid"
+    style="margin-top: 20px;"
+>
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            📝
+        </div>
+
+        <div>
+
+            <p>
+                Assessments
+            </p>
+
+            <h2>
+                <%= (studentTrendAnalytics && studentTrendAnalytics.attempts) || 0 %>
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            📊
+        </div>
+
+        <div>
+
+            <p>
+                Average
+            </p>
+
+            <h2>
+                <%= (studentTrendAnalytics && studentTrendAnalytics.average_score) || 0 %>%
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            🏆
+        </div>
+
+        <div>
+
+            <p>
+                Highest
+            </p>
+
+            <h2>
+                <%= (studentTrendAnalytics && studentTrendAnalytics.highest_score) || 0 %>%
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            ⚠️
+        </div>
+
+        <div>
+
+            <p>
+                Lowest
+            </p>
+
+            <h2>
+                <%= (studentTrendAnalytics && studentTrendAnalytics.lowest_score) || 0 %>%
+            </h2>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+            <!-- ========================================
+                 STUDENT PERFORMANCE SUMMARY
+            ========================================= -->
+
+            <div class="dashboard-card" style="margin-top: 20px;">
+
+                <h3>
+                    🎯 Performance Summary
+                </h3>
+
+                <p>
+                    <% if (!studentTrendAnalytics || studentTrendAnalytics.attempts === 0) { %>
+
+                        No assessment results are available for this student yet.
+
+                    <% } else if (studentTrendAnalytics.average_score >= 80) { %>
+
+                        🟢 <strong>Excellent performance.</strong>
+                        This student is consistently performing at a high level.
+
+                    <% } else if (studentTrendAnalytics.average_score >= 70) { %>
+
+                        🔵 <strong>Good performance.</strong>
+                        The student is performing well, with room for further improvement.
+
+                    <% } else if (studentTrendAnalytics.average_score >= 50) { %>
+
+                        🟡 <strong>Satisfactory performance.</strong>
+                        Consider targeted revision to help the student improve.
+
+                    <% } else { %>
+
+                        🔴 <strong>Needs support.</strong>
+                        The student may benefit from additional teaching, revision and intervention.
+
+                    <% } %>
+
+                </p>
+
+                <p style="margin-top: 15px;">
+
+                    <strong>
+                        Performance Trend:
+                    </strong>
+
+                    <% if (studentTrendDirection === "Improving") { %>
+
+                        📈
+                        <strong>
+                            Improving
+                        </strong>
+
+                        — the student's latest assessment performance
+                        is showing positive progress.
+
+                    <% } else if (studentTrendDirection === "Declining") { %>
+
+                        📉
+                        <strong>
+                            Declining
+                        </strong>
+
+                        — the student's latest assessment performance
+                        is below their earlier performance.
+
+                    <% } else if (studentTrendDirection === "Stable") { %>
+
+                        ➡️
+                        <strong>
+                            Stable
+                        </strong>
+
+                        — the student's assessment performance is
+                        remaining relatively consistent.
+
+                    <% } else if (studentTrendDirection === "Insufficient data") { %>
+
+                        ℹ️
+                        <strong>
+                            Insufficient data
+                        </strong>
+
+                        — at least two assessment results are needed
+                        to determine a performance trend.
+
+                    <% } else { %>
+
+                        No performance trend is available yet.
+
+                    <% } %>
+
+                </p>
+
+            </div>
+
+
+            <!-- ========================================
+                 LATEST ASSESSMENT PERFORMANCE
+            ========================================= -->
+
+            <div
+                class="dashboard-card"
+                style="margin-top: 20px;"
+            >
+
+                <h3>
+                    📌 Latest Assessment Performance
+                </h3>
+
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            🆕
+                        </div>
+
+                        <div>
+
+                            <p>
+                                Latest Score
+                            </p>
+
+                            <h2>
+                                <%= latestScore !== null
+                                    ? latestScore + "%"
+                                    : "—" %>
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            📋
+                        </div>
+
+                        <div>
+
+                            <p>
+                                Previous Score
+                            </p>
+
+                            <h2>
+                                <%= previousScore !== null
+                                    ? previousScore + "%"
+                                    : "—" %>
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            📈
+                        </div>
+
+                        <div>
+
+                            <p>
+                                Change
+                            </p>
+
+                            <h2>
+
+                                <% if (scoreChange !== null) { %>
+
+                                    <%= scoreChange > 0 ? "+" : "" %><%= scoreChange %>%
+
+                                <% } else { %>
+
+                                    —
+
+                                <% } %>
+
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            🎯
+                        </div>
+
+                        <div>
+
+                            <p>
+                                Latest Status
+                            </p>
+
+                            <h2>
+
+                                <% if (latestScore === null) { %>
+
+                                    —
+
+                                <% } else if (latestScore >= 80) { %>
+
+                                    🟢 Excellent
+
+                                <% } else if (latestScore >= 70) { %>
+
+                                    🔵 Good
+
+                                <% } else if (latestScore >= 50) { %>
+
+                                    🟡 Satisfactory
+
+                                <% } else { %>
+
+                                    🔴 Needs Support
+
+                                <% } %>
+
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <% if (scoreChange !== null) { %>
+
+                    <p style="margin-top: 20px;">
+
+                        <% if (scoreChange > 0) { %>
+
+                            📈
+                            <strong>
+                                Positive movement:
+                            </strong>
+
+                            The learner improved by
+                            <strong>
+                                <%= scoreChange %> percentage points
+                            </strong>
+                            compared with the previous assessment.
+
+                        <% } else if (scoreChange < 0) { %>
+
+                            📉
+                            <strong>
+                                Negative movement:
+                            </strong>
+
+                            The learner's score decreased by
+                            <strong>
+                                <%= Math.abs(scoreChange) %> percentage points
+                            </strong>
+                            compared with the previous assessment.
+
+                        <% } else { %>
+
+                            ➡️
+                            <strong>
+                                No change:
+                            </strong>
+
+                            The learner achieved the same percentage
+                            as in the previous assessment.
+
+                        <% } %>
+
+                    </p>
+
+                <% } else { %>
+
+                    <p style="margin-top: 20px;">
+
+                        ℹ️ A previous assessment is required to compare
+                        performance movement.
+
+                    </p>
+
+                <% } %>
+
+            </div>
+
+
+            <div
+                style="
+                    position: relative;
+                    height: 320px;
+                    margin-top: 15px;
+                "
+            >
+
+                <canvas
+                    id="studentPerformanceTrendChart"
+                ></canvas>
+
+            </div>
+
+
+            <!-- ========================================
+                 STUDENT INTERVENTION RECOMMENDATION
+            ========================================= -->
+
+            <div class="dashboard-card" style="margin-top: 20px;">
+
+                <h3>
+                    🧭 Recommended Teacher Action
+                </h3>
+
+                <p>
+
+                    <% if (!studentTrendAnalytics ||
+                           studentTrendAnalytics.attempts === 0) { %>
+
+                        No recommendation is available yet.
+
+                    <% } else if (
+                        studentTrendAnalytics.average_score >= 80
+                    ) { %>
+
+                        🟢
+                        <strong>Provide enrichment activities.</strong>
+                        Encourage this learner with advanced problems,
+                        extension activities and opportunities to apply
+                        higher-order mathematical thinking.
+
+                    <% } else if (
+                        studentTrendDirection === "Improving" &&
+                        studentTrendAnalytics.average_score >= 50
+                    ) { %>
+
+                        📈
+                        <strong>
+                            Reinforce recent improvement.
+                        </strong>
+                        The learner is showing positive progress.
+                        Continue targeted revision and consolidation while
+                        gradually introducing more challenging questions.
+
+                    <% } else if (
+                        studentTrendDirection === "Declining" &&
+                        studentTrendAnalytics.average_score >= 50
+                    ) { %>
+
+                        📉
+                        <strong>
+                            Investigate the recent decline.
+                        </strong>
+                        Review the learner's latest assessment errors,
+                        identify emerging learning gaps and provide
+                        focused revision before the next assessment.
+
+                    <% } else if (
+                        studentTrendAnalytics.average_score >= 70
+                    ) { %>
+
+                        🔵
+                        <strong>Continue consolidation.</strong>
+                        Provide regular practice and challenging questions
+                        to help the learner move toward excellent performance.
+
+                    <% } else if (
+                        studentTrendAnalytics.average_score >= 50
+                    ) { %>
+
+                        🟡
+                        <strong>Provide targeted revision.</strong>
+                        Review areas where the learner is losing marks and
+                        provide additional practice before the next assessment.
+
+                    <% } else if (
+                        studentTrendDirection === "Improving"
+                    ) { %>
+
+                        📈
+                        <strong>
+                            Support the positive improvement.
+                        </strong>
+                        The learner's average remains below 50%, but recent
+                        results are improving. Continue focused intervention
+                        while reinforcing the areas showing progress.
+
+                    <% } else { %>
+
+                        🔴
+                        <strong>Provide focused intervention.</strong>
+                        Identify learning gaps, provide additional teaching
+                        and practice, and monitor the learner's progress closely.
+
+                    <% } %>
+
+                </p>
+
+            </div>
+
+        </div>
+
+    <% } else { %>
+
+        <p style="margin-top: 20px;">
+
+            Select a student above to view
+            their assessment performance trend.
+
+        </p>
+
+    <% } %>
+
+    
 
 </div>
 
@@ -270,6 +1836,510 @@
 
 
 </div>
+
+<script>
+
+const performanceDistributionCtx =
+    document.getElementById(
+        "performanceDistributionChart"
+    );
+
+
+new Chart(
+    performanceDistributionCtx,
+    {
+
+        type: "bar",
+
+        data: {
+
+            labels: [
+
+                "Excellent",
+
+                "Good",
+
+                "Satisfactory",
+
+                "Needs Support"
+
+            ],
+
+            datasets: [{
+
+                label:
+                    "Number of Attempts",
+
+                data: [
+
+                    <%= performance.excellent %>,
+
+                    <%= performance.good %>,
+
+                    <%= performance.satisfactory %>,
+
+                    <%= performance.support %>
+
+                ]
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true,
+
+                    ticks: {
+
+                        precision: 0
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+);
+
+</script>
+
+<script>
+
+<% if (selectedStudent && studentTrend.length > 0) { %>
+
+const studentTrendCtx =
+    document.getElementById(
+        "studentPerformanceTrendChart"
+    );
+
+
+const studentTrendDates = [
+
+    <% studentTrend.forEach(item => { %>
+
+        "<%= item.submitted_at %>",
+
+    <% }) %>
+
+];
+
+
+new Chart(
+    studentTrendCtx,
+    {
+
+        type: "line",
+
+        data: {
+
+         labels: studentTrendDates.map(
+    date => {
+
+        const d =
+            new Date(date);
+
+        return d.toLocaleString(
+            "en-ZA",
+            {
+                day: "2-digit",
+                month: "short",
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        );
+
+    }
+),
+
+            datasets: [
+
+                {
+
+                    label:
+                        "Student Percentage",
+
+                    data: [
+
+                        <% studentTrend.forEach(item => { %>
+
+                            <%= item.percentage %>,
+
+                        <% }) %>
+
+                    ],
+
+                    tension: 0.3,
+
+                    borderWidth: 3,
+
+                    pointRadius: function(context) {
+
+                        return context.dataIndex ===
+                            context.dataset.data.length - 1
+                            ? 9
+                            : 5;
+
+                    },
+
+                    pointHoverRadius: function(context) {
+
+                        return context.dataIndex ===
+                            context.dataset.data.length - 1
+                            ? 12
+                            : 7;
+
+                    },
+
+                    pointBorderWidth: function(context) {
+
+                        return context.dataIndex ===
+                            context.dataset.data.length - 1
+                            ? 3
+                            : 1;
+
+                    }
+
+                },
+
+                {
+
+                    label:
+                        "Pass Benchmark (50%)",
+
+                    data: [
+
+                        <% studentTrend.forEach(() => { %>
+
+                            50,
+
+                        <% }) %>
+
+                    ],
+
+                    borderDash: [6, 6],
+
+                    pointRadius: 0,
+
+                    borderWidth: 2
+
+                },
+
+                {
+
+                    label:
+                        "Good Benchmark (70%)",
+
+                    data: [
+
+                        <% studentTrend.forEach(() => { %>
+
+                            70,
+
+                        <% }) %>
+
+                    ],
+
+                    borderDash: [6, 6],
+
+                    pointRadius: 0,
+
+                    borderWidth: 2
+
+                },
+
+                {
+
+                    label:
+                        "Excellent Benchmark (80%)",
+
+                    data: [
+
+                        <% studentTrend.forEach(() => { %>
+
+                            80,
+
+                        <% }) %>
+
+                    ],
+
+                    borderDash: [6, 6],
+
+                    pointRadius: 0,
+
+                    borderWidth: 2
+
+                }
+
+            ]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true,
+
+                    max: 100,
+
+                    ticks: {
+
+                        callback:
+                            function(value) {
+
+                                return value + "%";
+
+                            }
+
+                    }
+
+                }
+
+            },
+
+           plugins: {
+
+    legend: {
+
+        display: true
+
+    },
+
+    tooltip: {
+
+        callbacks: {
+
+            title: function(context) {
+
+                const index =
+                    context[0].dataIndex;
+
+                return studentTrend[index]
+                    .assessment_title;
+
+            },
+
+            label: function(context) {
+
+                const index =
+                    context.dataIndex;
+
+                const score =
+                    studentTrend[index]
+                        .percentage;
+
+                return "Score: " + score + "%";
+
+            },
+
+            afterLabel: function(context) {
+
+                const index =
+                    context.dataIndex;
+
+                const submitted =
+                    studentTrend[index]
+                        .submitted_at;
+
+                return "Submitted: " + submitted;
+
+            }
+
+        }
+
+    }
+
+}
+
+        }
+
+    }
+
+);
+
+<% } %>
+
+</script>
+
+
+<script>
+
+<% if (assessmentPerformance && assessmentPerformance.length > 0) { %>
+
+const assessmentPerformanceComparisonCtx =
+    document.getElementById(
+        "assessmentPerformanceComparisonChart"
+    );
+
+
+new Chart(
+    assessmentPerformanceComparisonCtx,
+    {
+
+        type: "bar",
+
+        data: {
+
+            labels: [
+
+                <% assessmentPerformance.forEach(item => { %>
+
+                    "<%= item.assessment_title %>",
+
+                <% }) %>
+
+            ],
+
+            datasets: [
+
+                {
+
+                    label:
+                        "Average Score",
+
+                    data: [
+
+                        <% assessmentPerformance.forEach(item => { %>
+
+                            <%= item.average_score %>,
+
+                        <% }) %>
+
+                    ]
+
+                },
+
+                {
+
+                    label:
+                        "Highest Score",
+
+                    data: [
+
+                        <% assessmentPerformance.forEach(item => { %>
+
+                            <%= item.highest_score %>,
+
+                        <% }) %>
+
+                    ]
+
+                },
+
+                {
+
+                    label:
+                        "Lowest Score",
+
+                    data: [
+
+                        <% assessmentPerformance.forEach(item => { %>
+
+                            <%= item.lowest_score %>,
+
+                        <% }) %>
+
+                    ]
+
+                },
+
+                {
+
+                    label:
+                        "Pass Benchmark (50%)",
+
+                    data: [
+
+                        <% assessmentPerformance.forEach(() => { %>
+
+                            50,
+
+                        <% }) %>
+
+                    ],
+
+                    type: "line",
+
+                    borderDash: [6, 6],
+
+                    pointRadius: 0,
+
+                    borderWidth: 2
+
+                }
+
+            ]
+
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true,
+
+                    max: 100,
+
+                    ticks: {
+
+                        callback:
+                            function(value) {
+
+                                return value + "%";
+
+                            }
+
+                    }
+
+                }
+
+            },
+
+            plugins: {
+
+                legend: {
+
+                    display: true
+
+                }
+
+            }
+
+        }
+
+    }
+
+);
+
+<% } %>
+
+</script>
 
 
 </body>
