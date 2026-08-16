@@ -148,6 +148,44 @@ Your teacher has not published any lessons for this course.
 <% } %>
 
 
+<% if (lesson.exercises && lesson.exercises.length > 0) { %>
+
+<h3>
+    ✏️ Interactive Exercises
+</h3>
+
+<% lesson.exercises.forEach(function(exercise) { %>
+
+<div
+    class="dashboard-card"
+    style="margin-top: 15px;"
+>
+
+    <p>
+        <strong>
+            <%= exercise.question %>
+        </strong>
+    </p>
+
+    <p>
+        Marks:
+        <%= exercise.marks %>
+    </p>
+
+    <a
+        class="btn primary"
+        href="/student/exercises/<%= exercise.id %>"
+    >
+        Attempt Exercise
+    </a>
+
+</div>
+
+<% }) %>
+
+<% } %>
+
+
 
 </div>
 

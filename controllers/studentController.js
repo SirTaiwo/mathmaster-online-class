@@ -534,6 +534,20 @@ exports.courseLessons = (req, res) => {
                 req.params.courseId
             );
 
+    const Exercise =
+        require("../models/Exercise");
+
+
+    lessons.forEach((lesson) => {
+
+        lesson.exercises =
+            Exercise.findByLesson(
+                lesson.id
+            );
+
+    });
+
+
     res.render(
         "student-lessons",
         {
