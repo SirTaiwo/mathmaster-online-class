@@ -64,6 +64,9 @@ const adminRoutes =
     const studentFinanceRoutes =
     require("./routes/studentFinance");
 
+    const studentAttendanceRoutes =
+    require("./routes/studentAttendance");
+
     const paymentRoutes =
     require("./routes/payment");
 
@@ -280,6 +283,10 @@ app.use(
 
 app.use(
     studentFinanceRoutes
+);
+
+app.use(
+    studentAttendanceRoutes
 );
 
 
