@@ -290,3 +290,228 @@ exports.viewPerformance = (req, res) => {
     );
 
 };
+
+// ========================================
+// STUDENT - VIEW OWN PERFORMANCE
+// ========================================
+
+exports.studentPerformance = (req, res) => {
+
+    const studentId =
+        req.session.student.id;
+
+    const student =
+        Student.findById(studentId);
+
+    const results =
+        AssessmentResult.findByStudent(studentId);
+
+    const performance =
+        AssessmentResult.getStudentPerformance(studentId);
+
+    const feedback =
+        StudentFeedback.findByStudent(studentId);
+
+    const trend =
+        AssessmentResult.getProgressTrend(studentId);
+
+    const performanceStatus =
+        AssessmentResult.getPerformanceStatus(studentId);
+
+
+    let status = {
+
+        label: performanceStatus,
+
+        icon: "🔴"
+
+    };
+
+
+    if (performanceStatus === "Excellent") {
+
+        status = {
+            label: "Excellent",
+            icon: "🟢"
+        };
+
+    }
+
+    else if (performanceStatus === "Good") {
+
+        status = {
+            label: "Good",
+            icon: "🔵"
+        };
+
+    }
+
+    else if (performanceStatus === "Satisfactory") {
+
+        status = {
+            label: "Satisfactory",
+            icon: "🟡"
+        };
+
+    }
+
+    else if (performanceStatus === "Needs Improvement") {
+
+        status = {
+            label: "Needs Improvement",
+            icon: "🔴"
+        };
+
+    }
+
+    else if (performanceStatus === "No Data") {
+
+        status = {
+            label: "No Data",
+            icon: "⚪"
+        };
+
+    }
+
+
+    // ========================================
+    // PERFORMANCE INSIGHT
+    // ========================================
+
+    let insight = {
+
+        icon: "📊",
+
+        title: "Performance Insight",
+
+        latestScore: null,
+
+        previousScore: null,
+
+        difference: null,
+
+        message: "No assessment data is available yet."
+
+    };
+
+
+    if (trend.length > 0) {
+
+        const latestScore =
+            Number(trend[trend.length - 1].percentage) || 0;
+
+
+        if (trend.length === 1) {
+
+            insight = {
+
+                icon: "📊",
+
+                title: "First Assessment",
+
+                latestScore,
+
+                previousScore: null,
+
+                difference: null,
+
+                message:
+                    "This is your first recorded assessment."
+
+            };
+
+        }
+
+        else {
+
+            const previousScore =
+                Number(trend[trend.length - 2].percentage) || 0;
+
+
+            const difference =
+                latestScore - previousScore;
+
+
+            if (difference > 0) {
+
+                insight = {
+
+                    icon: "📈",
+
+                    title: "Strong Improvement",
+
+                    latestScore,
+
+                    previousScore,
+
+                    difference,
+
+                    message:
+                        "Your latest assessment shows improvement compared with your previous attempt."
+
+                };
+
+            }
+
+            else if (difference < 0) {
+
+                insight = {
+
+                    icon: "📉",
+
+                    title: "Performance Decline",
+
+                    latestScore,
+
+                    previousScore,
+
+                    difference,
+
+                    message:
+                        "Your latest assessment score is lower than your previous attempt."
+
+                };
+
+            }
+
+            else {
+
+                insight = {
+
+                    icon: "➡️",
+
+                    title: "Performance Stable",
+
+                    latestScore,
+
+                    previousScore,
+
+                    difference: 0,
+
+                    message:
+                        "Your latest assessment score is unchanged from your previous attempt."
+
+                };
+
+            }
+
+        }
+
+    }
+
+
+    res.render(
+        "student-performance",
+        {
+            user: student,
+            student,
+            results,
+            performance,
+            feedback,
+            status,
+            trend,
+            insight
+        }
+    );
+
+};

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>
+My Performance
+</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+Math<span>Master</span>
+</div>
+
+
+<div class="nav-links">
+
+<a href="/student/dashboard">
+Dashboard
+</a>
+
+<a href="/student/attendance">
+Attendance
+</a>
+
+<a href="/student/finance">
+Finance
+</a>
+
+<a href="/logout">
+Logout
+</a>
+
+</div>
+
+</nav>
+
+</header>
+
+
+<main class="dashboard">
+
+
+<div class="dashboard-header">
+
+<h1>
+📈 My Performance
+</h1>
+
+<p>
+<%= student.first_name %>
+<%= student.last_name %>
+</p>
+
+</div>
+
+
+<!-- PERFORMANCE STATUS -->
+
+<div class="dashboard-card">
+
+<h3>
+📊 Performance Status
+</h3>
+
+<h2>
+
+<%= status.icon %>
+
+<%= status.label %>
+
+</h2>
+
+</div>
+
+
+<!-- PERFORMANCE SUMMARY -->
+
+<div class="dashboard-grid">
+
+
+<div class="dashboard-card">
+
+<h3>
+📝 Tests Taken
+</h3>
+
+<h2>
+<%= performance.attempts || 0 %>
+</h2>
+
+</div>
+
+
+<div class="dashboard-card">
+
+<h3>
+📊 Average Score
+</h3>
+
+<h2>
+<%= performance.average_percentage || 0 %>%
+</h2>
+
+</div>
+
+
+<div class="dashboard-card">
+
+<h3>
+🏆 Highest Score
+</h3>
+
+<h2>
+<%= performance.highest_percentage || 0 %>%
+</h2>
+
+</div>
+
+
+<div class="dashboard-card">
+
+<h3>
+🕐 Latest Score
+</h3>
+
+<h2>
+<%= performance.latest_percentage || 0 %>%
+</h2>
+
+</div>
+
+
+</div>
+
+
+<!-- PROGRESS TREND -->
+
+<h2>
+📈 Progress Trend
+</h2>
+
+
+<div class="dashboard-card"
+     style="height: 350px;">
+
+<% if (trend.length > 0) { %>
+
+<canvas id="studentProgressChart"></canvas>
+
+<% } else { %>
+
+<p>
+No assessment results are available yet.
+</p>
+
+<% } %>
+
+</div>
+
+
+<!-- ASSESSMENT HISTORY -->
+
+<h2>
+📋 Assessment History
+</h2>
+
+
+<% if (results.length > 0) { %>
+
+
+<% results.forEach(result => { %>
+
+<div class="dashboard-card"
+     style="margin-bottom: 20px;">
+
+<h3>
+<%= result.assessment_title %>
+</h3>
+
+
+<p>
+
+Score:
+
+<strong>
+
+<%= result.score %>
+
+/
+
+<%= result.total_marks %>
+
+</strong>
+
+</p>
+
+
+<p>
+
+Percentage:
+
+<strong>
+
+<%= result.percentage %>%
+
+</strong>
+
+</p>
+
+
+<p>
+
+Submitted:
+
+<%= result.submitted_at %>
+
+</p>
+
+</div>
+
+<% }) %>
+
+
+<% } else { %>
+
+<div class="dashboard-card">
+
+<p>
+No assessment results yet.
+</p>
+
+</div>
+
+<% } %>
+
+
+<!-- TEACHER FEEDBACK -->
+
+<h2>
+👨‍🏫 Teacher Feedback
+</h2>
+
+
+<% if (feedback && feedback.length > 0) { %>
+
+
+<% feedback.forEach(item => { %>
+
+<div class="dashboard-card"
+     style="margin-bottom: 20px;">
+
+<h3>
+
+👨‍🏫
+
+<%= item.teacher_first %>
+
+<%= item.teacher_last %>
+
+</h3>
+
+
+<p style="color:#666;">
+
+<%= new Date(
+    item.created_at.replace(" ", "T")
+).toLocaleString("en-ZA", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false
+}) %>
+
+</p>
+
+
+<p style="white-space: pre-line;">
+
+<%= item.feedback %>
+
+</p>
+
+</div>
+
+<% }) %>
+
+
+<% } else { %>
+
+<div class="dashboard-card">
+
+<p>
+No teacher feedback has been recorded yet.
+</p>
+
+</div>
+
+<% } %>
+
+
+</main>
+
+
+<script>
+
+const studentProgressData =
+    <%- JSON.stringify(trend) %>;
+
+
+if (studentProgressData.length > 0) {
+
+    const labels =
+        studentProgressData.map(
+            item => {
+
+                const date =
+                    new Date(
+                        item.submitted_at.replace(
+                            " ",
+                            "T"
+                        )
+                    );
+
+                return (
+                    item.assessment_title +
+                    " - " +
+                    date.toLocaleDateString(
+                        "en-ZA",
+                        {
+                            day: "2-digit",
+                            month: "short"
+                        }
+                    )
+                );
+
+            }
+        );
+
+
+    const values =
+        studentProgressData.map(
+            item =>
+                Number(item.percentage)
+        );
+
+
+    new Chart(
+
+        document.getElementById(
+            "studentProgressChart"
+        ),
+
+        {
+
+            type: "line",
+
+            data: {
+
+                labels,
+
+                datasets: [
+
+                    {
+
+                        label:
+                            "Percentage",
+
+                        data:
+                            values,
+
+                        tension:
+                            0.3,
+
+                        fill:
+                            false
+
+                    }
+
+                ]
+
+            },
+
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                scales: {
+
+                    y: {
+
+                        beginAtZero: true,
+
+                        max: 100
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    );
+
+}
+
+</script>
+
+
+</body>
+
+</html>

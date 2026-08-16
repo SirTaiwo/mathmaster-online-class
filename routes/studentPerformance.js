@@ -43,5 +43,19 @@ router.post(
 
 );
 
+// ========================================
+// STUDENT - VIEW OWN PERFORMANCE
+// ========================================
+
+router.get(
+
+    "/student/performance",
+
+    requireRole("student"),
+
+    controller.studentPerformance
+
+);
+
 
 module.exports = router;
