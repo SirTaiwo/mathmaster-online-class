@@ -116,12 +116,29 @@ const assessmentPerformance =
 
 
     // ========================================
-    // GRADEBOOK ANALYTICS
+    // TEACHER-SPECIFIC GRADEBOOK ANALYTICS
     // ========================================
 
-    const analytics =
-        Gradebook.getAnalytics();
+    const teacherAnalytics =
+        Gradebook.getTeacherAnalytics(
+            teacherId
+        );
 
+    const analytics = {
+
+        attempts:
+            teacherAnalytics.total_attempts || 0,
+
+        average_percentage:
+            teacherAnalytics.average_score || 0,
+
+        highest_percentage:
+            teacherAnalytics.highest_score || 0,
+
+        lowest_percentage:
+            teacherAnalytics.lowest_score || 0
+
+    };
 
     // ========================================
     // PERFORMANCE DISTRIBUTION
