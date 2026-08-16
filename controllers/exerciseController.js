@@ -106,6 +106,16 @@ exports.viewExercise = (req, res) => {
     }
 
 
+    const submissions =
+        Submission.findByStudentAndExercise(
+
+            req.session.student.id,
+
+            exercise.id
+
+        );
+
+
     res.render(
         "student-exercise",
         {
@@ -114,6 +124,8 @@ exports.viewExercise = (req, res) => {
                 req.session.student,
 
             exercise,
+
+            submissions,
 
             result: null
 
@@ -193,6 +205,16 @@ Submission.createSubmission(
 
 
 
+        const submissions =
+        Submission.findByStudentAndExercise(
+
+            req.session.student.id,
+
+            exercise.id
+
+        );
+
+
     res.render(
         "student-exercise",
         {
@@ -201,6 +223,8 @@ Submission.createSubmission(
                 req.session.student,
 
             exercise,
+
+            submissions,
 
             result
 

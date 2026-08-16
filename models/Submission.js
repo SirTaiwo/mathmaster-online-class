@@ -69,6 +69,37 @@ function findByStudent(
     );
 
 }
+
+// ========================================
+// FIND SUBMISSIONS BY STUDENT AND EXERCISE
+// ========================================
+
+function findByStudentAndExercise(
+    studentId,
+    exerciseId
+) {
+
+    return db.prepare(`
+
+        SELECT *
+
+        FROM submissions
+
+        WHERE student_id = ?
+
+        AND exercise_id = ?
+
+        ORDER BY created_at DESC
+
+    `).all(
+
+        studentId,
+        exerciseId
+
+    );
+
+}
+
 // ========================================
 // STUDENT PERFORMANCE SUMMARY
 // ========================================
@@ -209,6 +240,8 @@ module.exports = {
     createSubmission,
 
     findByStudent,
+
+    findByStudentAndExercise,
 
     getStudentSummary,
 

@@ -108,17 +108,98 @@ Submit Answer
 
 
 
-<% if (result) { %>
-
 <hr>
 
-
 <h3>
-
-<%= result %>
-
+📊 My Attempts
 </h3>
 
+
+<% if (submissions && submissions.length > 0) { %>
+
+<div style="overflow-x: auto;">
+
+<table class="admin-table">
+
+<thead>
+
+<tr>
+
+<th>
+Date
+</th>
+
+<th>
+Your Answer
+</th>
+
+<th>
+Result
+</th>
+
+<th>
+Marks
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+<% submissions.forEach(function(submission) { %>
+
+<tr>
+
+<td>
+<%= submission.created_at %>
+</td>
+
+
+<td>
+<%= submission.answer %>
+</td>
+
+
+<td>
+
+<% if (submission.correct) { %>
+
+<span>
+✅ Correct
+</span>
+
+<% } else { %>
+
+<span>
+❌ Incorrect
+</span>
+
+<% } %>
+
+</td>
+
+
+<td>
+<%= submission.marks %>
+</td>
+
+</tr>
+
+<% }) %>
+
+</tbody>
+
+</table>
+
+</div>
+
+<% } else { %>
+
+<p>
+You have not attempted this exercise yet.
+</p>
 
 <% } %>
 
