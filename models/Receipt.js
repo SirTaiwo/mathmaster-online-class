@@ -109,12 +109,41 @@ function findById(id){
 
 }
 
+function findByStudent(studentId){
+
+    return db.prepare(`
+
+        SELECT
+            receipts.*,
+
+            payments.payment_method,
+            payments.reference_number,
+
+            invoices.invoice_number
+
+        FROM receipts
+
+        JOIN payments
+        ON receipts.payment_id = payments.id
+
+        JOIN invoices
+        ON payments.invoice_id = invoices.id
+
+        WHERE receipts.student_id = ?
+
+        ORDER BY receipts.created_at DESC
+
+    `).all(studentId);
+
+}
+
 
 
 module.exports = {
 
     createReceipt,
     findAll,
-    findById
+    findById,
+    findByStudent
 
 };

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>My Finance - MathMaster</title>
+
+<link rel="stylesheet"
+      href="/css/style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+Math<span>Master</span>
+</div>
+
+
+<div class="nav-links">
+
+<a href="/student/dashboard">
+Dashboard
+</a>
+
+<a href="/student/my-courses">
+My Courses
+</a>
+
+<a href="/student/finance">
+Finance
+</a>
+
+<a href="/logout">
+Logout
+</a>
+
+</div>
+
+</nav>
+
+</header>
+
+
+
+<main class="dashboard">
+
+
+<div class="dashboard-header">
+
+<p class="eyebrow">
+STUDENT FINANCE
+</p>
+
+<h1>
+💰 My Finance
+</h1>
+
+<p>
+View your fees, invoices, payments and receipts.
+</p>
+
+</div>
+
+
+
+<!-- ========================================
+     FINANCE SUMMARY
+========================================= -->
+
+<div class="dashboard-grid">
+
+
+<div class="dashboard-card">
+
+<h2>
+💰 Total Fees
+</h2>
+
+<h1>
+R<%= Number(totalFees || 0).toFixed(2) %>
+</h1>
+
+<p>
+Total fees assigned
+</p>
+
+</div>
+
+
+<div class="dashboard-card">
+
+<h2>
+💳 Total Paid
+</h2>
+
+<h1>
+R<%= Number(totalPaid || 0).toFixed(2) %>
+</h1>
+
+<p>
+Payments recorded
+</p>
+
+</div>
+
+
+<div class="dashboard-card">
+
+<h2>
+📌 Outstanding
+</h2>
+
+<h1>
+R<%= Number(totalBalance || 0).toFixed(2) %>
+</h1>
+
+<p>
+Current balance
+</p>
+
+</div>
+
+
+</div>
+
+
+
+<!-- ========================================
+     FEE ACCOUNTS
+========================================= -->
+
+<h2>
+📋 Fee Accounts
+</h2>
+
+
+<% if (fees.length === 0) { %>
+
+<div class="dashboard-card">
+
+<p>
+No fee accounts have been assigned yet.
+</p>
+
+</div>
+
+<% } else { %>
+
+
+<% fees.forEach(fee => { %>
+
+<div class="dashboard-card">
+
+<h3>
+<%= fee.description %>
+</h3>
+
+<p>
+<strong>Term:</strong>
+<%= fee.term %>
+</p>
+
+<p>
+<strong>Year:</strong>
+<%= fee.year %>
+</p>
+
+<p>
+<strong>Amount Due:</strong>
+R<%= Number(fee.amount_due || 0).toFixed(2) %>
+</p>
+
+<p>
+<strong>Amount Paid:</strong>
+R<%= Number(fee.amount_paid || 0).toFixed(2) %>
+</p>
+
+<p>
+<strong>Status:</strong>
+<%= fee.status %>
+</p>
+
+</div>
+
+<% }) %>
+
+<% } %>
+
+
+
+<!-- ========================================
+     INVOICES
+========================================= -->
+
+<h2>
+🧾 Invoices
+</h2>
+
+
+<% if (invoices.length === 0) { %>
+
+<div class="dashboard-card">
+
+<p>
+No invoices have been issued yet.
+</p>
+
+</div>
+
+<% } else { %>
+
+
+<% invoices.forEach(invoice => { %>
+
+<div class="dashboard-card">
+
+<h3>
+<%= invoice.invoice_number %>
+</h3>
+
+<p>
+<strong>Description:</strong>
+<%= invoice.description %>
+</p>
+
+<p>
+<strong>Amount:</strong>
+R<%= Number(invoice.amount || 0).toFixed(2) %>
+</p>
+
+<p>
+<strong>Paid:</strong>
+R<%= Number(invoice.amount_paid || 0).toFixed(2) %>
+</p>
+
+<p>
+<strong>Balance:</strong>
+R<%= Number(invoice.balance || 0).toFixed(2) %>
+</p>
+
+<p>
+<strong>Status:</strong>
+<%= invoice.status %>
+</p>
+
+<p>
+<small>
+Issued:
+<%= invoice.created_at %>
+</small>
+</p>
+
+</div>
+
+<% }) %>
+
+<% } %>
+
+
+
+<!-- ========================================
+     PAYMENT HISTORY
+========================================= -->
+
+<h2>
+💳 Payment History
+</h2>
+
+
+<% if (payments.length === 0) { %>
+
+<div class="dashboard-card">
+
+<p>
+No payments have been recorded yet.
+</p>
+
+</div>
+
+<% } else { %>
+
+
+<% payments.forEach(payment => { %>
+
+<div class="dashboard-card">
+
+<h3>
+<%= payment.invoice_number %>
+</h3>
+
+<p>
+<strong>Amount Paid:</strong>
+R<%= Number(payment.amount_paid || 0).toFixed(2) %>
+</p>
+
+<p>
+<strong>Payment Method:</strong>
+<%= payment.payment_method || "-" %>
+</p>
+
+<p>
+<strong>Reference:</strong>
+<%= payment.reference_number || "-" %>
+</p>
+
+<p>
+<strong>Date:</strong>
+<%= payment.payment_date || payment.created_at %>
+</p>
+
+</div>
+
+<% }) %>
+
+<% } %>
+
+
+
+<!-- ========================================
+     RECEIPTS
+========================================= -->
+
+<h2>
+🧾 Receipts
+</h2>
+
+
+<% if (receipts.length === 0) { %>
+
+<div class="dashboard-card">
+
+<p>
+No receipts have been issued yet.
+</p>
+
+</div>
+
+<% } else { %>
+
+
+<% receipts.forEach(receipt => { %>
+
+<div class="dashboard-card">
+
+<h3>
+<%= receipt.receipt_number %>
+</h3>
+
+<p>
+<strong>Invoice:</strong>
+<%= receipt.invoice_number %>
+</p>
+
+<p>
+<strong>Amount:</strong>
+R<%= Number(receipt.amount || 0).toFixed(2) %>
+</p>
+
+<p>
+<strong>Payment Method:</strong>
+<%= receipt.payment_method || "-" %>
+</p>
+
+<p>
+<strong>Reference:</strong>
+<%= receipt.reference_number || "-" %>
+</p>
+
+<p>
+<strong>Date:</strong>
+<%= receipt.created_at %>
+</p>
+
+</div>
+
+<% }) %>
+
+<% } %>
+
+
+</main>
+
+
+</body>
+
+</html>
