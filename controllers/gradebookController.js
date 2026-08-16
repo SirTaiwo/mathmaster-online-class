@@ -111,8 +111,10 @@ const assessmentPerformance =
     // ALL ASSESSMENT RESULTS
     // ========================================
 
-    const results =
-        Gradebook.getAllResults();
+  const results =
+    Gradebook.getTeacherResults(
+        teacherId
+    );
 
 
     // ========================================
