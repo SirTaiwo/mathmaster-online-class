@@ -21,6 +21,14 @@ exports.index = (req, res) => {
 const summary =
     Submission.getGradebookSummary();
 
+    const scorePercentage =
+    summary.total_possible_marks > 0
+        ? Math.round(
+            (summary.total_marks /
+                summary.total_possible_marks) * 100
+          )
+        : 0;
+
 
     res.render(
         "teacher-gradebook",
@@ -31,7 +39,9 @@ const summary =
 
             submissions,
 
-            summary
+            summary,
+
+            scorePercentage
 
         }
     );

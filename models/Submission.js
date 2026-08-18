@@ -240,6 +240,10 @@ function findAll() {
 // TEACHER GRADEBOOK SUMMARY
 // ========================================
 
+// ========================================
+// TEACHER GRADEBOOK SUMMARY
+// ========================================
+
 function getGradebookSummary() {
 
     return db.prepare(`
@@ -257,9 +261,16 @@ function getGradebookSummary() {
                 END
             ) AS incorrect_answers,
 
-            SUM(marks) AS total_marks
+            SUM(submissions.marks) AS total_marks,
+
+            SUM(exercises.marks) AS total_possible_marks
 
         FROM submissions
+
+        JOIN exercises
+
+        ON submissions.exercise_id =
+           exercises.id
 
     `).get();
 
