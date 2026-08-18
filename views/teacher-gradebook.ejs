@@ -59,6 +59,67 @@ Student Performance
 
 </div>
 
+<!-- ========================================
+     GRADEBOOK SUMMARY
+========================================= -->
+
+<div class="dashboard-grid" style="margin-top: 25px;">
+
+
+<div class="dashboard-card">
+
+<p class="eyebrow">
+TOTAL ATTEMPTS
+</p>
+
+<h2>
+<%= summary.total_attempts || 0 %>
+</h2>
+
+</div>
+
+
+<div class="dashboard-card">
+
+<p class="eyebrow">
+CORRECT ANSWERS
+</p>
+
+<h2>
+<%= summary.correct_answers || 0 %>
+</h2>
+
+</div>
+
+
+<div class="dashboard-card">
+
+<p class="eyebrow">
+INCORRECT ANSWERS
+</p>
+
+<h2>
+<%= summary.incorrect_answers || 0 %>
+</h2>
+
+</div>
+
+
+<div class="dashboard-card">
+
+<p class="eyebrow">
+TOTAL MARKS
+</p>
+
+<h2>
+<%= summary.total_marks || 0 %>
+</h2>
+
+</div>
+
+
+</div>
+
 
 
 

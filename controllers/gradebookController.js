@@ -15,8 +15,11 @@ const Course =
 exports.index = (req, res) => {
 
 
-    const submissions =
-        Submission.findAll();
+   const submissions =
+    Submission.findAll();
+
+const summary =
+    Submission.getGradebookSummary();
 
 
     res.render(
@@ -26,7 +29,9 @@ exports.index = (req, res) => {
             user:
                 req.session.student,
 
-            submissions
+            submissions,
+
+            summary
 
         }
     );
