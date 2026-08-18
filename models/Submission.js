@@ -235,6 +235,36 @@ function findAll() {
 
 
 }
+
+// ========================================
+// TEACHER GRADEBOOK SUMMARY
+// ========================================
+
+function getGradebookSummary() {
+
+    return db.prepare(`
+
+        SELECT
+
+            COUNT(*) AS total_attempts,
+
+            SUM(correct) AS correct_answers,
+
+            SUM(
+                CASE
+                    WHEN correct = 0 THEN 1
+                    ELSE 0
+                END
+            ) AS incorrect_answers,
+
+            SUM(marks) AS total_marks
+
+        FROM submissions
+
+    `).get();
+
+}
+
 module.exports = {
 
     createSubmission,
@@ -247,6 +277,8 @@ module.exports = {
 
     findCoursePerformance,
 
-    findAll
+    findAll,
+
+    getGradebookSummary
 
 };
