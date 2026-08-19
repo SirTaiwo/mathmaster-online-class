@@ -78,8 +78,19 @@ exports.courseGradebook = (req, res) => {
     const students =
         Submission.findCoursePerformance(
             req.params.courseId
-        );
+        ).map(student => ({
 
+            ...student,
+
+            scorePercentage:
+                student.total_possible_marks > 0
+                    ? Math.round(
+                        (student.marks /
+                         student.total_possible_marks) * 100
+                      )
+                    : 0
+
+        }));
 
 
     res.render(

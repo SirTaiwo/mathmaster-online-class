@@ -224,7 +224,6 @@ function getStudentExercisePerformance(studentId) {
 
 function findCoursePerformance(courseId) {
 
-
     return db.prepare(`
 
         SELECT
@@ -235,49 +234,48 @@ function findCoursePerformance(courseId) {
             COUNT(submissions.id)
             AS attempts,
 
-
             SUM(submissions.correct)
             AS correct,
 
+            SUM(
+                CASE
+                    WHEN submissions.correct = 0 THEN 1
+                    ELSE 0
+                END
+            ) AS incorrect,
 
             SUM(submissions.marks)
-            AS marks
+            AS marks,
 
-
+            SUM(exercises.marks)
+            AS total_possible_marks
 
         FROM submissions
-
 
         JOIN students
 
         ON submissions.student_id =
            students.id
 
-
         JOIN exercises
 
         ON submissions.exercise_id =
            exercises.id
-
 
         JOIN lessons
 
         ON exercises.lesson_id =
            lessons.id
 
-
         WHERE lessons.course_id = ?
 
-
         GROUP BY students.id
-
 
     `).all(
 
         courseId
 
     );
-
 
 }
 
