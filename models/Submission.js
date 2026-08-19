@@ -240,10 +240,6 @@ function findAll() {
 // TEACHER GRADEBOOK SUMMARY
 // ========================================
 
-// ========================================
-// TEACHER GRADEBOOK SUMMARY
-// ========================================
-
 function getGradebookSummary() {
 
     return db.prepare(`
@@ -276,6 +272,58 @@ function getGradebookSummary() {
 
 }
 
+// ========================================
+// STUDENT GRADEBOOK SUMMARY
+// ========================================
+
+function getStudentGradebookSummary() {
+
+    return db.prepare(`
+
+        SELECT
+
+            students.id AS student_id,
+
+            students.first_name,
+
+            students.last_name,
+
+            COUNT(submissions.id) AS total_attempts,
+
+            SUM(submissions.correct) AS correct_answers,
+
+            SUM(
+                CASE
+                    WHEN submissions.correct = 0 THEN 1
+                    ELSE 0
+                END
+            ) AS incorrect_answers,
+
+            SUM(submissions.marks) AS total_marks,
+
+            SUM(exercises.marks) AS total_possible_marks
+
+        FROM submissions
+
+        JOIN students
+
+        ON submissions.student_id =
+           students.id
+
+        JOIN exercises
+
+        ON submissions.exercise_id =
+           exercises.id
+
+        GROUP BY students.id
+
+        ORDER BY students.first_name,
+                 students.last_name
+
+    `).all();
+
+}
+
 module.exports = {
 
     createSubmission,
@@ -290,6 +338,8 @@ module.exports = {
 
     findAll,
 
-    getGradebookSummary
+    getGradebookSummary,
+
+    getStudentGradebookSummary
 
 };

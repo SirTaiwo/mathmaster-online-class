@@ -136,6 +136,103 @@ OVERALL SCORE
 
 <div class="dashboard-card">
 
+     <!-- ========================================
+     STUDENT GRADEBOOK SUMMARY
+========================================= -->
+
+<div class="dashboard-card" style="margin-top: 25px;">
+
+<h2>
+Student Gradebook Summary
+</h2>
+
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>
+Student
+</th>
+
+<th>
+Attempts
+</th>
+
+<th>
+Correct
+</th>
+
+<th>
+Incorrect
+</th>
+
+<th>
+Marks
+</th>
+
+<th>
+Score
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+<% studentSummaries.forEach(function(student){ %>
+
+<tr>
+
+<td>
+<%= student.first_name %>
+<%= student.last_name %>
+</td>
+
+<td>
+<%= student.total_attempts %>
+</td>
+
+<td>
+<%= student.correct_answers %>
+</td>
+
+<td>
+<%= student.incorrect_answers %>
+</td>
+
+<td>
+<%= student.total_marks %>
+/
+<%= student.total_possible_marks %>
+</td>
+
+<td>
+
+<%= student.total_possible_marks > 0
+    ? Math.round(
+        (student.total_marks /
+        student.total_possible_marks) * 100
+      )
+    : 0
+%>%
+
+</td>
+
+</tr>
+
+<% }); %>
+
+</tbody>
+
+</table>
+
+</div>
+
 
 <table>
 

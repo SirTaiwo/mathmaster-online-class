@@ -21,6 +21,9 @@ exports.index = (req, res) => {
 const summary =
     Submission.getGradebookSummary();
 
+    const studentSummaries =
+    Submission.getStudentGradebookSummary();
+
     const scorePercentage =
     summary.total_possible_marks > 0
         ? Math.round(
@@ -40,6 +43,8 @@ const summary =
             submissions,
 
             summary,
+
+            studentSummaries,
 
             scorePercentage
 
