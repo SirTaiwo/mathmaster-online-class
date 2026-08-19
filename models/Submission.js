@@ -71,6 +71,49 @@ function findByStudent(
 }
 
 // ========================================
+// STUDENT EXERCISE HISTORY
+// ========================================
+
+function getStudentExerciseHistory(studentId) {
+
+    return db.prepare(`
+
+        SELECT
+
+            submissions.id,
+
+            submissions.answer,
+
+            submissions.correct,
+
+            submissions.marks,
+
+            submissions.created_at,
+
+            exercises.question,
+
+            exercises.marks AS possible_marks
+
+        FROM submissions
+
+        JOIN exercises
+
+        ON submissions.exercise_id =
+           exercises.id
+
+        WHERE submissions.student_id = ?
+
+        ORDER BY submissions.created_at DESC
+
+    `).all(
+
+        studentId
+
+    );
+
+}
+
+// ========================================
 // FIND SUBMISSIONS BY STUDENT AND EXERCISE
 // ========================================
 
@@ -375,6 +418,8 @@ module.exports = {
     createSubmission,
 
     findByStudent,
+
+    getStudentExerciseHistory,
 
     findByStudentAndExercise,
 

@@ -25,6 +25,11 @@ exports.viewPerformance = (req, res) => {
         studentId
     );
 
+    const exerciseHistory =
+    Submission.getStudentExerciseHistory(
+        studentId
+    );
+
 
     const student =
         Student.findById(
@@ -60,7 +65,6 @@ exports.viewPerformance = (req, res) => {
         AssessmentResult.getPerformanceStatus(
             studentId
         );
-
 
     // ========================================
     // DISPLAY STATUS
@@ -293,7 +297,9 @@ exports.viewPerformance = (req, res) => {
 
             insight,
 
-            exercisePerformance
+            exercisePerformance,
+
+            exerciseHistory
 
         }
 
@@ -325,8 +331,16 @@ exports.studentPerformance = (req, res) => {
     const trend =
         AssessmentResult.getProgressTrend(studentId);
 
-    const performanceStatus =
-        AssessmentResult.getPerformanceStatus(studentId);
+
+    const exercisePerformance =
+        Submission.getStudentExercisePerformance(
+            studentId
+        );
+
+const exerciseHistory =
+    Submission.getStudentExerciseHistory(
+        studentId
+    );
 
 
     let status = {
@@ -520,7 +534,9 @@ exports.studentPerformance = (req, res) => {
             feedback,
             status,
             trend,
-            insight
+            insight,
+            exercisePerformance,
+            exerciseHistory
         }
     );
 

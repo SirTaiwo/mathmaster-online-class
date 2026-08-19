@@ -286,6 +286,79 @@ marks
 
 
 <h2>
+📝 Exercise Attempt History
+</h2>
+
+
+<% if (exerciseHistory && exerciseHistory.length > 0) { %>
+
+<div class="dashboard-card">
+
+<table>
+
+<thead>
+<tr>
+<th>Exercise</th>
+<th>Answer</th>
+<th>Status</th>
+<th>Marks</th>
+<th>Date</th>
+</tr>
+</thead>
+
+<tbody>
+
+<% exerciseHistory.forEach(attempt => { %>
+
+<tr>
+
+<td>
+<%= attempt.question %>
+</td>
+
+<td>
+<%= attempt.answer %>
+</td>
+
+<td>
+<%= attempt.correct ? "✅ Correct" : "❌ Incorrect" %>
+</td>
+
+<td>
+<%= attempt.marks %> / <%= attempt.possible_marks %>
+</td>
+
+<td>
+<%= new Date(attempt.created_at.replace(" ", "T")).toLocaleString("en-ZA", {
+day: "2-digit",
+month: "short",
+year: "numeric",
+hour: "2-digit",
+minute: "2-digit",
+hour12: false
+}) %>
+</td>
+
+</tr>
+
+<% }) %>
+
+</tbody>
+
+</table>
+
+</div>
+
+<% } else { %>
+
+<div class="dashboard-card">
+<p>No exercise attempts have been recorded yet.</p>
+</div>
+
+<% } %>
+
+
+<h2>
 Assessment History
 </h2>
 
