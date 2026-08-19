@@ -129,6 +129,52 @@ function getStudentSummary(studentId) {
 
 
 }
+
+// ========================================
+// STUDENT EXERCISE PERFORMANCE SUMMARY
+// ========================================
+
+function getStudentExercisePerformance(studentId) {
+
+    return db.prepare(`
+
+        SELECT
+
+            COUNT(*) AS attempted,
+
+            SUM(submissions.correct)
+                AS correct_answers,
+
+            SUM(
+                CASE
+                    WHEN submissions.correct = 0 THEN 1
+                    ELSE 0
+                END
+            ) AS incorrect_answers,
+
+            SUM(submissions.marks)
+                AS total_marks,
+
+            SUM(exercises.marks)
+                AS total_possible_marks
+
+        FROM submissions
+
+        JOIN exercises
+
+        ON submissions.exercise_id =
+           exercises.id
+
+        WHERE submissions.student_id = ?
+
+    `).get(
+
+        studentId
+
+    );
+
+}
+
 // ========================================
 // COURSE PERFORMANCE SUMMARY
 // ========================================
@@ -333,6 +379,8 @@ module.exports = {
     findByStudentAndExercise,
 
     getStudentSummary,
+
+    getStudentExercisePerformance,
 
     findCoursePerformance,
 

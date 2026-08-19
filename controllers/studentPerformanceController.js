@@ -7,6 +7,9 @@ const AssessmentResult =
 const StudentFeedback =
     require("../models/StudentFeedback");
 
+    const Submission =
+    require("../models/Submission");
+
 
 // ========================================
 // VIEW STUDENT PERFORMANCE
@@ -16,6 +19,11 @@ exports.viewPerformance = (req, res) => {
 
     const studentId =
         req.params.id;
+
+  const exercisePerformance =
+    Submission.getStudentExercisePerformance(
+        studentId
+    );
 
 
     const student =
@@ -283,7 +291,9 @@ exports.viewPerformance = (req, res) => {
 
             trend,
 
-            insight
+            insight,
+
+            exercisePerformance
 
         }
 
