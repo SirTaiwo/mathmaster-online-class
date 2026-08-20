@@ -228,6 +228,8 @@ function findCoursePerformance(courseId) {
 
         SELECT
 
+        students.id AS student_id,
+
             students.first_name,
             students.last_name,
 
