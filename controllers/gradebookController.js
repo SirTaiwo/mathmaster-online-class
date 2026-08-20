@@ -78,20 +78,64 @@ exports.courseGradebook = (req, res) => {
     const students =
         Submission.findCoursePerformance(
             req.params.courseId
-        ).map(student => ({
+               ).map(student => {
 
-            ...student,
-
-            scorePercentage:
+            const scorePercentage =
                 student.total_possible_marks > 0
                     ? Math.round(
                         (student.marks /
                          student.total_possible_marks) * 100
                       )
-                    : 0
+                    : 0;
 
-        }));
+            let performanceStatus = "No Activity";
+            let performanceIcon = "⚪";
 
+            if (student.attempts > 0) {
+
+                if (scorePercentage >= 80) {
+
+                    performanceStatus = "Excellent";
+                    performanceIcon = "🟢";
+
+                }
+
+                else if (scorePercentage >= 70) {
+
+                    performanceStatus = "Good";
+                    performanceIcon = "🔵";
+
+                }
+
+                else if (scorePercentage >= 50) {
+
+                    performanceStatus = "Satisfactory";
+                    performanceIcon = "🟡";
+
+                }
+
+                else {
+
+                    performanceStatus = "Needs Improvement";
+                    performanceIcon = "🔴";
+
+                }
+
+            }
+
+            return {
+
+                ...student,
+
+                scorePercentage,
+
+                performanceStatus,
+
+                performanceIcon
+
+            };
+
+        });
 
     res.render(
         "course-gradebook",

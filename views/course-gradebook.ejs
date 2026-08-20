@@ -87,6 +87,10 @@ Marks
 Score
 </th>
 
+<th>
+Performance
+</th>
+
 </tr>
 
 <% students.forEach(function(student){ %>
@@ -118,6 +122,11 @@ Score
 
 <td>
 <%= student.scorePercentage %>%
+</td>
+
+<td>
+<%= student.performanceIcon %>
+<%= student.performanceStatus %>
 </td>
 
 </tr>
