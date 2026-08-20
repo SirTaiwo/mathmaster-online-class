@@ -228,59 +228,116 @@ function findCoursePerformance(courseId) {
 
         SELECT
 
-        students.id AS student_id,
+            students.id AS student_id,
 
             students.first_name,
+
             students.last_name,
 
             COUNT(submissions.id)
             AS attempts,
 
-            SUM(submissions.correct)
+            COALESCE(
+                SUM(submissions.correct),
+                0
+            )
             AS correct,
 
-            SUM(
-                CASE
-                    WHEN submissions.correct = 0 THEN 1
-                    ELSE 0
-                END
-            ) AS incorrect,
+            COALESCE(
+                SUM(
+                    CASE
+                        WHEN submissions.id IS NOT NULL
+                        THEN 1 - submissions.correct
+                        ELSE 0
+                    END
+                ),
+                0
+            )
+            AS incorrect,
 
-            SUM(submissions.marks)
+            COALESCE(
+                SUM(submissions.marks),
+                0
+            )
             AS marks,
 
-            SUM(exercises.marks)
+            COALESCE(
+                SUM(submissions.possible_marks),
+                0
+            )
             AS total_possible_marks
 
-        FROM submissions
+
+        FROM enrollments
+
 
         JOIN students
+
+        ON enrollments.student_id =
+           students.id
+
+
+        LEFT JOIN (
+
+            SELECT
+
+                submissions.id,
+
+                submissions.student_id,
+
+                submissions.correct,
+
+                submissions.marks,
+
+                exercises.marks AS possible_marks
+
+            FROM submissions
+
+            JOIN exercises
+
+            ON submissions.exercise_id =
+               exercises.id
+
+            JOIN lessons
+
+            ON exercises.lesson_id =
+               lessons.id
+
+            WHERE lessons.course_id = ?
+
+        ) AS submissions
 
         ON submissions.student_id =
            students.id
 
-        JOIN exercises
 
-        ON submissions.exercise_id =
-           exercises.id
+        WHERE enrollments.course_id = ?
 
-        JOIN lessons
 
-        ON exercises.lesson_id =
-           lessons.id
+        GROUP BY
 
-        WHERE lessons.course_id = ?
+            students.id,
 
-        GROUP BY students.id
+            students.first_name,
+
+            students.last_name
+
+
+        ORDER BY
+
+            students.last_name,
+
+            students.first_name
 
     `).all(
+
+        courseId,
 
         courseId
 
     );
 
 }
-
 
 
 
