@@ -122,6 +122,61 @@ NEEDS SUPPORT
 
 
 <!-- ========================================
+     COURSE PERFORMANCE ANALYTICS
+========================================= -->
+
+<div class="dashboard-card" style="margin-bottom: 30px;">
+
+<p class="eyebrow">
+COURSE PERFORMANCE ANALYTICS
+</p>
+
+<div class="dashboard-grid">
+
+<div class="dashboard-card">
+
+<p class="eyebrow">
+HIGHEST SCORE
+</p>
+
+<h2>
+<%= highestScore %>%
+</h2>
+
+</div>
+
+
+<div class="dashboard-card">
+
+<p class="eyebrow">
+LOWEST SCORE
+</p>
+
+<h2>
+<%= lowestScore %>%
+</h2>
+
+</div>
+
+
+<div class="dashboard-card">
+
+<p class="eyebrow">
+PASS RATE
+</p>
+
+<h2>
+<%= passRate %>%
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ========================================
      TOP PERFORMING STUDENTS
 ========================================= -->
 
@@ -202,7 +257,70 @@ No students have completed any course activity yet.
 </div>
 
 
-<table>
+<!-- ========================================
+     STUDENT SEARCH & FILTER
+========================================= -->
+
+<div class="dashboard-card" style="margin-bottom: 25px;">
+
+<p class="eyebrow">
+STUDENT FILTER
+</p>
+
+<div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
+
+<input
+    type="text"
+    id="studentSearch"
+    placeholder="Search student..."
+    style="padding: 10px; min-width: 250px;"
+>
+
+<select
+    id="performanceFilter"
+    style="padding: 10px;"
+>
+
+<option value="all">
+All Students
+</option>
+
+<option value="Excellent">
+Excellent
+</option>
+
+<option value="Good">
+Good
+</option>
+
+<option value="Satisfactory">
+Satisfactory
+</option>
+
+<option value="Needs Improvement">
+Needs Improvement
+</option>
+
+<option value="No Activity">
+No Activity
+</option>
+
+</select>
+
+<button
+    type="button"
+    onclick="clearStudentFilters()"
+    style="padding: 10px 15px;"
+>
+Clear Filters
+</button>
+
+</div>
+
+</div>
+
+
+<table id="studentGradebookTable">
 
 <tr>
 
@@ -280,13 +398,161 @@ Performance
 
 </div>
 
-<!-- TOP PERFORMING STUDENTS -->
 
-<div class="dashboard-card">
-    ...
-</div>
+<script>
 
-<table>
+const studentSearch =
+    document.getElementById("studentSearch");
+
+const performanceFilter =
+    document.getElementById("performanceFilter");
+
+const studentGradebookTable =
+    document.getElementById("studentGradebookTable");
+
+
+function filterStudents() {
+
+    const searchTerm =
+        studentSearch.value
+            .toLowerCase()
+            .trim();
+
+    const selectedPerformance =
+        performanceFilter.value;
+
+    const rows =
+        studentGradebookTable.querySelectorAll(
+            "tr:not(:first-child)"
+        );
+
+    let visibleStudents = 0;
+
+    rows.forEach(function(row) {
+
+        const studentName =
+            row.cells[0]
+                ? row.cells[0].innerText
+                    .toLowerCase()
+                    .trim()
+                : "";
+
+        const performance =
+            row.cells[6]
+                ? row.cells[6].innerText
+                    .trim()
+                : "";
+
+        const matchesSearch =
+            studentName.includes(
+                searchTerm
+            );
+
+        const matchesPerformance =
+            selectedPerformance === "all" ||
+            performance.includes(
+                selectedPerformance
+            );
+
+        if (
+            matchesSearch &&
+            matchesPerformance
+        ) {
+
+            row.style.display = "";
+
+            visibleStudents++;
+
+        } else {
+
+            row.style.display = "none";
+
+        }
+
+    });
+
+    updateNoResultsMessage(
+        visibleStudents
+    );
+
+}
+
+
+function updateNoResultsMessage(
+    visibleStudents
+) {
+
+    let message =
+        document.getElementById(
+            "studentFilterNoResults"
+        );
+
+    if (visibleStudents === 0) {
+
+        if (!message) {
+
+            message =
+                document.createElement(
+                    "p"
+                );
+
+            message.id =
+                "studentFilterNoResults";
+
+            message.textContent =
+                "No students match the selected filters.";
+
+            message.style.textAlign =
+                "center";
+
+            message.style.padding =
+                "20px";
+
+            studentGradebookTable
+                .parentNode
+                .insertBefore(
+                    message,
+                    studentGradebookTable
+                );
+
+        }
+
+    } else {
+
+        if (message) {
+
+            message.remove();
+
+        }
+
+    }
+
+}
+
+
+function clearStudentFilters() {
+
+    studentSearch.value = "";
+
+    performanceFilter.value = "all";
+
+    filterStudents();
+
+}
+
+
+studentSearch.addEventListener(
+    "input",
+    filterStudents
+);
+
+performanceFilter.addEventListener(
+    "change",
+    filterStudents
+);
+
+</script>
+
 
 <!-- ========================================
      PERFORMANCE DISTRIBUTION

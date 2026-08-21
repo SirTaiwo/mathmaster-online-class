@@ -186,6 +186,46 @@ exports.courseGradebook = (req, res) => {
                 "Needs Improvement"
         ).length;
 
+        // ========================================
+// COURSE PERFORMANCE ANALYTICS
+// ========================================
+
+const activeStudentRecords =
+    students.filter(
+        student => student.attempts > 0
+    );
+
+const highestScore =
+    activeStudentRecords.length > 0
+        ? Math.max(
+            ...activeStudentRecords.map(
+                student => student.scorePercentage
+            )
+          )
+        : 0;
+
+const lowestScore =
+    activeStudentRecords.length > 0
+        ? Math.min(
+            ...activeStudentRecords.map(
+                student => student.scorePercentage
+            )
+          )
+        : 0;
+
+const passingStudents =
+    activeStudentRecords.filter(
+        student => student.scorePercentage >= 50
+    ).length;
+
+const passRate =
+    activeStudentRecords.length > 0
+        ? Math.round(
+            (passingStudents /
+             activeStudentRecords.length) * 100
+          )
+        : 0;
+
             // ========================================
     // TOP PERFORMING STUDENTS
     // ========================================
@@ -239,20 +279,25 @@ exports.courseGradebook = (req, res) => {
 
             course,
 
-            students,
+students,
 
-            totalStudents,
+totalStudents,
 
-            activeStudents,
+activeStudents,
 
-            courseAverage,
+courseAverage,
 
-            studentsNeedingSupport,
+studentsNeedingSupport,
 
-            performanceDistribution,
+highestScore,
 
-            topPerformingStudents
+lowestScore,
 
+passRate,
+
+performanceDistribution,
+
+topPerformingStudents
         }
     );
 
