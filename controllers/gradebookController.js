@@ -74,6 +74,25 @@ exports.courseGradebook = (req, res) => {
 
     }
 
+        // ========================================
+    // VERIFY COURSE OWNERSHIP
+    // ========================================
+
+    const isAdmin =
+        req.session.student.role === "admin";
+
+    const isCourseOwner =
+        course.teacher_id ===
+        req.session.student.id;
+
+    if (!isAdmin && !isCourseOwner) {
+
+        return res.redirect(
+            "/teacher/courses"
+        );
+
+    }
+
 
     const students =
         Submission.findCoursePerformance(
