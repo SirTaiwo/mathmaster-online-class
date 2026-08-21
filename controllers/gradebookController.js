@@ -186,6 +186,22 @@ exports.courseGradebook = (req, res) => {
                 "Needs Improvement"
         ).length;
 
+            // ========================================
+    // TOP PERFORMING STUDENTS
+    // ========================================
+
+    const topPerformingStudents =
+        students
+            .filter(
+                student => student.attempts > 0
+            )
+            .sort(
+                (a, b) =>
+                    b.scorePercentage -
+                    a.scorePercentage
+            )
+            .slice(0, 5);
+
     // ========================================
     // PERFORMANCE DISTRIBUTION
     // ========================================
@@ -233,7 +249,9 @@ exports.courseGradebook = (req, res) => {
 
             studentsNeedingSupport,
 
-            performanceDistribution
+            performanceDistribution,
+
+            topPerformingStudents
 
         }
     );

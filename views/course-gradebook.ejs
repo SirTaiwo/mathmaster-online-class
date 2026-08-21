@@ -121,6 +121,87 @@ NEEDS SUPPORT
 </div>
 
 
+<!-- ========================================
+     TOP PERFORMING STUDENTS
+========================================= -->
+
+<div class="dashboard-card" style="margin-bottom: 30px;">
+
+<p class="eyebrow">
+TOP PERFORMING STUDENTS
+</p>
+
+<h2>
+Highest Course Scores
+</h2>
+
+<% if (topPerformingStudents.length > 0) { %>
+
+<table>
+
+<tr>
+
+<th>
+Rank
+</th>
+
+<th>
+Student
+</th>
+
+<th>
+Score
+</th>
+
+<th>
+Performance
+</th>
+
+</tr>
+
+<% topPerformingStudents.forEach(function(student, index){ %>
+
+<tr>
+
+<td>
+<%= index + 1 %>
+</td>
+
+<td>
+<a href="/teacher/students/<%= student.student_id %>/performance">
+<%= student.first_name %>
+<%= student.last_name %>
+</a>
+</td>
+
+<td>
+<strong>
+<%= student.scorePercentage %>%
+</strong>
+</td>
+
+<td>
+<%= student.performanceIcon %>
+<%= student.performanceStatus %>
+</td>
+
+</tr>
+
+<% }) %>
+
+</table>
+
+<% } else { %>
+
+<p>
+No students have completed any course activity yet.
+</p>
+
+<% } %>
+
+</div>
+
+
 <table>
 
 <tr>
@@ -196,6 +277,16 @@ Performance
 <% }) %>
 
 </table>
+
+</div>
+
+<!-- TOP PERFORMING STUDENTS -->
+
+<div class="dashboard-card">
+    ...
+</div>
+
+<table>
 
 <!-- ========================================
      PERFORMANCE DISTRIBUTION
