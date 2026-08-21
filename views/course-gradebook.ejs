@@ -10,6 +10,8 @@ Course Gradebook
 
 <link rel="stylesheet" href="/css/style.css">
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 
@@ -194,5 +196,100 @@ Performance
 <% }) %>
 
 </table>
+
+<!-- ========================================
+     PERFORMANCE DISTRIBUTION
+========================================= -->
+
+<div class="dashboard-card" style="margin-top: 30px;">
+
+<p class="eyebrow">
+PERFORMANCE DISTRIBUTION
+</p>
+
+<h2>
+Student Performance Overview
+</h2>
+
+<p style="color: #666; margin-bottom: 20px;">
+Students grouped by their current course performance level.
+</p>
+
+<div style="max-width: 700px; margin: 0 auto;">
+
+<canvas id="performanceDistributionChart"></canvas>
+
+</div>
+
+</div>
+
+<script>
+
+const performanceData = {
+
+    excellent: <%= performanceDistribution.excellent %>,
+    good: <%= performanceDistribution.good %>,
+    satisfactory: <%= performanceDistribution.satisfactory %>,
+    needsImprovement: <%= performanceDistribution.needsImprovement %>,
+    noActivity: <%= performanceDistribution.noActivity %>
+
+};
+
+const performanceCtx =
+    document.getElementById(
+        "performanceDistributionChart"
+    );
+
+new Chart(
+    performanceCtx,
+    {
+        type: "bar",
+
+        data: {
+
+            labels: [
+                "Excellent",
+                "Good",
+                "Satisfactory",
+                "Needs Improvement",
+                "No Activity"
+            ],
+
+            datasets: [{
+
+                label: "Students",
+
+                data: [
+                    performanceData.excellent,
+                    performanceData.good,
+                    performanceData.satisfactory,
+                    performanceData.needsImprovement,
+                    performanceData.noActivity
+                ]
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            scales: {
+
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        precision: 0
+                    }
+                }
+
+            }
+
+        }
+    }
+);
+
+</script>
 
 </html>

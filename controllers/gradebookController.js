@@ -167,6 +167,34 @@ exports.courseGradebook = (req, res) => {
                 "Needs Improvement"
         ).length;
 
+    // ========================================
+    // PERFORMANCE DISTRIBUTION
+    // ========================================
+
+    const performanceDistribution = {
+
+        excellent: students.filter(
+            student => student.performanceStatus === "Excellent"
+        ).length,
+
+        good: students.filter(
+            student => student.performanceStatus === "Good"
+        ).length,
+
+        satisfactory: students.filter(
+            student => student.performanceStatus === "Satisfactory"
+        ).length,
+
+        needsImprovement: students.filter(
+            student => student.performanceStatus === "Needs Improvement"
+        ).length,
+
+        noActivity: students.filter(
+            student => student.performanceStatus === "No Activity"
+        ).length
+
+    };
+
     res.render(
         "course-gradebook",
         {
@@ -184,7 +212,9 @@ exports.courseGradebook = (req, res) => {
 
             courseAverage,
 
-            studentsNeedingSupport
+            studentsNeedingSupport,
+
+            performanceDistribution
 
         }
     );
