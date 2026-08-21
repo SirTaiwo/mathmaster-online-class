@@ -137,6 +137,36 @@ exports.courseGradebook = (req, res) => {
 
         });
 
+            // ========================================
+    // COURSE GRADEBOOK SUMMARY
+    // ========================================
+
+    const totalStudents =
+        students.length;
+
+    const activeStudents =
+        students.filter(
+            student => student.attempts > 0
+        ).length;
+
+    const courseAverage =
+        totalStudents > 0
+            ? Math.round(
+                students.reduce(
+                    (total, student) =>
+                        total + student.scorePercentage,
+                    0
+                ) / totalStudents
+              )
+            : 0;
+
+    const studentsNeedingSupport =
+        students.filter(
+            student =>
+                student.performanceStatus ===
+                "Needs Improvement"
+        ).length;
+
     res.render(
         "course-gradebook",
         {
@@ -146,7 +176,15 @@ exports.courseGradebook = (req, res) => {
 
             course,
 
-            students
+            students,
+
+            totalStudents,
+
+            activeStudents,
+
+            courseAverage,
+
+            studentsNeedingSupport
 
         }
     );
