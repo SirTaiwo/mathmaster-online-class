@@ -14,15 +14,23 @@ const Course =
 
 exports.index = (req, res) => {
 
+    const teacherId =
+        req.session.student.id;
 
-   const submissions =
-    Submission.findAll();
+    const submissions =
+        Submission.findAllByTeacher(
+            teacherId
+        );
 
-const summary =
-    Submission.getGradebookSummary();
+    const summary =
+        Submission.getGradebookSummaryByTeacher(
+            teacherId
+        );
 
     const studentSummaries =
-    Submission.getStudentGradebookSummary();
+        Submission.getStudentGradebookSummaryByTeacher(
+            teacherId
+        );
 
     const scorePercentage =
     summary.total_possible_marks > 0

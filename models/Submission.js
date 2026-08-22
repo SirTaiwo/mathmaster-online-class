@@ -470,6 +470,93 @@ function getStudentGradebookSummary() {
 
 }
 
+// ========================================
+// TEACHER-SPECIFIC GRADEBOOK
+// ========================================
+
+function findAllByTeacher(teacherId) {
+
+    return db.prepare(`SELECT
+            submissions.*,
+            students.first_name,
+            students.last_name,
+            exercises.question
+        FROM submissions
+        JOIN students
+            ON submissions.student_id = students.id
+        JOIN exercises
+            ON submissions.exercise_id = exercises.id
+        JOIN lessons
+            ON exercises.lesson_id = lessons.id
+        JOIN courses
+            ON lessons.course_id = courses.id
+        WHERE courses.teacher_id = ?
+        ORDER BY submissions.created_at DESC
+    `).all(teacherId);
+
+}
+
+
+function getGradebookSummaryByTeacher(teacherId) {
+
+    return db.prepare(`SELECT
+            COUNT(*) AS total_attempts,
+            SUM(submissions.correct) AS correct_answers,
+            SUM(
+                CASE
+                    WHEN submissions.correct = 0 THEN 1
+                    ELSE 0
+                END
+            ) AS incorrect_answers,
+            SUM(submissions.marks) AS total_marks,
+            SUM(exercises.marks) AS total_possible_marks
+        FROM submissions
+        JOIN exercises
+            ON submissions.exercise_id = exercises.id
+        JOIN lessons
+            ON exercises.lesson_id = lessons.id
+        JOIN courses
+            ON lessons.course_id = courses.id
+        WHERE courses.teacher_id = ?
+    `).get(teacherId);
+
+}
+
+
+function getStudentGradebookSummaryByTeacher(teacherId) {
+
+    return db.prepare(`SELECT
+            students.id AS student_id,
+            students.first_name,
+            students.last_name,
+            COUNT(submissions.id) AS total_attempts,
+            SUM(submissions.correct) AS correct_answers,
+            SUM(
+                CASE
+                    WHEN submissions.correct = 0 THEN 1
+                    ELSE 0
+                END
+            ) AS incorrect_answers,
+            SUM(submissions.marks) AS total_marks,
+            SUM(exercises.marks) AS total_possible_marks
+        FROM submissions
+        JOIN students
+            ON submissions.student_id = students.id
+        JOIN exercises
+            ON submissions.exercise_id = exercises.id
+        JOIN lessons
+            ON exercises.lesson_id = lessons.id
+        JOIN courses
+            ON lessons.course_id = courses.id
+        WHERE courses.teacher_id = ?
+        GROUP BY students.id
+        ORDER BY students.first_name,
+                 students.last_name
+    `).all(teacherId);
+
+}
+
+
 module.exports = {
 
     createSubmission,
@@ -490,6 +577,12 @@ module.exports = {
 
     getGradebookSummary,
 
-    getStudentGradebookSummary
+    getStudentGradebookSummary,
+
+    findAllByTeacher,
+
+    getGradebookSummaryByTeacher,
+
+    getStudentGradebookSummaryByTeacher
 
 };
