@@ -210,6 +210,10 @@ function getTeacherAnalytics(teacherId) {
             AS highest_score,
 
 
+            MIN(assessment_results.percentage)
+            AS lowest_score,
+
+
             SUM(
                 CASE
                     WHEN assessment_results.percentage >= 50
