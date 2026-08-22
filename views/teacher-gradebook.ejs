@@ -140,6 +140,7 @@ OVERALL SCORE
      STUDENT GRADEBOOK SUMMARY
 ========================================= -->
 
+
 <div class="dashboard-card" style="margin-top: 25px;">
 
 <h2>
@@ -234,8 +235,83 @@ Score
 </div>
 
 
+<!-- ========================================
+     EXERCISE PERFORMANCE
+========================================= -->
+
+<div class="dashboard-card" style="margin-top: 25px;">
+
+<h2>
+Exercise Performance
+</h2>
+
 <table>
 
+<thead>
+
+<tr>
+
+<th>Exercise</th>
+<th>Attempts</th>
+<th>Correct</th>
+<th>Incorrect</th>
+<th>Marks</th>
+<th>Score</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<% exercisePerformance.forEach(function(exercise){ %>
+
+<tr>
+
+<td>
+<%= exercise.question %>
+</td>
+
+<td>
+<%= exercise.attempts %>
+</td>
+
+<td>
+<%= exercise.correct_answers %>
+</td>
+
+<td>
+<%= exercise.incorrect_answers %>
+</td>
+
+<td>
+<%= exercise.total_marks %>
+/
+<%= exercise.total_possible_marks %>
+</td>
+
+<td>
+<%= exercise.total_possible_marks > 0
+    ? Math.round(
+        (exercise.total_marks /
+         exercise.total_possible_marks) * 100
+      )
+    : 0
+%>%
+</td>
+
+</tr>
+
+<% }); %>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<table>
 
 <tr>
 

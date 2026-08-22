@@ -556,6 +556,65 @@ function getStudentGradebookSummaryByTeacher(teacherId) {
 
 }
 
+// ========================================
+// TEACHER EXERCISE PERFORMANCE
+// ========================================
+
+function getExercisePerformanceByTeacher(teacherId) {
+
+    return db.prepare(`
+
+        SELECT
+
+            exercises.id AS exercise_id,
+
+            exercises.question,
+
+            COUNT(submissions.id)
+                AS attempts,
+
+            SUM(submissions.correct)
+                AS correct_answers,
+
+            SUM(
+                CASE
+                    WHEN submissions.correct = 0
+                    THEN 1
+                    ELSE 0
+                END
+            )
+                AS incorrect_answers,
+
+            SUM(submissions.marks)
+                AS total_marks,
+
+            SUM(exercises.marks)
+                AS total_possible_marks
+
+        FROM submissions
+
+        JOIN exercises
+            ON submissions.exercise_id =
+               exercises.id
+
+        JOIN lessons
+            ON exercises.lesson_id =
+               lessons.id
+
+        JOIN courses
+            ON lessons.course_id =
+               courses.id
+
+        WHERE courses.teacher_id = ?
+
+        GROUP BY exercises.id
+
+        ORDER BY exercises.question
+
+    `).all(teacherId);
+
+}
+
 
 module.exports = {
 
@@ -583,6 +642,8 @@ module.exports = {
 
     getGradebookSummaryByTeacher,
 
-    getStudentGradebookSummaryByTeacher
+    getStudentGradebookSummaryByTeacher,
+
+    getExercisePerformanceByTeacher
 
 };
