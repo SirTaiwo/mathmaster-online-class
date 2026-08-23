@@ -236,6 +236,92 @@ Score
 
 
 <!-- ========================================
+     EXERCISE ANALYTICS
+========================================= -->
+
+<div class="dashboard-grid" style="margin-top: 25px;">
+
+<div class="dashboard-card">
+
+<p class="eyebrow">
+TOTAL EXERCISES
+</p>
+
+<h2>
+<%= exerciseAnalytics.total_exercises || 0 %>
+</h2>
+
+</div>
+
+
+<div class="dashboard-card">
+
+<p class="eyebrow">
+AVERAGE SCORE
+</p>
+
+<h2>
+<%= exerciseAnalytics.average_score || 0 %>%
+</h2>
+
+</div>
+
+
+<div class="dashboard-card">
+
+<p class="eyebrow">
+HIGHEST SCORE
+</p>
+
+<h2>
+<%= exerciseAnalytics.highest_score || 0 %>%
+</h2>
+
+</div>
+
+
+<div class="dashboard-card">
+
+<p class="eyebrow">
+LOWEST SCORE
+</p>
+
+<h2>
+<%= exerciseAnalytics.lowest_score || 0 %>%
+</h2>
+
+</div>
+
+
+<div class="dashboard-card">
+
+<p class="eyebrow">
+PASSING EXERCISES
+</p>
+
+<h2>
+<%= exerciseAnalytics.passing_exercises || 0 %>
+</h2>
+
+</div>
+
+
+<div class="dashboard-card">
+
+<p class="eyebrow">
+NEEDS SUPPORT
+</p>
+
+<h2>
+<%= exerciseAnalytics.exercises_needing_support || 0 %>
+</h2>
+
+</div>
+
+</div>
+
+
+<!-- ========================================
      EXERCISE PERFORMANCE
 ========================================= -->
 

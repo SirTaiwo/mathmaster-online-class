@@ -615,6 +615,87 @@ function getExercisePerformanceByTeacher(teacherId) {
 
 }
 
+// ========================================
+// TEACHER EXERCISE ANALYTICS
+// ========================================
+
+function getExerciseAnalyticsByTeacher(teacherId) {
+
+    const exercises =
+        getExercisePerformanceByTeacher(
+            teacherId
+        );
+
+    const totalExercises =
+        exercises.length;
+
+    const scores =
+        exercises.map(exercise => {
+
+            return exercise.total_possible_marks > 0
+                ? Math.round(
+                    (exercise.total_marks /
+                     exercise.total_possible_marks) * 100
+                  )
+                : 0;
+
+        });
+
+    const averageScore =
+        totalExercises > 0
+            ? Math.round(
+                scores.reduce(
+                    (total, score) =>
+                        total + score,
+                    0
+                ) / totalExercises
+              )
+            : 0;
+
+    const highestScore =
+        totalExercises > 0
+            ? Math.max(...scores)
+            : 0;
+
+    const lowestScore =
+        totalExercises > 0
+            ? Math.min(...scores)
+            : 0;
+
+    const passingExercises =
+        scores.filter(
+            score => score >= 50
+        ).length;
+
+    const exercisesNeedingSupport =
+        scores.filter(
+            score => score < 50
+        ).length;
+
+    return {
+
+        total_exercises:
+            totalExercises,
+
+        average_score:
+            averageScore,
+
+        highest_score:
+            highestScore,
+
+        lowest_score:
+            lowestScore,
+
+        passing_exercises:
+            passingExercises,
+
+        exercises_needing_support:
+            exercisesNeedingSupport
+
+    };
+
+}
+
 
 module.exports = {
 
@@ -644,6 +725,8 @@ module.exports = {
 
     getStudentGradebookSummaryByTeacher,
 
-    getExercisePerformanceByTeacher
+    getExercisePerformanceByTeacher,
+
+    getExerciseAnalyticsByTeacher
 
 };

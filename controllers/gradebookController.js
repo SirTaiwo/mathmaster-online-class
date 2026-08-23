@@ -37,6 +37,11 @@ exports.index = (req, res) => {
             teacherId
         );
 
+    const exerciseAnalytics =
+        Submission.getExerciseAnalyticsByTeacher(
+            teacherId
+        );
+
     const scorePercentage =
     summary.total_possible_marks > 0
         ? Math.round(
@@ -60,6 +65,8 @@ exports.index = (req, res) => {
             studentSummaries,
 
             exercisePerformance,
+
+            exerciseAnalytics,
 
             scorePercentage
 
