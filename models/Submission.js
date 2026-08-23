@@ -149,9 +149,18 @@ function findByStudentAndExercise(
 
 function findById(id) {
 
-    return db.prepare().get(id);
+    return db.prepare(`
+
+        SELECT *
+
+        FROM submissions
+
+        WHERE id = ?
+
+    `).get(id);
 
 }
+
 
 // ========================================
 // STUDENT PERFORMANCE SUMMARY
