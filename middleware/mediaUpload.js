@@ -80,11 +80,30 @@ const fileFilter =
         ];
 
 
-        if (
-            allowedTypes.includes(
-                file.mimetype
-            )
-        ) {
+      const baseMimeType =
+    file.mimetype.split(";")[0];
+
+
+const extension =
+    path.extname(
+        file.originalname
+    ).toLowerCase();
+
+
+const isAllowedMimeType =
+    allowedTypes.includes(
+        baseMimeType
+    );
+
+
+const isAllowedWebm =
+    extension === ".webm";
+
+
+if (
+    isAllowedMimeType ||
+    isAllowedWebm
+) {
 
             cb(
                 null,

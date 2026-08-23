@@ -97,11 +97,14 @@ router.post(
 
 
         const mediaType =
-            req.file.mimetype.startsWith(
-                "video/"
-            )
-                ? "video"
-                : "audio";
+    req.body.recordingType === "video"
+        ? "video"
+        : "audio";
+
+        const mimeType =
+    mediaType === "video"
+        ? "video/webm"
+        : "audio/webm";
 
 
         const filePath =
@@ -120,7 +123,7 @@ router.post(
 
                 filePath,
 
-                req.file.mimetype,
+                mimeType,
 
                 null,
 

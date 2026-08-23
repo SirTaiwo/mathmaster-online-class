@@ -451,10 +451,41 @@ async function startRecording(type) {
         recordedBlob = null;
 
 
-        const mimeType =
-            type === "video"
-                ? "video/webm"
-                : "audio/webm";
+       const supportedMimeTypes =
+    type === "video"
+        ? [
+            "video/webm;codecs=vp8,opus",
+            "video/webm;codecs=vp9,opus",
+            "video/webm"
+        ]
+        : [
+            "audio/webm;codecs=opus",
+            "audio/webm"
+        ];
+
+
+const mimeType =
+    supportedMimeTypes.find(
+        type =>
+            MediaRecorder.isTypeSupported(type)
+    );
+
+
+if (!mimeType) {
+
+    recordingStatus.textContent =
+        `Your browser does not support recording ${type} in a compatible format.`;
+
+    mediaStream
+        .getTracks()
+        .forEach(
+            track =>
+                track.stop()
+        );
+
+    return;
+
+}
 
 
         mediaRecorder =
@@ -611,7 +642,6 @@ async function uploadRecording() {
 
     }
 
-
     const formData =
         new FormData();
 
@@ -620,7 +650,10 @@ async function uploadRecording() {
         recordingType === "video"
             ? "webm"
             : "webm";
-
+formData.append(
+    "recordingType",
+    recordingType
+);
 
     formData.append(
         "recording",
