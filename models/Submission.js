@@ -144,6 +144,16 @@ function findByStudentAndExercise(
 }
 
 // ========================================
+// FIND SUBMISSION BY ID
+// ========================================
+
+function findById(id) {
+
+    return db.prepare().get(id);
+
+}
+
+// ========================================
 // STUDENT PERFORMANCE SUMMARY
 // ========================================
 
@@ -700,6 +710,8 @@ function getExerciseAnalyticsByTeacher(teacherId) {
 module.exports = {
 
     createSubmission,
+
+    findById,
 
     findByStudent,
 

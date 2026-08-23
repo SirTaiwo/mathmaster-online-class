@@ -42,3 +42,6 @@ uploads/
 # ==========================
 .DS_Store
 Thumbs.db
+# Uploaded student audio/video recordings
+public/media/recordings/*
+!public/media/recordings/.gitkeep

@@ -205,10 +205,448 @@ You have not attempted this exercise yet.
 
 
 
+<!-- ========================================
+     RECORD YOUR WORK
+========================================= -->
+
+<hr>
+
+<h3>
+🎙️ Record Your Work
+</h3>
+
+<p>
+You can record an audio or video explanation of your answer.
+</p>
+
+<div style="display: flex; gap: 10px; flex-wrap: wrap;">
+
+<button
+    type="button"
+    class="btn primary"
+    id="startAudioBtn">
+
+    🎙️ Start Audio Recording
+
+</button>
+
+
+<button
+    type="button"
+    class="btn primary"
+    id="startVideoBtn">
+
+    🎥 Start Video Recording
+
+</button>
+
+
+<button
+    type="button"
+    class="btn"
+    id="stopRecordingBtn"
+    disabled>
+
+    ⏹️ Stop Recording
+
+</button>
+
+</div>
+
+
+<div
+    id="recordingStatus"
+    style="margin-top: 15px;">
+
+    Ready to record.
+
+</div>
+
+
+<div
+    id="videoPreviewContainer"
+    style="display: none; margin-top: 20px;">
+
+    <video
+        id="videoPreview"
+        controls
+        style="max-width: 100%; width: 500px;">
+    </video>
+
+</div>
+
+
+<div
+    id="audioPreviewContainer"
+    style="display: none; margin-top: 20px;">
+
+    <audio
+        id="audioPreview"
+        controls>
+    </audio>
+
+</div>
+
+
+<button
+    type="button"
+    class="btn primary"
+    id="uploadRecordingBtn"
+    style="display: none; margin-top: 15px;">
+
+    ⬆️ Upload Recording
+
+</button>
+
+
+<div
+    id="uploadStatus"
+    style="margin-top: 10px;">
+</div>
+
+
 </div>
 
 
 </main>
+
+
+<script>
+
+let mediaRecorder = null;
+let mediaStream = null;
+let recordedChunks = [];
+let recordedBlob = null;
+let recordingType = null;
+
+
+const startAudioBtn =
+    document.getElementById("startAudioBtn");
+
+const startVideoBtn =
+    document.getElementById("startVideoBtn");
+
+const stopRecordingBtn =
+    document.getElementById("stopRecordingBtn");
+
+const uploadRecordingBtn =
+    document.getElementById("uploadRecordingBtn");
+
+const recordingStatus =
+    document.getElementById("recordingStatus");
+
+const uploadStatus =
+    document.getElementById("uploadStatus");
+
+const audioPreview =
+    document.getElementById("audioPreview");
+
+const videoPreview =
+    document.getElementById("videoPreview");
+
+
+// ========================================
+// START RECORDING
+// ========================================
+
+async function startRecording(type) {
+
+    try {
+
+        recordingType = type;
+
+        const constraints =
+            type === "video"
+                ? {
+                    audio: true,
+                    video: true
+                }
+                : {
+                    audio: true
+                };
+
+
+        mediaStream =
+            await navigator.mediaDevices
+                .getUserMedia(constraints);
+
+
+        recordedChunks = [];
+
+        recordedBlob = null;
+
+
+        const mimeType =
+            type === "video"
+                ? "video/webm"
+                : "audio/webm";
+
+
+        mediaRecorder =
+            new MediaRecorder(
+                mediaStream,
+                {
+                    mimeType
+                }
+            );
+
+
+        mediaRecorder.ondataavailable =
+            function(event) {
+
+                if (event.data.size > 0) {
+
+                    recordedChunks.push(
+                        event.data
+                    );
+
+                }
+
+            };
+
+
+        mediaRecorder.onstop =
+            function() {
+
+                recordedBlob =
+                    new Blob(
+                        recordedChunks,
+                        {
+                            type: mimeType
+                        }
+                    );
+
+
+                const previewUrl =
+                    URL.createObjectURL(
+                        recordedBlob
+                    );
+
+
+                if (recordingType === "video") {
+
+                    videoPreview.src =
+                        previewUrl;
+
+                    videoPreview.style.display =
+                        "block";
+
+                    audioPreview.style.display =
+                        "none";
+
+                } else {
+
+                    audioPreview.src =
+                        previewUrl;
+
+                    audioPreview.style.display =
+                        "block";
+
+                    videoPreview.style.display =
+                        "none";
+
+                }
+
+
+                uploadRecordingBtn.style.display =
+                    "inline-block";
+
+
+                recordingStatus.textContent =
+                    "Recording finished. You can preview it before uploading.";
+
+
+                if (mediaStream) {
+
+                    mediaStream
+                        .getTracks()
+                        .forEach(
+                            track =>
+                                track.stop()
+                        );
+
+                }
+
+            };
+
+
+        mediaRecorder.start();
+
+
+        startAudioBtn.disabled = true;
+        startVideoBtn.disabled = true;
+        stopRecordingBtn.disabled = false;
+        uploadRecordingBtn.style.display = "none";
+
+
+        recordingStatus.textContent =
+            type === "video"
+                ? "🎥 Video recording in progress..."
+                : "🎤 Audio recording in progress...";
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        recordingStatus.textContent =
+            "Unable to access your microphone or camera. Please check your browser permissions.";
+
+    }
+
+}
+
+
+// ========================================
+// STOP RECORDING
+// ========================================
+
+function stopRecording() {
+
+    if (
+        mediaRecorder &&
+        mediaRecorder.state !== "inactive"
+    ) {
+
+        mediaRecorder.stop();
+
+    }
+
+
+    startAudioBtn.disabled = false;
+    startVideoBtn.disabled = false;
+    stopRecordingBtn.disabled = true;
+
+}
+
+
+// ========================================
+// UPLOAD RECORDING
+// ========================================
+
+async function uploadRecording() {
+
+    if (!recordedBlob) {
+
+        uploadStatus.textContent =
+            "There is no recording to upload.";
+
+        return;
+
+    }
+
+
+    const formData =
+        new FormData();
+
+
+    const extension =
+        recordingType === "video"
+            ? "webm"
+            : "webm";
+
+
+    formData.append(
+        "recording",
+        recordedBlob,
+        `exercise-${<%= exercise.id %>}-${Date.now()}.${extension}`
+    );
+
+
+    uploadStatus.textContent =
+        "Uploading recording...";
+
+
+    uploadRecordingBtn.disabled = true;
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/student/exercises/<%= exercise.id %>/recording",
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok || !data.success) {
+
+            throw new Error(
+                data.message ||
+                "Recording upload failed."
+            );
+
+        }
+
+
+        uploadStatus.textContent =
+            "✅ Recording uploaded successfully.";
+
+
+        uploadRecordingBtn.disabled =
+            false;
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        uploadStatus.textContent =
+            "❌ " + error.message;
+
+        uploadRecordingBtn.disabled =
+            false;
+
+    }
+
+}
+
+
+// ========================================
+// BUTTON EVENTS
+// ========================================
+
+startAudioBtn.addEventListener(
+    "click",
+    function() {
+
+        startRecording("audio");
+
+    }
+);
+
+
+startVideoBtn.addEventListener(
+    "click",
+    function() {
+
+        startRecording("video");
+
+    }
+);
+
+
+stopRecordingBtn.addEventListener(
+    "click",
+    stopRecording
+);
+
+
+uploadRecordingBtn.addEventListener(
+    "click",
+    uploadRecording
+);
+
+</script>
 
 
 </body>

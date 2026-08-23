@@ -189,19 +189,23 @@ if (
         "❌ Incorrect. Try again.";
 
 }
-Submission.createSubmission(
+const submissionResult =
+    Submission.createSubmission(
 
-    req.session.student.id,
+        req.session.student.id,
 
-    exercise.id,
+        exercise.id,
 
-    studentAnswer,
+        studentAnswer,
 
-    correct,
+        correct,
 
-    marks
+        marks
 
-);
+    );
+
+const submissionId =
+    submissionResult.lastInsertRowid;
 
 
 
