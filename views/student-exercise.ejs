@@ -304,6 +304,81 @@ You can record an audio or video explanation of your answer.
     style="margin-top: 10px;">
 </div>
 
+<!-- ========================================
+     SAVED RECORDINGS
+========================================= -->
+
+<hr>
+
+<h3>
+📁 My Saved Recordings
+</h3>
+
+<% if (recordings && recordings.length > 0) { %>
+
+    <% recordings.forEach(function(recording) { %>
+
+        <div
+            class="dashboard-card"
+            style="margin-top: 15px;">
+
+            <p>
+                <strong>
+                    <%= recording.media_type === "video"
+                        ? "🎥 Video Recording"
+                        : "🎙️ Audio Recording" %>
+                </strong>
+            </p>
+
+            <p>
+                Recorded:
+                <%= recording.created_at %>
+            </p>
+
+            <% if (recording.media_type === "video") { %>
+
+                <video
+                    controls
+                    preload="metadata"
+                    style="max-width: 100%; width: 500px;">
+
+                    <source
+                        src="<%= recording.file_path %>"
+                        type="<%= recording.mime_type %>">
+
+                    Your browser does not support video playback.
+
+                </video>
+
+            <% } else { %>
+
+                <audio
+                    controls
+                    preload="metadata"
+                    style="width: 100%;">
+
+                    <source
+                        src="<%= recording.file_path %>"
+                        type="<%= recording.mime_type %>">
+
+                    Your browser does not support audio playback.
+
+                </audio>
+
+            <% } %>
+
+        </div>
+
+    <% }) %>
+
+<% } else { %>
+
+    <p>
+        You have not saved any audio or video recordings for this exercise yet.
+    </p>
+
+<% } %>
+
 
 </div>
 

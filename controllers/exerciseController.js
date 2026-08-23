@@ -7,6 +7,9 @@ const Lesson =
 const Submission =
     require("../models/Submission");
 
+    const MediaRecording =
+    require("../models/MediaRecording");
+
 
 // ========================================
 // CREATE EXERCISE FORM
@@ -115,6 +118,15 @@ exports.viewExercise = (req, res) => {
 
         );
 
+        const recordings =
+    MediaRecording.findByStudentAndExercise(
+
+        req.session.student.id,
+
+        exercise.id
+
+    );
+
 
     res.render(
         "student-exercise",
@@ -126,6 +138,8 @@ exports.viewExercise = (req, res) => {
             exercise,
 
             submissions,
+
+            recordings,
 
             result: null
 
@@ -219,6 +233,16 @@ const submissionId =
         );
 
 
+        const recordings =
+        MediaRecording.findByStudentAndExercise(
+
+            req.session.student.id,
+
+            exercise.id
+
+        );
+
+
     res.render(
         "student-exercise",
         {
@@ -229,6 +253,8 @@ const submissionId =
             exercise,
 
             submissions,
+
+            recordings,
 
             result
 

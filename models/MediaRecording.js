@@ -106,6 +106,45 @@ function findBySubmission(submission_id) {
 
 }
 
+// ========================================
+// FIND RECORDINGS BY STUDENT AND EXERCISE
+// ========================================
+
+function findByStudentAndExercise(
+    student_id,
+    exercise_id
+) {
+
+    return db.prepare(`
+
+        SELECT
+
+            media_recordings.*,
+
+            submissions.answer,
+            submissions.correct,
+            submissions.marks
+
+        FROM media_recordings
+
+        JOIN submissions
+
+        ON media_recordings.submission_id =
+           submissions.id
+
+        WHERE media_recordings.student_id = ?
+
+        AND submissions.exercise_id = ?
+
+        ORDER BY media_recordings.created_at DESC
+
+    `).all(
+        student_id,
+        exercise_id
+    );
+
+}
+
 
 module.exports = {
 
@@ -115,6 +154,8 @@ module.exports = {
 
     findByStudent,
 
-    findBySubmission
+    findBySubmission,
+
+    findByStudentAndExercise
 
 };
