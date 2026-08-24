@@ -430,6 +430,9 @@ const uploadStatus =
 const audioPreview =
     document.getElementById("audioPreview");
 
+    const audioPreviewContainer =
+    document.getElementById("audioPreviewContainer");
+
 const videoPreview =
     document.getElementById("videoPreview");
 
@@ -570,7 +573,7 @@ if (!mimeType) {
     videoPreview.src =
         previewUrl;
 
-        videoPreview.load();
+    videoPreview.load();
 
     videoPreviewContainer.style.display =
         "block";
@@ -578,12 +581,11 @@ if (!mimeType) {
     videoPreview.style.display =
         "block";
 
-    audioPreview.style.display =
+    audioPreviewContainer.style.display =
         "none";
 
-}
-
-                if (recordingType === "video") {
+    audioPreview.style.display =
+        "none";
 
     liveVideoPreview.srcObject =
         null;
@@ -591,27 +593,32 @@ if (!mimeType) {
     liveVideoContainer.style.display =
         "none";
 
-}else {
+} else {
 
-                    audioPreview.src =
-                        previewUrl;
+    audioPreview.src =
+        previewUrl;
 
-                    audioPreview.style.display =
-                        "block";
+    audioPreview.load();
 
-                    videoPreview.style.display =
-                        "none";
+    audioPreviewContainer.style.display =
+        "block";
 
-                }
+    audioPreview.style.display =
+        "block";
 
+    videoPreviewContainer.style.display =
+        "none";
 
-                uploadRecordingBtn.style.display =
-                    "inline-block";
+    videoPreview.style.display =
+        "none";
 
+}
 
-                recordingStatus.textContent =
-                    "Recording finished. You can preview it before uploading.";
+uploadRecordingBtn.style.display =
+    "inline-block";
 
+recordingStatus.textContent =
+    "Recording finished. You can preview it before uploading.";
 
                 if (mediaStream) {
 
