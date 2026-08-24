@@ -262,6 +262,20 @@ You can record an audio or video explanation of your answer.
 
 </div>
 
+<div
+    id="liveVideoContainer"
+    style="display: none; margin-top: 20px;">
+
+    <video
+        id="liveVideoPreview"
+        autoplay
+        muted
+        playsinline
+        style="max-width: 100%; width: 500px;">
+    </video>
+
+</div>
+
 
 <div
     id="videoPreviewContainer"
@@ -419,6 +433,15 @@ const audioPreview =
 const videoPreview =
     document.getElementById("videoPreview");
 
+    const videoPreviewContainer =
+    document.getElementById("videoPreviewContainer");
+
+    const liveVideoContainer =
+    document.getElementById("liveVideoContainer");
+
+const liveVideoPreview =
+    document.getElementById("liveVideoPreview");
+
 
 // ========================================
 // START RECORDING
@@ -444,6 +467,19 @@ async function startRecording(type) {
         mediaStream =
             await navigator.mediaDevices
                 .getUserMedia(constraints);
+
+                if (type === "video") {
+
+    liveVideoPreview.srcObject =
+        mediaStream;
+
+    liveVideoContainer.style.display =
+        "block";
+
+    videoPreviewContainer.style.display =
+        "none";
+
+}
 
 
         recordedChunks = [];
@@ -531,16 +567,31 @@ if (!mimeType) {
 
                 if (recordingType === "video") {
 
-                    videoPreview.src =
-                        previewUrl;
+    videoPreview.src =
+        previewUrl;
 
-                    videoPreview.style.display =
-                        "block";
+        videoPreview.load();
 
-                    audioPreview.style.display =
-                        "none";
+    videoPreviewContainer.style.display =
+        "block";
 
-                } else {
+    videoPreview.style.display =
+        "block";
+
+    audioPreview.style.display =
+        "none";
+
+}
+
+                if (recordingType === "video") {
+
+    liveVideoPreview.srcObject =
+        null;
+
+    liveVideoContainer.style.display =
+        "none";
+
+}else {
 
                     audioPreview.src =
                         previewUrl;
@@ -591,6 +642,7 @@ if (!mimeType) {
                 : "🎤 Audio recording in progress...";
 
     }
+
 
     catch (error) {
 
