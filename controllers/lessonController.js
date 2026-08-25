@@ -4,6 +4,9 @@ const Lesson =
 const Course =
     require("../models/Course");
 
+    const MediaRecording =
+    require("../models/MediaRecording");
+
 
 // ========================================
 // VIEW COURSE LESSONS
@@ -43,6 +46,11 @@ exports.lessons = (req, res) => {
             Exercise.findByLesson(
                 lesson.id
             );
+
+            lesson.recordings =
+    MediaRecording.findByLesson(
+        lesson.id
+    );
 
     });
 

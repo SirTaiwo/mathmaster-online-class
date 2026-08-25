@@ -496,7 +496,7 @@ CREATE TABLE IF NOT EXISTS class_students (
 
 // ========================================
 // CREATE MEDIA RECORDINGS TABLE
-// AUDIO AND VIDEO CAPTURES
+// TEACHER LESSON AUDIO AND VIDEO
 // ========================================
 
 db.prepare(`
@@ -504,9 +504,9 @@ CREATE TABLE IF NOT EXISTS media_recordings (
 
     id INTEGER PRIMARY KEY AUTOINCREMENT,
 
-    student_id INTEGER NOT NULL,
+    teacher_id INTEGER NOT NULL,
 
-    submission_id INTEGER,
+    lesson_id INTEGER NOT NULL,
 
     media_type TEXT NOT NULL,
 
@@ -520,11 +520,11 @@ CREATE TABLE IF NOT EXISTS media_recordings (
 
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 
-    FOREIGN KEY(student_id)
+    FOREIGN KEY(teacher_id)
         REFERENCES students(id),
 
-    FOREIGN KEY(submission_id)
-        REFERENCES submissions(id)
+    FOREIGN KEY(lesson_id)
+        REFERENCES lessons(id)
 
 )
 `).run();

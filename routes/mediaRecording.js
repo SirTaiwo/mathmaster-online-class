@@ -11,141 +11,227 @@ const {
 const upload =
     require("../middleware/mediaUpload");
 
-const Exercise =
-    require("../models/Exercise");
-
-const Submission =
-    require("../models/Submission");
+const Lesson =
+    require("../models/Lesson");
 
 const MediaRecording =
     require("../models/MediaRecording");
 
+const db =
+    require("../database/database");
+
 
 // ========================================
-// STUDENT UPLOAD MEDIA RECORDING
+// TEACHER UPLOAD LESSON MEDIA
+// AUDIO / VIDEO
 // ========================================
 
 router.post(
 
-    "/student/exercises/:id/recording",
+    "/teacher/lessons/:id/recording",
 
-    requireRole("student"),
+    requireRole("teacher", "admin"),
 
     upload.single("recording"),
 
     (req, res) => {
 
-        const exercise =
-            Exercise.findById(
-                req.params.id
+        try {
+
+            const lessonId =
+                req.params.id;
+
+
+            // ========================================
+            // FIND LESSON
+            // ========================================
+
+            const lesson =
+                Lesson.findById(
+                    lessonId
+                );
+
+
+            if (!lesson) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message:
+                        "Lesson not found."
+
+                });
+
+            }
+
+
+            // ========================================
+            // VERIFY TEACHER OWNS THE COURSE
+            // ========================================
+
+            if (
+                req.session.student.role === "teacher"
+            ) {
+
+                const course =
+                    db.prepare(`
+
+                        SELECT
+                            id,
+                            teacher_id
+
+                        FROM courses
+
+                        WHERE id = ?
+
+                    `).get(
+                        lesson.course_id
+                    );
+
+
+                if (
+                    !course ||
+                    course.teacher_id !==
+                    req.session.student.id
+                ) {
+
+                    return res.status(403).json({
+
+                        success: false,
+
+                        message:
+                            "You are not authorised to record media for this lesson."
+
+                    });
+
+                }
+
+            }
+
+
+            // ========================================
+            // CHECK UPLOAD
+            // ========================================
+
+            if (!req.file) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "No recording was uploaded."
+
+                });
+
+            }
+
+
+            // ========================================
+            // TEACHER ID
+            // ========================================
+
+            const teacherId =
+                req.session.student.id;
+
+
+            // ========================================
+            // DETERMINE MEDIA TYPE
+            // ========================================
+
+            const mediaType =
+                req.body.recordingType === "video"
+                    ? "video"
+                    : "audio";
+
+
+            // ========================================
+            // DETERMINE MIME TYPE
+            // ========================================
+
+            const mimeType =
+                mediaType === "video"
+                    ? "video/webm"
+                    : "audio/webm";
+
+
+            // ========================================
+            // FILE PATH
+            // ========================================
+
+            const filePath =
+                "/media/recordings/" +
+                req.file.filename;
+
+
+            // ========================================
+            // SAVE RECORDING
+            // ========================================
+
+            const result =
+                MediaRecording.createRecording(
+
+                    teacherId,
+
+                    lessonId,
+
+                    mediaType,
+
+                    filePath,
+
+                    mimeType,
+
+                    null,
+
+                    req.file.size
+
+                );
+
+
+            // ========================================
+            // RESPONSE
+            // ========================================
+
+            return res.json({
+
+                success: true,
+
+                recording_id:
+                    result.lastInsertRowid,
+
+                media_type:
+                    mediaType,
+
+                mime_type:
+                    mimeType,
+
+                file_path:
+                    filePath,
+
+                file_size:
+                    req.file.size
+
+            });
+
+        } catch (error) {
+
+            console.error(
+                "Lesson media upload error:",
+                error
             );
 
 
-        if (!exercise) {
-
-            return res.status(404).json({
+            return res.status(500).json({
 
                 success: false,
 
                 message:
-                    "Exercise not found."
+                    "Unable to save the recording."
 
             });
 
         }
-
-
-        if (!req.file) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                message:
-                    "No recording was uploaded."
-
-            });
-
-        }
-
-
-        const studentId =
-            req.session.student.id;
-
-
-        const submissions =
-            Submission.findByStudentAndExercise(
-
-                studentId,
-
-                exercise.id
-
-            );
-
-
-        const latestSubmission =
-            submissions &&
-            submissions.length > 0
-                ? submissions[0]
-                : null;
-
-
-        const submissionId =
-            latestSubmission
-                ? latestSubmission.id
-                : null;
-
-
-        const mediaType =
-    req.body.recordingType === "video"
-        ? "video"
-        : "audio";
-
-        const mimeType =
-    mediaType === "video"
-        ? "video/webm"
-        : "audio/webm";
-
-
-        const filePath =
-            "/media/recordings/" +
-            req.file.filename;
-
-
-        const result =
-            MediaRecording.createRecording(
-
-                studentId,
-
-                submissionId,
-
-                mediaType,
-
-                filePath,
-
-                mimeType,
-
-                null,
-
-                req.file.size
-
-            );
-
-
-        return res.json({
-
-            success: true,
-
-            recording_id:
-                result.lastInsertRowid,
-
-            media_type:
-                mediaType,
-
-            file_path:
-                filePath
-
-        });
 
     }
 

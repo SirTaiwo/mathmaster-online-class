@@ -3,12 +3,12 @@ const db =
 
 
 // ========================================
-// CREATE MEDIA RECORDING
+// CREATE TEACHER LESSON RECORDING
 // ========================================
 
 function createRecording(
-    student_id,
-    submission_id,
+    teacher_id,
+    lesson_id,
     media_type,
     file_path,
     mime_type,
@@ -20,8 +20,8 @@ function createRecording(
 
         INSERT INTO media_recordings
         (
-            student_id,
-            submission_id,
+            teacher_id,
+            lesson_id,
             media_type,
             file_path,
             mime_type,
@@ -33,8 +33,8 @@ function createRecording(
 
     `).run(
 
-        student_id,
-        submission_id,
+        teacher_id,
+        lesson_id,
         media_type,
         file_path,
         mime_type,
@@ -66,10 +66,10 @@ function findById(id) {
 
 
 // ========================================
-// FIND RECORDINGS BY STUDENT
+// FIND RECORDINGS BY LESSON
 // ========================================
 
-function findByStudent(student_id) {
+function findByLesson(lesson_id) {
 
     return db.prepare(`
 
@@ -77,20 +77,20 @@ function findByStudent(student_id) {
 
         FROM media_recordings
 
-        WHERE student_id = ?
+        WHERE lesson_id = ?
 
         ORDER BY created_at DESC
 
-    `).all(student_id);
+    `).all(lesson_id);
 
 }
 
 
 // ========================================
-// FIND RECORDINGS BY SUBMISSION
+// FIND RECORDINGS BY TEACHER
 // ========================================
 
-function findBySubmission(submission_id) {
+function findByTeacher(teacher_id) {
 
     return db.prepare(`
 
@@ -98,50 +98,57 @@ function findBySubmission(submission_id) {
 
         FROM media_recordings
 
-        WHERE submission_id = ?
+        WHERE teacher_id = ?
 
         ORDER BY created_at DESC
 
-    `).all(submission_id);
+    `).all(teacher_id);
 
 }
 
+
 // ========================================
-// FIND RECORDINGS BY STUDENT AND EXERCISE
+// FIND RECORDINGS BY TEACHER AND LESSON
 // ========================================
 
-function findByStudentAndExercise(
-    student_id,
-    exercise_id
+function findByTeacherAndLesson(
+    teacher_id,
+    lesson_id
 ) {
 
     return db.prepare(`
 
-        SELECT
-
-            media_recordings.*,
-
-            submissions.answer,
-            submissions.correct,
-            submissions.marks
+        SELECT *
 
         FROM media_recordings
 
-        JOIN submissions
+        WHERE teacher_id = ?
 
-        ON media_recordings.submission_id =
-           submissions.id
+        AND lesson_id = ?
 
-        WHERE media_recordings.student_id = ?
-
-        AND submissions.exercise_id = ?
-
-        ORDER BY media_recordings.created_at DESC
+        ORDER BY created_at DESC
 
     `).all(
-        student_id,
-        exercise_id
+        teacher_id,
+        lesson_id
     );
+
+}
+
+
+// ========================================
+// DELETE RECORDING
+// ========================================
+
+function deleteRecording(id) {
+
+    return db.prepare(`
+
+        DELETE FROM media_recordings
+
+        WHERE id = ?
+
+    `).run(id);
 
 }
 
@@ -152,10 +159,12 @@ module.exports = {
 
     findById,
 
-    findByStudent,
+    findByLesson,
 
-    findBySubmission,
+    findByTeacher,
 
-    findByStudentAndExercise
+    findByTeacherAndLesson,
+
+    deleteRecording
 
 };

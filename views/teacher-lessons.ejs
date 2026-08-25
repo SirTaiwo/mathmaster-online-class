@@ -162,6 +162,177 @@ Manage Questions
 </h3>
 
 
+<!-- ========================================
+     TEACHER LESSON RECORDING
+========================================= -->
+
+<hr>
+
+<h3>
+🎙️ Lesson Audio & Video
+</h3>
+
+<p>
+Record an audio or video explanation for this lesson.
+</p>
+
+<div
+    class="lesson-recorder"
+    data-lesson-id="<%= lesson.id %>"
+    style="margin-top: 15px;">
+
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+
+        <button
+            type="button"
+            class="btn primary start-audio-btn">
+            🎙️ Start Audio Recording
+        </button>
+
+        <button
+            type="button"
+            class="btn primary start-video-btn">
+            🎥 Start Video Recording
+        </button>
+
+        <button
+            type="button"
+            class="btn stop-recording-btn"
+            disabled>
+            ⏹️ Stop Recording
+        </button>
+
+    </div>
+
+    <div
+        class="recording-status"
+        style="margin-top: 15px;">
+        Ready to record.
+    </div>
+
+    <div
+        class="live-video-container"
+        style="display: none; margin-top: 20px;">
+
+        <video
+            class="live-video-preview"
+            autoplay
+            muted
+            playsinline
+            style="max-width: 100%; width: 500px;">
+        </video>
+
+    </div>
+
+    <div
+        class="video-preview-container"
+        style="display: none; margin-top: 20px;">
+
+        <video
+            class="video-preview"
+            controls
+            style="max-width: 100%; width: 500px;">
+        </video>
+
+    </div>
+
+    <div
+        class="audio-preview-container"
+        style="display: none; margin-top: 20px;">
+
+        <audio
+            class="audio-preview"
+            controls
+            style="width: 100%;">
+        </audio>
+
+    </div>
+
+    <button
+        type="button"
+        class="btn primary upload-recording-btn"
+        style="display: none; margin-top: 15px;">
+        ⬆️ Upload Recording
+    </button>
+
+    <div
+        class="upload-status"
+        style="margin-top: 10px;">
+    </div>
+
+</div>
+
+<h4 style="margin-top: 25px;">
+📁 Saved Lesson Recordings
+</h4>
+
+<% if (lesson.recordings && lesson.recordings.length > 0) { %>
+
+    <% lesson.recordings.forEach(function(recording) { %>
+
+        <div
+            class="card"
+            style="margin-top: 15px;">
+
+            <p>
+                <strong>
+                    <%= recording.media_type === "video"
+                        ? "🎥 Video Lesson Recording"
+                        : "🎙️ Audio Lesson Recording" %>
+                </strong>
+            </p>
+
+            <p>
+                Recorded:
+                <%= recording.created_at %>
+            </p>
+
+            <% if (recording.media_type === "video") { %>
+
+                <video
+                    controls
+                    preload="metadata"
+                    style="max-width: 100%; width: 500px;">
+
+                    <source
+                        src="<%= recording.file_path %>"
+                        type="<%= recording.mime_type %>">
+
+                    Your browser does not support video playback.
+
+                </video>
+
+            <% } else { %>
+
+                <audio
+                    controls
+                    preload="metadata"
+                    style="width: 100%;">
+
+                    <source
+                        src="<%= recording.file_path %>"
+                        type="<%= recording.mime_type %>">
+
+                    Your browser does not support audio playback.
+
+                </audio>
+
+            <% } %>
+
+        </div>
+
+    <% }) %>
+
+<% } else { %>
+
+    <p>
+        No audio or video recordings have been saved for this lesson yet.
+    </p>
+
+<% } %>
+
+
+
 <% if (lesson.exercises.length === 0) { %>
 
 <p>
@@ -226,6 +397,395 @@ Delete
 
 </main>
 
+
+
+<script>
+
+document.querySelectorAll(".lesson-recorder").forEach(function(recorder) {
+
+    let mediaRecorder = null;
+    let mediaStream = null;
+    let recordedChunks = [];
+    let recordedBlob = null;
+    let recordingType = null;
+
+    const lessonId =
+        recorder.dataset.lessonId;
+
+    const startAudioBtn =
+        recorder.querySelector(".start-audio-btn");
+
+    const startVideoBtn =
+        recorder.querySelector(".start-video-btn");
+
+    const stopRecordingBtn =
+        recorder.querySelector(".stop-recording-btn");
+
+    const uploadRecordingBtn =
+        recorder.querySelector(".upload-recording-btn");
+
+    const recordingStatus =
+        recorder.querySelector(".recording-status");
+
+    const uploadStatus =
+        recorder.querySelector(".upload-status");
+
+    const audioPreview =
+        recorder.querySelector(".audio-preview");
+
+    const audioPreviewContainer =
+        recorder.querySelector(".audio-preview-container");
+
+    const videoPreview =
+        recorder.querySelector(".video-preview");
+
+    const videoPreviewContainer =
+        recorder.querySelector(".video-preview-container");
+
+    const liveVideoContainer =
+        recorder.querySelector(".live-video-container");
+
+    const liveVideoPreview =
+        recorder.querySelector(".live-video-preview");
+
+
+    async function startRecording(type) {
+
+        try {
+
+            recordingType = type;
+
+            const constraints =
+                type === "video"
+                    ? {
+                        audio: true,
+                        video: true
+                    }
+                    : {
+                        audio: true
+                    };
+
+
+            mediaStream =
+                await navigator.mediaDevices.getUserMedia(
+                    constraints
+                );
+
+
+            if (type === "video") {
+
+                liveVideoPreview.srcObject =
+                    mediaStream;
+
+                liveVideoContainer.style.display =
+                    "block";
+
+            }
+
+
+            recordedChunks = [];
+            recordedBlob = null;
+
+
+            const supportedMimeTypes =
+                type === "video"
+                    ? [
+                        "video/webm;codecs=vp8,opus",
+                        "video/webm;codecs=vp9,opus",
+                        "video/webm"
+                    ]
+                    : [
+                        "audio/webm;codecs=opus",
+                        "audio/webm"
+                    ];
+
+
+            const mimeType =
+                supportedMimeTypes.find(function(type) {
+
+                    return MediaRecorder.isTypeSupported(type);
+
+                });
+
+
+            if (!mimeType) {
+
+                recordingStatus.textContent =
+                    "This browser does not support the required recording format.";
+
+                mediaStream.getTracks().forEach(function(track) {
+                    track.stop();
+                });
+
+                return;
+
+            }
+
+
+            mediaRecorder =
+                new MediaRecorder(
+                    mediaStream,
+                    {
+                        mimeType: mimeType
+                    }
+                );
+
+
+            mediaRecorder.ondataavailable =
+                function(event) {
+
+                    if (event.data.size > 0) {
+
+                        recordedChunks.push(
+                            event.data
+                        );
+
+                    }
+
+                };
+
+
+            mediaRecorder.onstop =
+                function() {
+
+                    recordedBlob =
+                        new Blob(
+                            recordedChunks,
+                            {
+                                type: mimeType
+                            }
+                        );
+
+
+                    const previewUrl =
+                        URL.createObjectURL(
+                            recordedBlob
+                        );
+
+
+                    if (recordingType === "video") {
+
+                        videoPreview.src =
+                            previewUrl;
+
+                        videoPreview.load();
+
+                        videoPreviewContainer.style.display =
+                            "block";
+
+                        audioPreviewContainer.style.display =
+                            "none";
+
+                        liveVideoPreview.srcObject =
+                            null;
+
+                        liveVideoContainer.style.display =
+                            "none";
+
+                    } else {
+
+                        audioPreview.src =
+                            previewUrl;
+
+                        audioPreview.load();
+
+                        audioPreviewContainer.style.display =
+                            "block";
+
+                        videoPreviewContainer.style.display =
+                            "none";
+
+                    }
+
+
+                    uploadRecordingBtn.style.display =
+                        "inline-block";
+
+                    recordingStatus.textContent =
+                        "Recording finished. You can preview it before uploading.";
+
+
+                    if (mediaStream) {
+
+                        mediaStream.getTracks().forEach(function(track) {
+                            track.stop();
+                        });
+
+                    }
+
+                };
+
+
+            mediaRecorder.start();
+
+
+            startAudioBtn.disabled = true;
+            startVideoBtn.disabled = true;
+            stopRecordingBtn.disabled = false;
+            uploadRecordingBtn.style.display = "none";
+
+
+            recordingStatus.textContent =
+                type === "video"
+                    ? "🎥 Video recording in progress..."
+                    : "🎙️ Audio recording in progress...";
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            recordingStatus.textContent =
+                "Unable to access your microphone or camera. Please check browser permissions.";
+
+        }
+
+    }
+
+
+    function stopRecording() {
+
+        if (
+            mediaRecorder &&
+            mediaRecorder.state !== "inactive"
+        ) {
+
+            mediaRecorder.stop();
+
+        }
+
+
+        startAudioBtn.disabled = false;
+        startVideoBtn.disabled = false;
+        stopRecordingBtn.disabled = true;
+
+    }
+
+
+    async function uploadRecording() {
+
+        if (!recordedBlob) {
+
+            uploadStatus.textContent =
+                "There is no recording to upload.";
+
+            return;
+
+        }
+
+
+        const formData =
+            new FormData();
+
+
+        formData.append(
+            "recordingType",
+            recordingType
+        );
+
+
+        formData.append(
+            "recording",
+            recordedBlob,
+            "lesson-" + lessonId + "-" + Date.now() + ".webm"
+        );
+
+
+        uploadStatus.textContent =
+            "Uploading recording...";
+
+        uploadRecordingBtn.disabled = true;
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/teacher/lessons/" + lessonId + "/recording",
+                    {
+                        method: "POST",
+                        body: formData
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok || !data.success) {
+
+                throw new Error(
+                    data.message ||
+                    "Recording upload failed."
+                );
+
+            }
+
+
+            uploadStatus.textContent =
+                "✅ Recording uploaded successfully.";
+
+            uploadRecordingBtn.disabled = false;
+
+
+            setTimeout(function() {
+
+                window.location.reload();
+
+            }, 800);
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            uploadStatus.textContent =
+                "❌ " + error.message;
+
+            uploadRecordingBtn.disabled = false;
+
+        }
+
+    }
+
+
+    startAudioBtn.addEventListener(
+        "click",
+        function() {
+
+            startRecording("audio");
+
+        }
+    );
+
+
+    startVideoBtn.addEventListener(
+        "click",
+        function() {
+
+            startRecording("video");
+
+        }
+    );
+
+
+    stopRecordingBtn.addEventListener(
+        "click",
+        stopRecording
+    );
+
+
+    uploadRecordingBtn.addEventListener(
+        "click",
+        uploadRecording
+    );
+
+});
+
+</script>
 
 </body>
 
