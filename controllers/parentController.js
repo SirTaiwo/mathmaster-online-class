@@ -84,12 +84,10 @@ const assessmentHistory =
     const payments =
     Payment.findByStudent(child.id);
 
-    const receipts =
-Receipt.findAll()
-.filter(
-    receipt =>
-        receipt.student_id === child.id
-);
+const receipts =
+    Receipt.findByStudent(
+        child.id
+    );
 
 const courses =
     Enrollment.findCoursesByStudent(
