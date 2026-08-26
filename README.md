@@ -1,8 +1,8 @@
 # MathMaster Online Class
 
-MathMaster Online Class is a web-based Learning Management System (LMS) designed to support online mathematics education by connecting administrators, teachers, and students through a secure, role-based platform.
+MathMaster Online Class is a web-based Learning Management System (LMS) designed to support online mathematics education by connecting administrators, teachers, students, and parents through a secure, role-based platform.
 
-The system provides tools for managing users, learners, teachers, attendance, assessments, and academic activities in a structured online classroom environment.
+The system provides tools for managing users, classes, courses, lessons, exercises, assessments, attendance, academic performance, learner finance, payments, receipts, and online learning activities.
 
 ---
 
@@ -10,21 +10,51 @@ The system provides tools for managing users, learners, teachers, attendance, as
 
 ## Current Version: v0.2.0 (In Development)
 
-The project has progressed from the initial LMS foundation into a functional school administration platform.
+MathMaster has progressed beyond the initial LMS foundation into a functional school administration and online learning platform.
 
-Current completed modules include:
+### Completed Modules
 
-✅ User authentication  
-✅ Role-based access control  
-✅ Administrator dashboard  
-✅ User management  
-✅ Student management  
-✅ Teacher management  
-✅ Attendance management  
-✅ Attendance reporting dashboard  
-✅ Dashboard analytics  
-✅ Recent activity monitoring  
-✅ Responsive administration interface  
+- User authentication
+- Role-based access control
+- Administrator dashboard
+- User management
+- Student management
+- Teacher management
+- Class management
+- Course management
+- Lesson management
+- Exercise management
+- Attendance management
+- Attendance reporting
+- Assessment management
+- Assessment question management
+- Student assessment submissions
+- Assessment results
+- Teacher gradebook
+- Exercise analytics
+- Student performance analytics
+- Leaderboard
+- Student feedback
+- Parent portal
+- Student finance
+- Student fee accounts
+- Automatic invoice creation
+- Payment recording
+- Partial-payment calculations
+- Overpayment protection
+- Automatic receipt generation
+- Admin payment management
+- Invoice management
+- Receipt management
+- Parent receipt retrieval
+- Student audio and video exercise recordings
+- Saved exercise recording playback
+- Teacher lesson audio and video recording infrastructure
+
+### In Progress
+
+- Final verification and correction of webcam image capture in saved video recordings
+- Further testing and refinement of audio/video recording functionality
 
 ---
 
@@ -41,35 +71,115 @@ Administrators can:
 - Create teacher accounts
 - Manage student records
 - Manage teacher records
+- Manage classes
 - Monitor attendance information
+- View attendance reports
+- Manage fee structures
+- Manage student fee accounts
+- Manage invoices
+- Record and manage payments
+- Generate and manage receipts
 - View recent system activity
 
 ---
 
 ## 👨‍🏫 Teacher
 
-Teachers will be able to:
+Teachers can:
 
-- Access teacher dashboard
+- Access the teacher dashboard
 - Manage assigned classes
+- Manage courses
+- Create and manage lessons
+- Create exercises
 - Create assessments
+- Create assessment questions
 - Record learner marks
+- Use the teacher gradebook
+- View assessment results
 - Monitor student progress
+- View exercise analytics
+- View performance information
+- View leaderboard information
+- Review student feedback
 - Manage learning materials
+- Record audio and video lesson content
 
 ---
 
 ## 👨‍🎓 Student
 
-Students will be able to:
+Students can:
 
-- Register and login
-- Access student dashboard
+- Register and log in
+- Access the student dashboard
 - Join mathematics classes
-- View learning materials
-- Submit assignments
+- View enrolled courses
+- View lessons
+- Complete exercises
+- Submit assessments
 - View assessment results
 - Monitor academic progress
+- View attendance information
+- Submit feedback
+- Record audio exercise responses
+- Record video exercise responses
+- View saved exercise recordings
+- View finance information
+- View fee account information
+- View invoices
+- View payment information
+- View receipts
+
+---
+
+## 👨‍👩‍👧 Parent
+
+Parents can:
+
+- Access the parent dashboard
+- Monitor learner information
+- View learner academic information
+- Monitor learner progress
+- Access available finance and payment information
+- View learner receipts
+
+---
+
+## 💰 Finance & Payment Management
+
+The finance module supports:
+
+- Student fee accounts
+- Fee structures
+- Automatic invoice creation
+- Payment recording
+- Partial-payment calculations
+- Outstanding balance calculations
+- Overpayment protection
+- Automatic receipt generation
+- Student Finance
+- Admin Payment Management
+- Invoice Management
+- Receipt Management
+- Parent receipt retrieval
+
+---
+
+## 🎥 Audio & Video Recording
+
+MathMaster supports:
+
+- Student audio exercise recordings
+- Student video exercise recordings
+- Recording uploads
+- Saved recording retrieval
+- Recording playback
+- Teacher lesson audio recording
+- Teacher lesson video recording
+- Audio and video previews
+
+The audio/video recording subsystem is still undergoing final verification, particularly the webcam image capture in saved video recordings.
 
 ---
 
