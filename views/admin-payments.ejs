@@ -15,41 +15,133 @@ Record Payment
 action="/admin/payments">
 
 
-<input
+<label>
+Invoice
+</label>
+
+
+<select
 name="invoice_id"
-placeholder="Invoice ID"
->
-
-
-<input
-name="student_id"
-placeholder="Student ID"
->
-
-
-<input
-type="number"
-name="amount_paid"
-placeholder="Amount"
-step="0.01"
 required
 >
 
+<option value="">
+Select Invoice
+</option>
+
+
+<% invoices
+    .filter(invoice => Number(invoice.balance) > 0)
+    .forEach(invoice => {
+%>
+
+
+<option value="<%= invoice.id %>">
+
+<%= invoice.invoice_number %>
+
+ -
+
+<%= invoice.first_name %>
+<%= invoice.last_name %>
+
+ -
+
+<%= invoice.description %>
+
+ -
+
+R<%= Number(invoice.balance || 0).toFixed(2) %>
+outstanding
+
+</option>
+
+
+<%
+});
+%>
+
+
+</select>
+
+
+
+<label>
+Amount
+</label>
+
 
 <input
+
+type="number"
+
+name="amount_paid"
+
+placeholder="Amount"
+
+step="0.01"
+
+min="0.01"
+
+required
+
+>
+
+
+
+<label>
+Payment Method
+</label>
+
+
+<select
 name="payment_method"
-placeholder="Method"
+required
 >
+
+<option value="">
+Select Method
+</option>
+
+<option value="Cash">
+Cash
+</option>
+
+<option value="EFT">
+EFT
+</option>
+
+<option value="Card">
+Card
+</option>
+
+<option value="Other">
+Other
+</option>
+
+</select>
+
+
+
+<label>
+Reference
+</label>
 
 
 <input
+
 name="reference_number"
-placeholder="Reference"
+
+placeholder="Reference / Transaction Number"
+
 >
 
 
-<button>
+
+<button type="submit">
+
 Record Payment
+
 </button>
 
 
@@ -70,6 +162,8 @@ Existing Payments
 
 <table class="admin-table">
 
+
+<thead>
 
 <tr>
 
@@ -93,8 +187,16 @@ Method
 Reference
 </th>
 
+<th>
+Date
+</th>
+
 </tr>
 
+</thead>
+
+
+<tbody>
 
 
 <% payments.forEach(payment => { %>
@@ -114,17 +216,22 @@ Reference
 
 
 <td>
-R<%= payment.amount_paid %>
+R<%= Number(payment.amount_paid || 0).toFixed(2) %>
 </td>
 
 
 <td>
-<%= payment.payment_method %>
+<%= payment.payment_method || "-" %>
 </td>
 
 
 <td>
-<%= payment.reference_number %>
+<%= payment.reference_number || "-" %>
+</td>
+
+
+<td>
+<%= payment.payment_date || payment.created_at %>
 </td>
 
 
@@ -132,6 +239,9 @@ R<%= payment.amount_paid %>
 
 
 <% }) %>
+
+
+</tbody>
 
 
 </table>

@@ -5,8 +5,6 @@ const Payment =
 const Invoice =
     require("../models/Invoice");
 
-    const Receipt = require("../models/Receipt");
-
 
 // ========================================
 // VIEW PAYMENTS
@@ -14,15 +12,19 @@ const Invoice =
 
 exports.index = (req, res) => {
 
-
     const payments =
         Payment.findAll();
+
+
+    const invoices =
+        Invoice.findAll();
 
 
     res.render(
         "admin-payments",
         {
-            payments
+            payments,
+            invoices
         }
     );
 
@@ -36,12 +38,9 @@ exports.index = (req, res) => {
 
 exports.create = (req, res) => {
 
-
     const {
 
         invoice_id,
-
-        student_id,
 
         amount_paid,
 
@@ -49,35 +48,78 @@ exports.create = (req, res) => {
 
         reference_number
 
-
     } = req.body;
 
-    console.log("PAYMENT DATA:", req.body);
+
+    console.log(
+        "PAYMENT DATA:",
+        req.body
+    );
 
 
+    // ----------------------------------------
+    // FIND SELECTED INVOICE
+    // ----------------------------------------
 
- const paymentResult = Payment.createPayment(
-    invoice_id,
-    student_id,
-    amount_paid,
-    payment_method,
-    reference_number
-);
+    const invoice =
+        Invoice.findById(invoice_id);
 
-Invoice.updatePaymentStatus(invoice_id);
 
-// Generate receipt number
-const receiptNumber =
-    "REC-" +
-    String(paymentResult.lastInsertRowid).padStart(6, "0");
+    if (!invoice) {
 
-Receipt.createReceipt(
-    receiptNumber,
-    paymentResult.lastInsertRowid,
-    student_id,
-    amount_paid
-);
+        return res.status(400).send(
+            "Invoice not found."
+        );
 
-res.redirect("/admin/payments");
+    }
+
+
+    // ----------------------------------------
+    // GET STUDENT FROM INVOICE
+    // ----------------------------------------
+
+    const student_id =
+        invoice.student_id;
+
+
+    // ----------------------------------------
+    // RECORD PAYMENT
+    // ----------------------------------------
+
+    try {
+
+        const paymentResult =
+            Payment.createPayment(
+
+                invoice_id,
+
+                student_id,
+
+                amount_paid,
+
+                payment_method,
+
+                reference_number
+
+            );
+
+
+        res.redirect(
+            "/admin/payments"
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Payment error:",
+            error
+        );
+
+
+        return res.status(400).send(
+            error.message
+        );
+
+    }
 
 };

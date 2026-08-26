@@ -69,6 +69,7 @@ function findByStudent(studentId) {
 
 // ========================================
 // CREATE STUDENT FEE ACCOUNT
+// AND AUTOMATICALLY CREATE INVOICE
 // ========================================
 
 function create(
@@ -85,42 +86,146 @@ function create(
 
 ) {
 
+    const createFeeAndInvoice =
+        db.transaction(() => {
 
-    return db.prepare(`
+            // --------------------------------
+            // CREATE STUDENT FEE ACCOUNT
+            // --------------------------------
 
-        INSERT INTO student_fees
+            const feeResult =
+                db.prepare(`
 
-        (
+                    INSERT INTO student_fees
+                    (
+                        student_id,
+                        fee_structure_id,
+                        term,
+                        year,
+                        amount_due
+                    )
 
-            student_id,
+                    VALUES (?, ?, ?, ?, ?)
 
-            fee_structure_id,
+                `).run(
 
-            term,
+                    student_id,
 
-            year,
+                    fee_structure_id,
 
-            amount_due
+                    term,
 
-        )
+                    year,
+
+                    amount_due
+
+                );
 
 
-        VALUES (?, ?, ?, ?, ?)
+            const studentFeeId =
+                feeResult.lastInsertRowid;
 
 
-    `).run(
+            // --------------------------------
+            // GET FEE DESCRIPTION
+            // --------------------------------
 
-        student_id,
+            const feeStructure =
+                db.prepare(`
 
-        fee_structure_id,
+                    SELECT description
 
-        term,
+                    FROM fee_structures
 
-        year,
+                    WHERE id = ?
 
-        amount_due
+                `).get(
+                    fee_structure_id
+                );
 
-    );
+
+            const description =
+                feeStructure &&
+                feeStructure.description
+                    ? feeStructure.description
+                    : "School Fees";
+
+
+            // --------------------------------
+            // GENERATE NEXT INVOICE NUMBER
+            // --------------------------------
+
+            const invoiceNumberResult =
+                db.prepare(`
+
+                    SELECT
+                        COALESCE(
+                            MAX(
+                                CAST(
+                                    SUBSTR(invoice_number, 5)
+                                    AS INTEGER
+                                )
+                            ),
+                            0
+                        ) + 1 AS next_number
+
+                    FROM invoices
+
+                    WHERE invoice_number LIKE 'INV-%'
+
+                `).get();
+
+
+            const nextNumber =
+                invoiceNumberResult.next_number;
+
+
+            const invoiceNumber =
+                "INV-" +
+                String(nextNumber).padStart(4, "0");
+
+
+            // --------------------------------
+            // CREATE INVOICE
+            // --------------------------------
+
+            db.prepare(`
+
+                INSERT INTO invoices
+                (
+                    invoice_number,
+                    student_id,
+                    student_fee_id,
+                    description,
+                    amount,
+                    balance
+                )
+
+                VALUES (?, ?, ?, ?, ?, ?)
+
+            `).run(
+
+                invoiceNumber,
+
+                student_id,
+
+                studentFeeId,
+
+                description,
+
+                amount_due,
+
+                amount_due
+
+            );
+
+
+            return feeResult;
+
+        });
+
+
+    return createFeeAndInvoice();
 
 }
 
