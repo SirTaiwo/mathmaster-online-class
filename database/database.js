@@ -529,6 +529,41 @@ CREATE TABLE IF NOT EXISTS media_recordings (
 )
 `).run();
 
+// ========================================
+// CREATE STUDENT MEDIA RECORDINGS TABLE
+// STUDENT EXERCISE AUDIO AND VIDEO
+// ========================================
+
+db.prepare(`
+CREATE TABLE IF NOT EXISTS student_media_recordings (
+
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    student_id INTEGER NOT NULL,
+
+    exercise_id INTEGER NOT NULL,
+
+    media_type TEXT NOT NULL,
+
+    file_path TEXT NOT NULL,
+
+    mime_type TEXT,
+
+    duration INTEGER,
+
+    file_size INTEGER,
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY(student_id)
+        REFERENCES students(id),
+
+    FOREIGN KEY(exercise_id)
+        REFERENCES exercises(id)
+
+)
+`).run();
+
 
 
 module.exports = db;
