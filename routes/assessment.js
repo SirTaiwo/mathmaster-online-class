@@ -38,20 +38,4 @@ router.get(
 );
 
 
-// ========================================
-// CREATE QUESTION
-// ========================================
-
-router.get(
-    "/teacher/assessments/:assessmentId/questions/create",
-    requireRole("teacher", "admin"),
-    assessmentController.createQuestionForm
-);
-
-router.post(
-    "/teacher/assessments/:assessmentId/questions/create",
-    requireRole("teacher", "admin"),
-    assessmentController.createQuestion
-);
-
 module.exports = router;
