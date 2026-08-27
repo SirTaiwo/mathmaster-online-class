@@ -70,18 +70,6 @@ router.post(
 );
 
 // ========================================
-// STUDENT MANAGEMENT
-// ========================================
-
-router.get(
-    "/admin/students",
-    requireRole("admin"),
-    adminController.students
-);
-
-
-
-// ========================================
 // TEACHER MANAGEMENT
 // ========================================
 

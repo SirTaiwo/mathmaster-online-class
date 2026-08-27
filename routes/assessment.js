@@ -27,15 +27,4 @@ router.post(
 );
 
 
-// ========================================
-// VIEW QUESTIONS
-// ========================================
-
-router.get(
-    "/teacher/assessments/:assessmentId/questions",
-    requireRole("teacher", "admin"),
-    assessmentController.viewQuestions
-);
-
-
 module.exports = router;

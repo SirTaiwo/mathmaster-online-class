@@ -288,26 +288,6 @@ exports.deleteUser = (req, res) => {
 
 };
 
-// ========================================
-// STUDENT MANAGEMENT
-// ========================================
-
-exports.students = (req, res) => {
-
-    const students =
-        Student.findAllStudents();
-
-    res.render(
-        "admin-students",
-        {
-            user: req.session.student,
-            students
-        }
-    );
-
-};
-
-
 
 // ========================================
 // TEACHER MANAGEMENT
