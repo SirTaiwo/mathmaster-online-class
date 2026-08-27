@@ -53,8 +53,7 @@ MathMaster has progressed beyond the initial LMS foundation into a functional sc
 
 ### In Progress
 
-- Final verification and correction of webcam image capture in saved video recordings
-- Further testing and refinement of audio/video recording functionality
+- Further LMS feature development and system refinement
 
 ---
 
@@ -179,7 +178,7 @@ MathMaster supports:
 - Teacher lesson video recording
 - Audio and video previews
 
-The audio/video recording subsystem is still undergoing final verification, particularly the webcam image capture in saved video recordings.
+The audio/video recording subsystem has been implemented and tested for both students and teachers, including webcam video capture, recording uploads, saved recording retrieval, and playback.
 
 ---
 
