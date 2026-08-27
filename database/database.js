@@ -530,6 +530,44 @@ CREATE TABLE IF NOT EXISTS media_recordings (
 `).run();
 
 // ========================================
+// CREATE LESSON MATERIALS TABLE
+// TEACHER UPLOADED LEARNING MATERIALS
+// ========================================
+
+db.prepare(`
+CREATE TABLE IF NOT EXISTS lesson_materials (
+
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    teacher_id INTEGER NOT NULL,
+
+    lesson_id INTEGER NOT NULL,
+
+    title TEXT NOT NULL,
+
+    description TEXT,
+
+    file_path TEXT NOT NULL,
+
+    original_filename TEXT NOT NULL,
+
+    mime_type TEXT,
+
+    file_size INTEGER,
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY(teacher_id)
+        REFERENCES students(id),
+
+    FOREIGN KEY(lesson_id)
+        REFERENCES lessons(id)
+
+)
+`).run();
+
+
+// ========================================
 // CREATE STUDENT MEDIA RECORDINGS TABLE
 // STUDENT EXERCISE AUDIO AND VIDEO
 // ========================================

@@ -7,6 +7,9 @@ const Course =
     const MediaRecording =
     require("../models/MediaRecording");
 
+    const LessonMaterial =
+    require("../models/LessonMaterial");
+
 
 // ========================================
 // VIEW COURSE LESSONS
@@ -49,6 +52,11 @@ exports.lessons = (req, res) => {
 
             lesson.recordings =
     MediaRecording.findByLesson(
+        lesson.id
+    );
+
+    lesson.materials =
+    LessonMaterial.findByLesson(
         lesson.id
     );
 

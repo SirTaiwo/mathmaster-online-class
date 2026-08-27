@@ -208,6 +208,11 @@ app.use(
     "/",
     lessonRoutes
 );
+
+app.use(
+    "/",
+    require("./routes/lessonMaterial")
+);
 app.use(
     require("./routes/exercise")
 );

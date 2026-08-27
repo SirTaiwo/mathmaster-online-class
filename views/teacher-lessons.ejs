@@ -161,6 +161,172 @@ Manage Questions
 📝 Exercises
 </h3>
 
+<!-- ========================================
+     TEACHER LEARNING MATERIALS
+========================================= -->
+
+<hr>
+
+<h3>
+📚 Learning Materials
+</h3>
+
+<p>
+Upload supporting materials for this lesson.
+</p>
+
+<form
+    action="/teacher/lessons/<%= lesson.id %>/materials"
+    method="POST"
+    enctype="multipart/form-data"
+    style="margin-top: 15px;">
+
+    <div style="margin-bottom: 10px;">
+
+        <label>
+            <strong>Material Title</strong>
+        </label>
+
+        <input
+            type="text"
+            name="title"
+            placeholder="e.g. Quadratic Equations Notes"
+            required
+            style="width: 100%; max-width: 500px; padding: 8px;">
+
+    </div>
+
+
+    <div style="margin-bottom: 10px;">
+
+        <label>
+            <strong>Description</strong>
+        </label>
+
+        <textarea
+            name="description"
+            rows="3"
+            placeholder="Optional description of this material"
+            style="width: 100%; max-width: 500px; padding: 8px;"></textarea>
+
+    </div>
+
+
+    <div style="margin-bottom: 10px;">
+
+        <label>
+            <strong>Select File</strong>
+        </label>
+
+        <input
+            type="file"
+            name="material"
+            accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.jpeg,.png,.gif,.webp,.txt"
+            required>
+
+    </div>
+
+
+    <button
+        type="submit"
+        class="btn primary">
+
+        📤 Upload Learning Material
+
+    </button>
+
+</form>
+
+
+<h4 style="margin-top: 25px;">
+📁 Saved Learning Materials
+</h4>
+
+
+<% if (lesson.materials && lesson.materials.length > 0) { %>
+
+    <% lesson.materials.forEach(function(material) { %>
+
+        <div
+            class="card"
+            style="margin-top: 15px;">
+
+            <p>
+
+                <strong>
+                    📄 <%= material.title %>
+                </strong>
+
+            </p>
+
+
+            <% if (material.description) { %>
+
+                <p>
+                    <%= material.description %>
+                </p>
+
+            <% } %>
+
+
+            <p>
+
+                <strong>
+                    File:
+                </strong>
+
+                <%= material.original_filename %>
+
+            </p>
+
+
+            <p>
+
+                <strong>
+                    Uploaded:
+                </strong>
+
+                <%= material.created_at %>
+
+            </p>
+
+
+            <div
+                style="display: flex; gap: 10px; flex-wrap: wrap;">
+
+                <a
+                    href="<%= material.file_path %>"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn secondary">
+
+                    👁️ Open Material
+
+                </a>
+
+
+                <a
+                    href="/teacher/lessons/<%= lesson.id %>/materials/delete/<%= material.id %>"
+                    class="btn">
+
+                    🗑️ Delete
+
+                </a>
+
+            </div>
+
+        </div>
+
+    <% }) %>
+
+<% } else { %>
+
+    <p>
+        No learning materials have been uploaded for this lesson yet.
+    </p>
+
+<% } %>
+
 
 <!-- ========================================
      TEACHER LESSON RECORDING
