@@ -92,7 +92,3 @@ exports.createAssessment = (req, res) => {
 
 
 };
-module.exports = {
-    createAssessmentForm,
-    createAssessment
-};
