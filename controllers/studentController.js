@@ -9,6 +9,9 @@ const Enrollment =
 
 const Course =
     require("../models/Course");
+
+    const LessonMaterial =
+    require("../models/LessonMaterial");
     const Submission =
     require("../models/Submission");
 
@@ -538,14 +541,19 @@ exports.courseLessons = (req, res) => {
         require("../models/Exercise");
 
 
-    lessons.forEach((lesson) => {
+  lessons.forEach((lesson) => {
 
-        lesson.exercises =
-            Exercise.findByLesson(
-                lesson.id
-            );
+    lesson.exercises =
+        Exercise.findByLesson(
+            lesson.id
+        );
 
-    });
+    lesson.materials =
+        LessonMaterial.findByLesson(
+            lesson.id
+        );
+
+});
 
 
     res.render(

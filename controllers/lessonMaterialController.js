@@ -4,6 +4,11 @@ const Lesson =
 const LessonMaterial =
     require("../models/LessonMaterial");
 
+    const fs =
+    require("fs");
+
+const path =
+    require("path");
 
 // ========================================
 // UPLOAD LEARNING MATERIAL
@@ -160,15 +165,86 @@ exports.deleteMaterial = (req, res) => {
         const materialId =
             req.params.id;
 
+        // ========================================
+        // FIND MATERIAL
+        // ========================================
+
+        const material =
+            LessonMaterial.findById(
+                materialId
+            );
+
+
+        if (!material) {
+
+            return res.status(404).send(
+                "Learning material not found."
+            );
+
+        }
+
+
+        // ========================================
+        // BUILD PHYSICAL FILE PATH
+        // ========================================
+
+            const physicalPath =
+            path.join(
+                __dirname,
+                "../public",
+                material.file_path
+            );
+
+
+        // ========================================
+        // DELETE PHYSICAL FILE
+        // ========================================
+
+        if (
+            fs.existsSync(
+                physicalPath
+            )
+        ) {
+
+            fs.unlinkSync(
+                physicalPath
+            );
+
+        }
+
+
+        // ========================================
+        // DELETE DATABASE RECORD
+        // ========================================
 
         LessonMaterial.deleteMaterial(
             materialId
         );
 
 
-        return res.redirect(
-            "back"
-        );
+        // ========================================
+        // RETURN TO PREVIOUS PAGE
+        // ========================================
+
+const lesson =
+    Lesson.findById(
+        material.lesson_id
+    );
+
+if (!lesson) {
+
+    return res.status(404).send(
+        "Lesson not found."
+    );
+
+}
+
+return res.redirect(
+    "/teacher/courses/" +
+    lesson.course_id +
+    "/lessons"
+);
+
 
     } catch (error) {
 

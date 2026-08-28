@@ -136,6 +136,72 @@ Your teacher has not published any lessons for this course.
 
 <% } %>
 
+<% if (lesson.materials && lesson.materials.length > 0) { %>
+
+<h3>
+    📚 Learning Materials
+</h3>
+
+<% lesson.materials.forEach(function(material) { %>
+
+<div
+    class="dashboard-card"
+    style="margin-top: 15px;"
+>
+
+    <p>
+        <strong>
+            📄 <%= material.title %>
+        </strong>
+    </p>
+
+    <p>
+        <strong>File:</strong>
+        <%= material.original_filename %>
+    </p>
+
+    <% if (material.description) { %>
+
+    <p>
+        <%= material.description %>
+    </p>
+
+    <% } %>
+
+    <p>
+        <strong>Uploaded:</strong>
+        <%= material.created_at %>
+    </p>
+
+    <div
+        style="display: flex; gap: 10px; flex-wrap: wrap;"
+    >
+
+        <a
+            href="<%= material.file_path %>"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn primary"
+        >
+            👁️ Open Material
+        </a>
+
+        <a
+            href="<%= material.file_path %>"
+            download
+            class="btn secondary"
+        >
+            ⬇️ Download
+        </a>
+
+    </div>
+
+</div>
+
+<% }) %>
+
+<% } %>
+
 
 <% if (lesson.exercise) { %>
 
