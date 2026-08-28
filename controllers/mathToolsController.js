@@ -28,3 +28,18 @@ exports.geometry = (req, res) => {
     );
 
 };
+
+// ========================================
+// GRAPHING WORKSPACE
+// ========================================
+
+exports.graphing = (req, res) => {
+
+    res.render(
+        "teacher-graphing-tools",
+        {
+            user: req.session.user
+        }
+    );
+
+};

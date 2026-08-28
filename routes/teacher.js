@@ -58,4 +58,15 @@ router.get(
     mathToolsController.geometry
 );
 
+
+// ========================================
+// TEACHER GRAPHING TOOLS
+// ========================================
+
+router.get(
+    "/teacher/math-tools/graphing",
+    requireRole("teacher", "admin"),
+    mathToolsController.graphing
+);
+
 module.exports = router;
