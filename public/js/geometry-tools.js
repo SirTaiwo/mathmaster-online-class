@@ -2253,6 +2253,201 @@ function plotPoint(){
 }
 
 // =======================
+// REFLECTION TOOL
+// =======================
+
+function drawReflection(
+    original,
+    reflected,
+    axis
+){
+
+    clearCanvas();
+
+    drawGrid();
+
+    // Draw original point
+    const originalCanvasX =
+        canvas.width / 2 +
+        original.x * 40;
+
+    const originalCanvasY =
+        canvas.height / 2 -
+        original.y * 40;
+
+    ctx.beginPath();
+
+    ctx.arc(
+        originalCanvasX,
+        originalCanvasY,
+        6,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+    ctx.font = "14px Arial";
+
+    ctx.fillText(
+        original.label +
+        " (" +
+        original.x +
+        "," +
+        original.y +
+        ")",
+        originalCanvasX + 8,
+        originalCanvasY - 8
+    );
+
+
+    // Draw reflected point
+    const reflectedCanvasX =
+        canvas.width / 2 +
+        reflected.x * 40;
+
+    const reflectedCanvasY =
+        canvas.height / 2 -
+        reflected.y * 40;
+
+    ctx.beginPath();
+
+    ctx.arc(
+        reflectedCanvasX,
+        reflectedCanvasY,
+        6,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+    ctx.fillText(
+        reflected.label +
+        " (" +
+        reflected.x +
+        "," +
+        reflected.y +
+        ")",
+        reflectedCanvasX + 8,
+        reflectedCanvasY - 8
+    );
+
+
+    document.getElementById(
+        "reflectionResult"
+    ).innerHTML =
+
+        "Reflection across " +
+        axis +
+        "-axis: " +
+
+        reflected.label +
+        " (" +
+        reflected.x +
+        "," +
+        reflected.y +
+        ")";
+
+}
+
+
+// =======================
+// REFLECT ACROSS X-AXIS
+// =======================
+
+function reflectXaxis(){
+
+    const x =
+        Number(
+            document.getElementById(
+                "reflectX"
+            ).value
+        );
+
+    const y =
+        Number(
+            document.getElementById(
+                "reflectY"
+            ).value
+        );
+
+
+    const original = {
+
+        x,
+        y,
+        label: "P"
+
+    };
+
+
+    const reflected = {
+
+        x,
+        y: -y,
+        label: "P'"
+
+    };
+
+
+    drawReflection(
+        original,
+        reflected,
+        "X"
+    );
+
+}
+
+
+// =======================
+// REFLECT ACROSS Y-AXIS
+// =======================
+
+function reflectYaxis(){
+
+    const x =
+        Number(
+            document.getElementById(
+                "reflectX"
+            ).value
+        );
+
+    const y =
+        Number(
+            document.getElementById(
+                "reflectY"
+            ).value
+        );
+
+
+    const original = {
+
+        x,
+        y,
+        label: "P"
+
+    };
+
+
+    const reflected = {
+
+        x: -x,
+        y,
+        label: "P'"
+
+    };
+
+
+    drawReflection(
+        original,
+        reflected,
+        "Y"
+    );
+
+}
+
+// =======================
 // TRANSLATION TOOL
 // =======================
 
@@ -2379,43 +2574,123 @@ function rotatePoint(){
 
     }
 
+
     const point =
     plottedPoints[
         plottedPoints.length - 1
     ];
 
-    const angle =
+
+    const angleDegrees =
     parseFloat(
         document.getElementById(
             "rotationAngle"
         ).value
-    ) * Math.PI / 180;
+    );
+
+
+    const angle =
+        angleDegrees *
+        Math.PI /
+        180;
+
 
     const rotatedX =
         point.x * Math.cos(angle)
         -
         point.y * Math.sin(angle);
 
+
     const rotatedY =
         point.x * Math.sin(angle)
         +
         point.y * Math.cos(angle);
 
+
     clearCanvas();
 
     drawGrid();
 
+
+    // =======================
+    // DRAW ORIGINAL POINT
+    // =======================
+
+    const originalCanvasX =
+        canvas.width / 2 +
+        point.x * 40;
+
+
+    const originalCanvasY =
+        canvas.height / 2 -
+        point.y * 40;
+
+
     ctx.beginPath();
 
     ctx.arc(
-        rotatedX,
-        rotatedY,
-        5,
+        originalCanvasX,
+        originalCanvasY,
+        6,
         0,
         Math.PI * 2
     );
 
     ctx.fill();
+
+
+    ctx.font = "14px Arial";
+
+    ctx.fillText(
+        point.label +
+        " (" +
+        point.x +
+        "," +
+        point.y +
+        ")",
+        originalCanvasX + 8,
+        originalCanvasY - 8
+    );
+
+
+    // =======================
+    // DRAW ROTATED POINT
+    // =======================
+
+    const rotatedCanvasX =
+        canvas.width / 2 +
+        rotatedX * 40;
+
+
+    const rotatedCanvasY =
+        canvas.height / 2 -
+        rotatedY * 40;
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        rotatedCanvasX,
+        rotatedCanvasY,
+        6,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+    ctx.fillText(
+        point.label +
+        "' (" +
+        rotatedX.toFixed(1) +
+        "," +
+        rotatedY.toFixed(1) +
+        ")",
+        rotatedCanvasX + 8,
+        rotatedCanvasY - 8
+    );
+
 
     document.getElementById(
         "rotationResult"
@@ -2428,9 +2703,6 @@ function rotatePoint(){
         ")";
 
 }
-
-
-
 
 function drawRuler(){
 
@@ -3442,22 +3714,87 @@ else if(activeTool === "angle"){
 
 else if(activeTool === "point"){
 
+    const originX =
+        canvas.width / 2;
+
+    const originY =
+        canvas.height / 2;
+
+    const x =
+        (mouseX - originX) / 40;
+
+    const y =
+        (originY - mouseY) / 40;
+
+    const label =
+        document.getElementById(
+            "pointLabel"
+        ).value;
 
     plottedPoints.push({
 
-        x: mouseX,
+        x: Number(x.toFixed(1)),
 
-        y: mouseY,
+        y: Number(y.toFixed(1)),
 
-        label:
-        document.getElementById(
-            "pointLabel"
-        ).value
+        label
 
     });
 
+    saveHistory();
 
-    plotPoint();
+    drawGrid();
+
+    plottedPoints.forEach(point => {
+
+        const canvasX =
+            originX + point.x * 40;
+
+        const canvasY =
+            originY - point.y * 40;
+
+        ctx.beginPath();
+
+        ctx.arc(
+            canvasX,
+            canvasY,
+            6,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
+        ctx.font =
+            "14px Arial";
+
+        ctx.fillText(
+
+            point.label +
+            " (" +
+            point.x +
+            "," +
+            point.y +
+            ")",
+
+            canvasX + 8,
+            canvasY - 8
+
+        );
+
+    });
+
+    document.getElementById(
+        "pointResult"
+    ).innerHTML =
+
+        "Point plotted: " +
+        label +
+        " (" +
+        x.toFixed(1) +
+        ", " +
+        y.toFixed(1) +
+        ")";
 
 }
 
@@ -3733,9 +4070,19 @@ if(draggingAnglePoint){
 
 let segmentPointA = null;
 let segmentPointB = null;
- 
 
+window.startSegmentTool = function(){
 
+    segmentPointA = null;
+
+    segmentPointB = null;
+
+    document.getElementById(
+        "segmentResult"
+    ).innerHTML =
+    "Select first point.";
+
+};
 
     
 canvas.addEventListener(
