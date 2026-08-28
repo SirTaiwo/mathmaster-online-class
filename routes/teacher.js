@@ -69,4 +69,14 @@ router.get(
     mathToolsController.graphing
 );
 
+// ========================================
+// TEACHER FORMULA LIBRARY
+// ========================================
+
+router.get(
+    "/teacher/math-tools/formulas",
+    requireRole("teacher", "admin"),
+    mathToolsController.formulas
+);
+
 module.exports = router;

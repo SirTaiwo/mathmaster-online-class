@@ -43,3 +43,18 @@ exports.graphing = (req, res) => {
     );
 
 };
+
+// ========================================
+// FORMULA LIBRARY
+// ========================================
+
+exports.formulas = (req, res) => {
+
+    res.render(
+        "teacher-formula-library",
+        {
+            user: req.session.user
+        }
+    );
+
+};
