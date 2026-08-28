@@ -79,4 +79,14 @@ router.get(
     mathToolsController.formulas
 );
 
+// ========================================
+// TEACHER CALCULATOR
+// ========================================
+
+router.get(
+    "/teacher/math-tools/calculator",
+    requireRole("teacher", "admin"),
+    mathToolsController.calculator
+);
+
 module.exports = router;

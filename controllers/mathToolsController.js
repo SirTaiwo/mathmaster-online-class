@@ -58,3 +58,18 @@ exports.formulas = (req, res) => {
     );
 
 };
+
+// ========================================
+// CALCULATOR WORKSPACE
+// ========================================
+
+exports.calculator = (req, res) => {
+
+    res.render(
+        "teacher-calculator",
+        {
+            user: req.session.user
+        }
+    );
+
+};
