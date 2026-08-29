@@ -48,3 +48,7 @@ public/media/recordings/*
 
 # Private uploaded audio/video recordings
 private/media/recordings/*
+
+# Private uploaded learning materials
+private/media/materials/*
+!private/media/materials/.gitkeep

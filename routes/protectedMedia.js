@@ -12,8 +12,15 @@ const MediaRecording =
 const StudentMediaRecording =
     require("../models/StudentMediaRecording");
 
+const LessonMaterial =
+    require("../models/LessonMaterial");
+
 const db =
     require("../database/database");
+
+const {
+    requirePaymentAccess
+} = require("../middleware/paymentAccess");
 
 const router = express.Router();
 
@@ -359,6 +366,294 @@ function streamRecording(
     ).pipe(res);
 
 }
+
+
+// ========================================
+// PROTECTED LEARNING MATERIAL
+// ========================================
+
+router.get(
+
+    "/media/lesson-materials/:id",
+
+    requireLogin,
+
+    (req, res, next) => {
+
+        // Students must have cleared payment
+        // before accessing learning materials.
+
+        if (
+            req.session.student &&
+            req.session.student.role === "student"
+        ) {
+
+            return requirePaymentAccess(
+                req,
+                res,
+                () => next()
+            );
+
+        }
+
+        return next();
+
+    },
+
+    (req, res) => {
+
+        const material =
+            LessonMaterial.findById(
+                req.params.id
+            );
+
+
+        if (!material) {
+
+            return res.status(404).send(
+                "Learning material not found."
+            );
+
+        }
+
+
+        const user =
+            req.session.student;
+
+
+        // ========================================
+        // ADMIN
+        // ========================================
+
+        if (
+            user.role === "admin"
+        ) {
+
+            return streamLearningMaterial(
+                req,
+                res,
+                material
+            );
+
+        }
+
+
+        // ========================================
+        // TEACHER
+        // ========================================
+
+        if (
+            user.role === "teacher"
+        ) {
+
+            const course =
+                db.prepare(`
+
+                    SELECT
+                        courses.teacher_id
+
+                    FROM lessons
+
+                    JOIN courses
+                        ON courses.id =
+                           lessons.course_id
+
+                    WHERE lessons.id = ?
+
+                `).get(
+                    material.lesson_id
+                );
+
+
+            if (
+                course &&
+                course.teacher_id === user.id
+            ) {
+
+                return streamLearningMaterial(
+                    req,
+                    res,
+                    material
+                );
+
+            }
+
+
+            return res.status(403).send(
+                "You are not authorised to view this learning material."
+            );
+
+        }
+
+
+        // ========================================
+        // STUDENT
+        // ========================================
+
+        if (
+            user.role === "student"
+        ) {
+
+            const enrolled =
+                db.prepare(`
+
+                    SELECT
+                        enrollments.id
+
+                    FROM enrollments
+
+                    JOIN lessons
+                        ON lessons.course_id =
+                           enrollments.course_id
+
+                    WHERE enrollments.student_id = ?
+
+                    AND lessons.id = ?
+
+                    LIMIT 1
+
+                `).get(
+
+                    user.id,
+
+                    material.lesson_id
+
+                );
+
+
+            if (!enrolled) {
+
+                return res.status(403).send(
+                    "You are not enrolled in this course."
+                );
+
+            }
+
+
+            return streamLearningMaterial(
+                req,
+                res,
+                material
+            );
+
+        }
+
+
+        return res.status(403).send(
+            "You are not authorised to view this learning material."
+        );
+
+    }
+
+);
+
+
+
+// ========================================
+// STREAM LEARNING MATERIAL
+// ========================================
+
+function streamLearningMaterial(
+    req,
+    res,
+    material
+) {
+
+    if (
+        !material.file_path
+    ) {
+
+        return res.status(404).send(
+            "Learning material file not found."
+        );
+
+    }
+
+
+    const materialsDirectory =
+        path.join(
+            __dirname,
+            "../private/media/materials"
+        );
+
+
+    const filename =
+        path.basename(
+            material.file_path
+        );
+
+
+    const filePath =
+        path.join(
+            materialsDirectory,
+            filename
+        );
+
+
+    // SECURITY: prevent path traversal
+
+    if (
+        path.dirname(
+            path.resolve(filePath)
+        ) !==
+        path.resolve(materialsDirectory)
+    ) {
+
+        return res.status(403).send(
+            "Invalid learning material path."
+        );
+
+    }
+
+
+    if (
+        !fs.existsSync(filePath)
+    ) {
+
+        return res.status(404).send(
+            "Learning material file not found."
+        );
+
+    }
+
+
+    const stat =
+        fs.statSync(filePath);
+
+
+    const disposition =
+        req.query.download === "1"
+            ? "attachment"
+            : "inline";
+
+
+    res.writeHead(
+        200,
+        {
+            "Content-Type":
+                material.mime_type ||
+                "application/octet-stream",
+
+            "Content-Length":
+                stat.size,
+
+            "Content-Disposition":
+                `${disposition}; filename="${encodeURIComponent(
+                    material.original_filename || filename
+                )}"`,
+
+            "Cache-Control":
+                "private, no-store"
+        }
+    );
+
+
+    return fs.createReadStream(
+        filePath
+    ).pipe(res);
+
+}
+
 
 
 // ========================================

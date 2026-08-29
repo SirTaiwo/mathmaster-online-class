@@ -178,7 +178,7 @@ Your teacher has not published any lessons for this course.
     >
 
         <a
-            href="<%= material.file_path %>"
+            href="/media/lesson-materials/<%= material.id %>"
             target="_blank"
             rel="noopener noreferrer"
             class="btn primary"
@@ -187,7 +187,7 @@ Your teacher has not published any lessons for this course.
         </a>
 
         <a
-            href="<%= material.file_path %>"
+            href="/media/lesson-materials/<%= material.id %>?download=1"
             download
             class="btn secondary"
         >

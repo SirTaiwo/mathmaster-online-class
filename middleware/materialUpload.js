@@ -22,7 +22,7 @@ const storage =
                 null,
                 path.join(
                     __dirname,
-                    "../public/media/materials"
+                    "../private/media/materials"
                 )
             );
 
