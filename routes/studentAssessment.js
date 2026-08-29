@@ -6,6 +6,10 @@ const {
     requireRole
 } = require("../middleware/auth");
 
+const {
+    requirePaymentAccess
+} = require("../middleware/paymentAccess");
+
 const studentAssessmentController =
     require("../controllers/studentAssessmentController");
 
@@ -19,6 +23,7 @@ router.get(
     "/student/lessons/:lessonId/assessments",
 
     requireRole("student"),
+    requirePaymentAccess,
 
     studentAssessmentController.listAssessments
 
@@ -34,6 +39,7 @@ router.get(
     "/student/assessments/:assessmentId",
 
     requireRole("student"),
+    requirePaymentAccess,
 
     studentAssessmentController.takeAssessment
 
@@ -49,6 +55,7 @@ router.post(
     "/student/assessments/:assessmentId",
 
     requireRole("student"),
+    requirePaymentAccess,
 
     studentAssessmentController.submitAssessment
 

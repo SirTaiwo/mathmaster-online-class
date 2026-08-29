@@ -16,6 +16,10 @@ const upload =
 const Exercise =
     require("../models/Exercise");
 
+    const {
+    requirePaymentAccess
+} = require("../middleware/paymentAccess");
+
 const StudentMediaRecording =
     require("../models/StudentMediaRecording");
 
@@ -45,6 +49,7 @@ router.post(
 router.get(
     "/student/exercises/:id",
     requireRole("student"),
+    requirePaymentAccess,
     exerciseController.viewExercise
 );
 
@@ -57,6 +62,7 @@ router.get(
 router.post(
     "/student/exercises/:id/submit",
     requireRole("student"),
+    requirePaymentAccess,
     exerciseController.submitAnswer
 );
 
@@ -70,6 +76,7 @@ router.post(
     "/student/exercises/:id/recording",
 
     requireRole("student"),
+    requirePaymentAccess,
 
     upload.single("recording"),
 

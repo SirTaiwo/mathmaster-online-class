@@ -7,7 +7,12 @@ const {
     requireRole
 } = require("../middleware/auth");
 
+const {
+    requirePaymentAccess
+} = require("../middleware/paymentAccess");
+
 const router = express.Router();
+
 
 
 // ========================================
@@ -75,6 +80,7 @@ router.get(
 router.get(
     "/student/courses",
     requireRole("student"),
+    requirePaymentAccess,
     studentController.courses
 );
 
@@ -86,6 +92,7 @@ router.get(
 router.get(
     "/student/courses/enroll/:id",
     requireRole("student"),
+    requirePaymentAccess,
     studentController.enroll
 );
 // ========================================
@@ -95,6 +102,7 @@ router.get(
 router.get(
     "/student/my-courses",
     requireRole("student"),
+    requirePaymentAccess,
     studentController.myCourses
 );
 // ========================================
@@ -104,6 +112,7 @@ router.get(
 router.get(
     "/student/courses/:courseId/lessons",
     requireRole("student"),
+    requirePaymentAccess,
     studentController.courseLessons
 );
 
