@@ -45,3 +45,6 @@ Thumbs.db
 # Uploaded student audio/video recordings
 public/media/recordings/*
 !public/media/recordings/.gitkeep
+
+# Private uploaded audio/video recordings
+private/media/recordings/*

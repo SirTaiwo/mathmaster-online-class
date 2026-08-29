@@ -457,11 +457,12 @@ Record an audio or video explanation for this lesson.
 
                 <video
                     controls
+                    controlsList="nodownload"
                     preload="metadata"
                     style="max-width: 100%; width: 500px;">
 
                     <source
-                        src="<%= recording.file_path %>"
+                        src="/media/lesson-recordings/<%= recording.id %>"
                         type="<%= recording.mime_type %>">
 
                     Your browser does not support video playback.
@@ -472,11 +473,12 @@ Record an audio or video explanation for this lesson.
 
                 <audio
                     controls
+                    controlsList="nodownload"
                     preload="metadata"
                     style="width: 100%;">
 
                     <source
-                        src="<%= recording.file_path %>"
+                        src="/media/lesson-recordings/<%= recording.id %>"
                         type="<%= recording.mime_type %>">
 
                     Your browser does not support audio playback.

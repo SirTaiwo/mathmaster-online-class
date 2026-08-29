@@ -353,11 +353,12 @@ You can record an audio or video explanation of your answer.
 
                 <video
                     controls
+                    controlsList="nodownload"
                     preload="metadata"
                     style="max-width: 100%; width: 500px;">
 
                     <source
-                        src="<%= recording.file_path %>"
+                       src="/media/student-recordings/<%= recording.id %>"
                         type="<%= recording.mime_type %>">
 
                     Your browser does not support video playback.
@@ -368,11 +369,12 @@ You can record an audio or video explanation of your answer.
 
                 <audio
                     controls
+                    controlsList="nodownload"
                     preload="metadata"
                     style="width: 100%;">
 
                     <source
-                        src="<%= recording.file_path %>"
+                        src="/media/student-recordings/<%= recording.id %>"
                         type="<%= recording.mime_type %>">
 
                     Your browser does not support audio playback.

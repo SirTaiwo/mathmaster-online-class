@@ -109,6 +109,10 @@ app.use(
 app.use(express.json());
 
 
+// ========================================
+// PUBLIC STATIC FILES
+// ========================================
+
 app.use(
     express.static(
         path.join(__dirname, "public")
@@ -218,6 +222,13 @@ app.use(
 );
 app.use(
     require("./routes/mediaRecording")
+);
+// ========================================
+// PROTECTED MEDIA STREAMING
+// ========================================
+
+app.use(
+    require("./routes/protectedMedia")
 );
 app.use(
     "/",

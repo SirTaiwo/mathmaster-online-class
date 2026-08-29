@@ -20,10 +20,10 @@ const storage =
 
             cb(
                 null,
-                path.join(
-                    __dirname,
-                    "../public/media/recordings"
-                )
+               path.join(
+    __dirname,
+    "../private/media/recordings"
+)
             );
 
         },
