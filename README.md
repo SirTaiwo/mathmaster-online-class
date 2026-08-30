@@ -47,13 +47,19 @@ MathMaster has progressed beyond the initial LMS foundation into a functional sc
 - Invoice management
 - Receipt management
 - Parent receipt retrieval
+- Learning material management
+- Private learning-material storage
+- Protected learning-material access
+- Payment-based learning-material access
 - Student audio and video exercise recordings
 - Saved exercise recording playback
 - Teacher lesson audio and video recording infrastructure
 
 ### In Progress
 
-- Further LMS feature development and system refinement
+- Further LMS feature development
+- System refinement and testing
+- Expansion of online learning functionality
 
 ---
 
@@ -115,6 +121,7 @@ Students can:
 - Join mathematics classes
 - View enrolled courses
 - View lessons
+- Access protected learning materials
 - Complete exercises
 - Submit assessments
 - View assessment results
