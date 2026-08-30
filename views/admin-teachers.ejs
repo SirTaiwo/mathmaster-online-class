@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Manage Teachers</title>
+
+<link
+rel="stylesheet"
+href="/css/style.css"
+>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+Math<span>Master</span>
+</div>
+
+<div class="nav-links">
+
+<a href="/admin/dashboard">
+Dashboard
+</a>
+
+<a href="/logout">
+Logout
+</a>
+
+</div>
+
+</nav>
+
+</header>
+
+
+
+<main class="dashboard">
+
+
+<h1>
+Teacher Management
+</h1>
+
+
+<div class="auth-card">
+
+<h2>
+Create Teacher Account
+</h2>
+
+
+<form
+action="/admin/users/teacher"
+method="POST"
+>
+
+
+<label>
+First Name
+</label>
+
+<input
+type="text"
+name="first_name"
+required
+>
+
+
+<label>
+Last Name
+</label>
+
+<input
+type="text"
+name="last_name"
+required
+>
+
+
+<label>
+Email
+</label>
+
+<input
+type="email"
+name="email"
+required
+>
+
+
+<label>
+Temporary Password
+</label>
+
+<input
+type="password"
+name="password"
+minlength="6"
+required
+>
+
+
+<button
+class="btn primary"
+type="submit"
+>
+Create Teacher
+</button>
+
+
+</form>
+
+</div>
+
+
+
+<div class="auth-card">
+
+<table class="users-table">
+
+<thead>
+
+<tr>
+
+<th>Name</th>
+
+<th>Email</th>
+
+<th>Role</th>
+
+<th>Registered</th>
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+<% if (teachers && teachers.length > 0) { %>
+
+    <% teachers.forEach(function(teacher) { %>
+
+    <tr>
+
+    <td>
+    <%= teacher.first_name %>
+    <%= teacher.last_name %>
+    </td>
+
+    <td>
+    <%= teacher.email %>
+    </td>
+
+    <td>
+    <%= teacher.role %>
+    </td>
+
+    <td>
+    <%= teacher.created_at %>
+    </td>
+
+    </tr>
+
+    <% }); %>
+
+<% } else { %>
+
+    <tr>
+
+    <td colspan="4">
+    No teachers found.
+    </td>
+
+    </tr>
+
+<% } %>
+
+</tbody>
+
+
+</table>
+
+</div>
+
+
+</main>
+
+
+</body>
+
+</html>
