@@ -567,7 +567,7 @@ document.getElementById(
 );
 
 
-new Chart(progressCtx, {
+const progressChart = new Chart(progressCtx, {
 
     type: "line",
 
@@ -692,29 +692,54 @@ selector.addEventListener(
     "change",
     function () {
 
-
         const studentId =
             this.value;
-
 
         fetch(
             `/teacher/student-analytics/${studentId}`
         )
 
-        .then(response =>
-            response.json()
-        )
+        .then(response => {
+
+            if (!response.ok) {
+                throw new Error(
+                    "Failed to load student analytics"
+                );
+            }
+
+            return response.json();
+
+        })
 
         .then(data => {
 
-            console.log(
-                "Student Analytics:",
-                data
+            const progressTrend =
+                data.progressTrend || [];
+
+            progressChart.data.labels =
+                progressTrend.map(
+                    (item, index) =>
+                        `Attempt ${index + 1}`
+                );
+
+            progressChart.data.datasets[0].data =
+                progressTrend.map(
+                    item =>
+                        item.percentage
+                );
+
+            progressChart.update();
+
+        })
+
+        .catch(error => {
+
+            console.error(
+                "Student Analytics Error:",
+                error
             );
 
-
         });
-
 
     }
 );

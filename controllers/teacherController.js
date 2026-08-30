@@ -91,10 +91,17 @@ const topStudents =
         teacherId
     );
 
+    const selectedStudentId =
+        enrolledStudents.length > 0
+            ? enrolledStudents[0].id
+            : null;
+
     const progressTrend =
-    AssessmentResult.getProgressTrend(
-        1
-    );
+        selectedStudentId
+            ? AssessmentResult.getProgressTrend(
+                selectedStudentId
+            )
+            : [];
 
 
 res.render(
@@ -113,9 +120,7 @@ res.render(
 
         distribution,
 
-        topStudents,
-
-        progressTrend
+        topStudents
 
     }
 );
@@ -178,22 +183,40 @@ exports.students = (req, res) => {
 
 exports.studentAnalytics = (req, res) => {
 
+    const teacherId =
+        req.session.student.id;
 
     const studentId =
-        req.params.id;
+        Number(req.params.id);
 
+    const students =
+        Enrollment.findStudentsByTeacher(
+            teacherId
+        );
+
+    const studentBelongsToTeacher =
+        students.some(
+            student => student.id === studentId
+        );
+
+    if (!studentBelongsToTeacher) {
+
+        return res.status(403).json({
+            error:
+                "You are not authorized to view this student's analytics."
+        });
+
+    }
 
     const performance =
         AssessmentResult.getStudentPerformance(
             studentId
         );
 
-
     const progressTrend =
         AssessmentResult.getProgressTrend(
             studentId
         );
-
 
     res.json({
 
@@ -202,6 +225,5 @@ exports.studentAnalytics = (req, res) => {
         progressTrend
 
     });
-
 
 };
