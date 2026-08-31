@@ -231,6 +231,16 @@ const submissionId =
 
         );
 
+        const recordings =
+        StudentMediaRecording.findByStudentAndExercise(
+
+            req.session.student.id,
+
+            exercise.id
+
+        );
+
+
 
 
     res.render(
@@ -243,6 +253,8 @@ const submissionId =
             exercise,
 
             submissions,
+
+            recordings,
 
             result
 
