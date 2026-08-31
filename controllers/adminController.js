@@ -39,11 +39,19 @@ exports.dashboard = (req, res) => {
 
 exports.users = (req, res) => {
 
-  const stats = Student.getStatistics();
+    const stats =
+        Student.getStatistics();
 
-const users = Student.findAll();
+    const users =
+        Student.findAll();
 
-const recentUsers = Student.getRecentUsers();
+    const recentUsers =
+        Student.getRecentUsers();
+
+    const success =
+        req.query.passwordReset === "success"
+            ? "User password reset successfully."
+            : null;
 
     res.render(
         "admin-users",
@@ -57,7 +65,7 @@ const recentUsers = Student.getRecentUsers();
 
             error: null,
 
-            success: null
+            success
         }
     );
 
@@ -240,6 +248,196 @@ exports.updateUser = (req, res) => {
 
                 error:
                     "Unable to update user.",
+
+                success:
+                    null
+            }
+        );
+
+    }
+
+};
+
+
+// ========================================
+// RESET USER PASSWORD - DISPLAY FORM
+// ========================================
+
+exports.resetUserPasswordForm = (req, res) => {
+
+    const member =
+        Student.findById(req.params.id);
+
+
+    if (!member) {
+
+        return res.redirect(
+            "/admin/users"
+        );
+
+    }
+
+
+    res.render(
+        "reset-user-password",
+        {
+            user:
+                req.session.student,
+
+            member,
+
+            error: null,
+
+            success: null
+        }
+    );
+
+};
+
+
+// ========================================
+// RESET USER PASSWORD
+// ========================================
+
+exports.resetUserPassword = async (req, res) => {
+
+    const member =
+        Student.findById(req.params.id);
+
+
+    if (!member) {
+
+        return res.redirect(
+            "/admin/users"
+        );
+
+    }
+
+
+    const {
+        password,
+        confirm_password
+    } = req.body;
+
+
+    // ----------------------------------------
+    // REQUIRE PASSWORDS
+    // ----------------------------------------
+
+    if (
+        !password ||
+        !confirm_password
+    ) {
+
+        return res.render(
+            "reset-user-password",
+            {
+                user:
+                    req.session.student,
+
+                member,
+
+                error:
+                    "Please enter and confirm the new password.",
+
+                success:
+                    null
+            }
+        );
+
+    }
+
+
+    // ----------------------------------------
+    // MINIMUM PASSWORD LENGTH
+    // ----------------------------------------
+
+    if (password.length < 6) {
+
+        return res.render(
+            "reset-user-password",
+            {
+                user:
+                    req.session.student,
+
+                member,
+
+                error:
+                    "Password must be at least 6 characters.",
+
+                success:
+                    null
+            }
+        );
+
+    }
+
+
+    // ----------------------------------------
+    // CONFIRM PASSWORD
+    // ----------------------------------------
+
+    if (
+        password !== confirm_password
+    ) {
+
+        return res.render(
+            "reset-user-password",
+            {
+                user:
+                    req.session.student,
+
+                member,
+
+                error:
+                    "Passwords do not match.",
+
+                success:
+                    null
+            }
+        );
+
+    }
+
+
+    try {
+
+        const hashedPassword =
+            await bcrypt.hash(
+                password,
+                12
+            );
+
+
+        Student.updatePassword(
+            req.params.id,
+            hashedPassword
+        );
+
+
+        res.redirect(
+            "/admin/users?passwordReset=success"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Password reset error:",
+            error
+        );
+
+
+        res.render(
+            "reset-user-password",
+            {
+                user:
+                    req.session.student,
+
+                member,
+
+                error:
+                    "Unable to reset user password.",
 
                 success:
                     null

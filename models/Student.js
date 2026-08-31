@@ -215,6 +215,27 @@ function updateUser(
 
 }
 
+
+// ========================================
+// UPDATE USER PASSWORD
+// ========================================
+
+function updatePassword(
+    id,
+    hashedPassword
+) {
+
+    return db.prepare(`
+        UPDATE students
+        SET password = ?
+        WHERE id = ?
+    `).run(
+        hashedPassword,
+        id
+    );
+
+}
+
 // ========================================
 // USER STATISTICS
 // ========================================
@@ -394,6 +415,7 @@ module.exports = {
     getStatistics,
     getRecentUsers,
     updateUser,
+    updatePassword,
     updateStudent,
     deleteUser,
     findAllTeachers

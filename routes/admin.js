@@ -69,6 +69,28 @@ router.post(
     adminController.updateUser
 );
 
+
+// ========================================
+// RESET USER PASSWORD - DISPLAY FORM
+// ========================================
+
+router.get(
+    "/admin/users/reset-password/:id",
+    requireRole("admin"),
+    adminController.resetUserPasswordForm
+);
+
+
+// ========================================
+// RESET USER PASSWORD
+// ========================================
+
+router.post(
+    "/admin/users/reset-password/:id",
+    requireRole("admin"),
+    adminController.resetUserPassword
+);
+
 // ========================================
 // TEACHER MANAGEMENT
 // ========================================
