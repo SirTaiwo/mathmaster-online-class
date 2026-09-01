@@ -117,10 +117,28 @@ function getClassStudents(classId) {
 
 function deleteClass(id) {
 
-    return db.prepare(`
-        DELETE FROM classes
-        WHERE id = ?
-    `).run(id);
+    const deleteClassTransaction =
+        db.transaction(() => {
+
+            // Remove students assigned to the class.
+            // This deletes only the relationship,
+            // not the student records themselves.
+            db.prepare(`
+                DELETE FROM class_students
+                WHERE class_id = ?
+            `).run(id);
+
+
+            // Now delete the class itself.
+            return db.prepare(`
+                DELETE FROM classes
+                WHERE id = ?
+            `).run(id);
+
+        });
+
+
+    return deleteClassTransaction();
 
 }
 
