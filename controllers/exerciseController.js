@@ -59,6 +59,21 @@ exports.createExerciseForm = (req, res) => {
 exports.createExercise = (req, res) => {
 
 
+    const lesson =
+        Lesson.findById(
+            req.params.lessonId
+        );
+
+
+    if (!lesson) {
+
+        return res.redirect(
+            "/teacher/courses"
+        );
+
+    }
+
+
     const {
         question,
         answer,
@@ -81,7 +96,7 @@ exports.createExercise = (req, res) => {
 
 
     res.redirect(
-        `/teacher/courses/${req.params.courseId}/lessons`
+        `/teacher/courses/${lesson.course_id}/lessons`
     );
 
 
