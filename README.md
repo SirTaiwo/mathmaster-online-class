@@ -57,9 +57,10 @@ MathMaster has progressed beyond the initial LMS foundation into a functional sc
 
 ### In Progress
 
-- Further LMS feature development
-- System refinement and testing
-- Expansion of online learning functionality
+- Final system-wide testing and refinement
+- Verification and refinement of student audio/video recording capture and playback
+- Investigation and correction of webcam video capture where the saved recording does not contain the student's camera image
+- Continued expansion of LMS functionality as new requirements are identified
 
 ---
 
