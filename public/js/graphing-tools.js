@@ -351,18 +351,13 @@ function plotGraphPoint(){
     }
 
 
-    graphPoints.push({
+   graphPoints.push({
 
-        x,
-        y,
-        label
+    x,
+    y,
+    label
 
-    });
-
-
-    drawGraph();
-
-    drawGraphPoints();
+});
 
 
     document.getElementById(
@@ -376,6 +371,968 @@ function plotGraphPoint(){
         ", " +
         y +
         ")";
+
+}
+
+// ======================
+// FUNCTION PLOTTER
+// ======================
+
+let plottedFunctions = [];
+
+
+// ----------------------
+// TOKENIZER
+// ----------------------
+
+function tokenizeFunction(expression){
+
+    const tokens = [];
+
+    let i = 0;
+
+    while(i < expression.length){
+
+        const char = expression[i];
+
+        // Ignore whitespace
+        if(/\s/.test(char)){
+            i++;
+            continue;
+        }
+
+        // Numbers
+        if(/[0-9.]/.test(char)){
+
+            let number = "";
+
+            while(
+                i < expression.length &&
+                /[0-9.]/.test(expression[i])
+            ){
+
+                number += expression[i];
+                i++;
+
+            }
+
+            if(
+                number === "." ||
+                (number.match(/\./g) || []).length > 1
+            ){
+
+                throw new Error("Invalid number.");
+
+            }
+
+            tokens.push({
+                type: "number",
+                value: Number(number)
+            });
+
+            continue;
+
+        }
+
+
+        // Identifiers
+        if(/[a-zA-Z]/.test(char)){
+
+            let identifier = "";
+
+            while(
+                i < expression.length &&
+                /[a-zA-Z]/.test(expression[i])
+            ){
+
+                identifier += expression[i];
+                i++;
+
+            }
+
+            const name =
+                identifier.toLowerCase();
+
+            if(name === "x"){
+
+                tokens.push({
+                    type: "variable",
+                    value: "x"
+                });
+
+            }
+            else if(name === "pi"){
+
+                tokens.push({
+                    type: "constant",
+                    value: Math.PI
+                });
+
+            }
+            else if([
+                "sin",
+                "cos",
+                "tan",
+                "sqrt",
+                "abs",
+                "log",
+                "exp"
+            ].includes(name)){
+
+                tokens.push({
+                    type: "function",
+                    value: name
+                });
+
+            }
+            else{
+
+                throw new Error(
+                    "Unknown function or variable: " +
+                    identifier
+                );
+
+            }
+
+            continue;
+
+        }
+
+
+        // Operators
+        if("+-*/^".includes(char)){
+
+            tokens.push({
+                type: "operator",
+                value: char
+            });
+
+            i++;
+            continue;
+
+        }
+
+
+        // Parentheses
+        if(char === "("){
+
+            tokens.push({
+                type: "leftParen",
+                value: char
+            });
+
+            i++;
+            continue;
+
+        }
+
+
+        if(char === ")"){
+
+            tokens.push({
+                type: "rightParen",
+                value: char
+            });
+
+            i++;
+            continue;
+
+        }
+
+
+        throw new Error(
+            "Invalid character: " + char
+        );
+
+    }
+
+    return addImplicitMultiplication(tokens);
+
+}
+
+
+// ----------------------
+// IMPLICIT MULTIPLICATION
+// ----------------------
+
+function addImplicitMultiplication(tokens){
+
+    const result = [];
+
+    function canEndValue(token){
+
+        return token &&
+            (
+                token.type === "number" ||
+                token.type === "variable" ||
+                token.type === "constant" ||
+                token.type === "rightParen"
+            );
+
+    }
+
+
+    function canStartValue(token){
+
+        return token &&
+            (
+                token.type === "number" ||
+                token.type === "variable" ||
+                token.type === "constant" ||
+                token.type === "function" ||
+                token.type === "leftParen"
+            );
+
+    }
+
+
+    for(let i = 0; i < tokens.length; i++){
+
+        const current = tokens[i];
+        const previous = tokens[i - 1];
+
+        if(
+            canEndValue(previous) &&
+            canStartValue(current)
+        ){
+
+            result.push({
+                type: "operator",
+                value: "*"
+            });
+
+        }
+
+        result.push(current);
+
+    }
+
+    return result;
+
+}
+
+
+// ----------------------
+// PARSER
+// ----------------------
+
+function parseFunction(expression){
+
+    const tokens =
+        tokenizeFunction(expression);
+
+    if(tokens.length === 0){
+
+        throw new Error(
+            "Please enter a function."
+        );
+
+    }
+
+
+    const output = [];
+
+    const operators = [];
+
+
+    const precedence = {
+
+        "+": 1,
+        "-": 1,
+        "*": 2,
+        "/": 2,
+        "^": 3
+
+    };
+
+
+    const rightAssociative = {
+        "^": true
+    };
+
+
+    for(let i = 0; i < tokens.length; i++){
+
+        const token = tokens[i];
+
+
+        if(
+            token.type === "number" ||
+            token.type === "variable" ||
+            token.type === "constant"
+        ){
+
+            output.push(token);
+            continue;
+
+        }
+
+
+        if(token.type === "function"){
+
+            operators.push(token);
+            continue;
+
+        }
+
+
+        if(token.type === "operator"){
+
+            // Unary plus/minus
+            if(
+                (i === 0 ||
+                tokens[i - 1].type === "operator" ||
+                tokens[i - 1].type === "leftParen") &&
+                (token.value === "+" ||
+                token.value === "-")
+            ){
+
+                output.push({
+                    type: "number",
+                    value: 0
+                });
+
+            }
+
+
+            while(operators.length){
+
+                const top =
+                    operators[operators.length - 1];
+
+                if(top.type === "function"){
+
+                    output.push(
+                        operators.pop()
+                    );
+
+                    continue;
+
+                }
+
+
+                if(
+                    top.type !== "operator"
+                ){
+
+                    break;
+
+                }
+
+
+                const topPrecedence =
+                    precedence[top.value];
+
+                const currentPrecedence =
+                    precedence[token.value];
+
+
+                if(
+                    topPrecedence >
+                    currentPrecedence ||
+                    (
+                        topPrecedence ===
+                        currentPrecedence &&
+                        !rightAssociative[token.value]
+                    )
+                ){
+
+                    output.push(
+                        operators.pop()
+                    );
+
+                }
+                else{
+
+                    break;
+
+                }
+
+            }
+
+
+            operators.push(token);
+            continue;
+
+        }
+
+
+        if(token.type === "leftParen"){
+
+            operators.push(token);
+            continue;
+
+        }
+
+
+        if(token.type === "rightParen"){
+
+            let foundLeftParen = false;
+
+            while(operators.length){
+
+                const top =
+                    operators.pop();
+
+                if(top.type === "leftParen"){
+
+                    foundLeftParen = true;
+                    break;
+
+                }
+
+                output.push(top);
+
+            }
+
+
+            if(!foundLeftParen){
+
+                throw new Error(
+                    "Mismatched parentheses."
+                );
+
+            }
+
+
+            if(
+                operators.length &&
+                operators[
+                    operators.length - 1
+                ].type === "function"
+            ){
+
+                output.push(
+                    operators.pop()
+                );
+
+            }
+
+        }
+
+    }
+
+
+    while(operators.length){
+
+        const top =
+            operators.pop();
+
+        if(
+            top.type === "leftParen" ||
+            top.type === "rightParen"
+        ){
+
+            throw new Error(
+                "Mismatched parentheses."
+            );
+
+        }
+
+        output.push(top);
+
+    }
+
+
+    return output;
+
+}
+
+
+// ----------------------
+// EXPRESSION EVALUATOR
+// ----------------------
+
+function evaluateFunction(rpn, xValue){
+
+    const stack = [];
+
+
+    for(const token of rpn){
+
+        if(token.type === "number"){
+
+            stack.push(token.value);
+            continue;
+
+        }
+
+
+        if(token.type === "constant"){
+
+            stack.push(token.value);
+            continue;
+
+        }
+
+
+        if(token.type === "variable"){
+
+            stack.push(xValue);
+            continue;
+
+        }
+
+
+        if(token.type === "operator"){
+
+            if(stack.length < 2){
+
+                throw new Error(
+                    "Invalid expression."
+                );
+
+            }
+
+
+            const b = stack.pop();
+            const a = stack.pop();
+
+            let result;
+
+
+            switch(token.value){
+
+                case "+":
+                    result = a + b;
+                    break;
+
+                case "-":
+                    result = a - b;
+                    break;
+
+                case "*":
+                    result = a * b;
+                    break;
+
+                case "/":
+                    result = a / b;
+                    break;
+
+                case "^":
+                    result = Math.pow(a, b);
+                    break;
+
+                default:
+                    throw new Error(
+                        "Unsupported operator."
+                    );
+
+            }
+
+            stack.push(result);
+            continue;
+
+        }
+
+
+        if(token.type === "function"){
+
+            if(stack.length < 1){
+
+                throw new Error(
+                    "Invalid function expression."
+                );
+
+            }
+
+
+            const value =
+                stack.pop();
+
+            const angleMode =
+                document.getElementById(
+                    "angleMode"
+                ).value;
+
+
+            let argument = value;
+
+
+            if(
+                angleMode === "degrees" &&
+                (
+                    token.value === "sin" ||
+                    token.value === "cos" ||
+                    token.value === "tan"
+                )
+            ){
+
+                argument =
+                    value *
+                    Math.PI /
+                    180;
+
+            }
+
+
+            let result;
+
+
+            switch(token.value){
+
+                case "sin":
+                    result = Math.sin(argument);
+                    break;
+
+                case "cos":
+                    result = Math.cos(argument);
+                    break;
+
+                case "tan":
+                    result = Math.tan(argument);
+                    break;
+
+                case "sqrt":
+                    result = Math.sqrt(value);
+                    break;
+
+                case "abs":
+                    result = Math.abs(value);
+                    break;
+
+                case "log":
+                    result = Math.log10(value);
+                    break;
+
+                case "exp":
+                    result = Math.exp(value);
+                    break;
+
+                default:
+                    throw new Error(
+                        "Unsupported function."
+                    );
+
+            }
+
+
+            stack.push(result);
+
+        }
+
+    }
+
+
+    if(stack.length !== 1){
+
+        throw new Error(
+            "Invalid expression."
+        );
+
+    }
+
+
+    return stack[0];
+
+}
+
+
+// ----------------------
+// DRAW FUNCTION
+// ----------------------
+
+function drawFunction(rpn){
+
+    const minX =
+        -originX / scale;
+
+    const maxX =
+        (canvas.width - originX) / scale;
+
+
+    const step =
+        1 / scale;
+
+
+    ctx.beginPath();
+
+
+    let previousCanvasX = null;
+    let previousCanvasY = null;
+
+
+    for(
+        let x = minX;
+        x <= maxX;
+        x += step
+    ){
+
+        let y;
+
+
+        try{
+
+            y =
+                evaluateFunction(
+                    rpn,
+                    x
+                );
+
+        }
+        catch(error){
+
+            previousCanvasX = null;
+            previousCanvasY = null;
+            continue;
+
+        }
+
+
+        if(
+            !Number.isFinite(y) ||
+            Math.abs(y) > 100000
+        ){
+
+            previousCanvasX = null;
+            previousCanvasY = null;
+            continue;
+
+        }
+
+
+        const canvasX =
+            originX +
+            x * scale;
+
+        const canvasY =
+            originY -
+            y * scale;
+
+
+        // Break the graph when there is
+        // an extreme jump between samples.
+        if(
+            previousCanvasY !== null &&
+            Math.abs(
+                canvasY -
+                previousCanvasY
+            ) > canvas.height * 1.5
+        ){
+
+            ctx.moveTo(
+                canvasX,
+                canvasY
+            );
+
+        }
+        else if(
+            previousCanvasX === null
+        ){
+
+            ctx.moveTo(
+                canvasX,
+                canvasY
+            );
+
+        }
+        else{
+
+            ctx.lineTo(
+                canvasX,
+                canvasY
+            );
+
+        }
+
+
+        previousCanvasX = canvasX;
+        previousCanvasY = canvasY;
+
+    }
+
+
+    ctx.stroke();
+
+}
+
+
+// ----------------------
+// REDRAW FUNCTIONS
+// ----------------------
+
+function drawAllFunctions(){
+
+    plottedFunctions.forEach(
+        functionItem => {
+
+            drawFunction(
+                functionItem.rpn
+            );
+
+        }
+    );
+
+}
+
+
+// ----------------------
+// PLOT FUNCTION
+// ----------------------
+
+function plotFunction(){
+
+    const input =
+        document.getElementById(
+            "functionInput"
+        );
+
+
+    let expression =
+        input.value.trim();
+
+
+    const result =
+        document.getElementById(
+            "functionResult"
+        );
+
+
+    if(!expression){
+
+        result.innerHTML =
+            "Please enter a function.";
+
+        return;
+
+    }
+
+
+    // Allow the teacher to enter:
+    // y = x^2
+    // or simply:
+    // x^2
+
+    expression =
+        expression
+            .replace(/^y\s*=\s*/i, "")
+            .trim();
+
+
+    try{
+
+        const rpn =
+            parseFunction(
+                expression
+            );
+
+
+        // Test the expression before
+        // accepting it.
+        const testValue =
+            evaluateFunction(
+                rpn,
+                0
+            );
+
+
+        if(!Number.isFinite(testValue)){
+
+            throw new Error(
+                "The function is undefined at x = 0."
+            );
+
+        }
+
+
+        plottedFunctions.push({
+
+            expression,
+            rpn
+
+        });
+
+
+        redrawGraphWithFunctions();
+
+
+        result.innerHTML =
+            "Function plotted: y = " +
+            expression;
+
+
+        input.value = "";
+
+        updateFunctionList();
+
+    }
+    catch(error){
+
+        result.innerHTML =
+            "Unable to plot function: " +
+            error.message;
+
+    }
+
+}
+
+
+// ----------------------
+// REDRAW GRAPH + FUNCTIONS
+// ----------------------
+
+function redrawGraphWithFunctions(){
+
+    drawGraph();
+
+    drawGraphPoints();
+
+    drawAllFunctions();
+
+}
+
+// ----------------------
+// FUNCTION LIST
+// ----------------------
+
+function updateFunctionList(){
+
+    const list =
+        document.getElementById(
+            "functionList"
+        );
+
+
+    if(!plottedFunctions.length){
+
+        list.innerHTML = "";
+
+        return;
+
+    }
+
+
+    list.innerHTML =
+        "<strong>Plotted Functions:</strong><br>" +
+        plottedFunctions
+            .map(
+                functionItem =>
+                    "y = " +
+                    functionItem.expression
+            )
+            .join("<br>");
+
+}
+
+
+// ----------------------
+// CLEAR FUNCTIONS
+// ----------------------
+
+function clearFunctions(){
+
+    plottedFunctions = [];
+
+    redrawGraphWithFunctions();
+
+
+    document.getElementById(
+        "functionResult"
+    ).innerHTML =
+        "Function:";
+
+
+    updateFunctionList();
 
 }
 
@@ -436,9 +1393,7 @@ function calculateGradient(){
         rise / run;
 
 
-    drawGraph();
-
-    drawGraphPoints();
+    redrawGraphWithFunctions();
 
 
     // ----------------------

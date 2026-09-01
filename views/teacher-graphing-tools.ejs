@@ -211,6 +211,70 @@ Gradient:
 
 </div>
 
+<div class="dashboard-card">
+
+<h2>
+📉 Function Plotter
+</h2>
+
+<p>
+Plot mathematical functions on the coordinate plane.
+</p>
+
+<label>
+Function:
+</label>
+
+<input
+type="text"
+id="functionInput"
+placeholder="e.g. x^2 - 4x + 3"
+>
+
+<label>
+Angle Mode:
+</label>
+
+<select id="angleMode">
+<option value="radians">
+Radians
+</option>
+
+<option value="degrees">
+Degrees
+</option>
+</select>
+
+<br>
+
+<button
+onclick="plotFunction()"
+class="btn primary">
+
+📉 Plot Function
+
+</button>
+
+<button
+onclick="clearFunctions()"
+class="btn">
+
+Clear Functions
+
+</button>
+
+<p id="functionResult">
+
+Function:
+
+</p>
+
+<div id="functionList">
+
+</div>
+
+</div>
+
 
 
 </main>
