@@ -7,12 +7,73 @@ const AssessmentQuestion =
 const AssessmentResult =
     require("../models/AssessmentResult");
 
+const Lesson =
+    require("../models/Lesson");
+
+const Enrollment =
+    require("../models/Enrollment");
+
+
+// ========================================
+// CHECK STUDENT ENROLLMENT
+// ========================================
+
+function isStudentEnrolledInAssessment(
+    studentId,
+    assessment
+) {
+
+    const lesson =
+        Lesson.findById(
+            assessment.lesson_id
+        );
+
+    if (!lesson) {
+        return false;
+    }
+
+    return !!Enrollment.isStudentEnrolled(
+        studentId,
+        lesson.course_id
+    );
+
+}
+
 
 // ========================================
 // LIST ASSESSMENTS
 // ========================================
 
 exports.listAssessments = (req, res) => {
+
+    const studentId =
+        req.session.student.id;
+
+    const lesson =
+        Lesson.findById(
+            req.params.lessonId
+        );
+
+    if (!lesson) {
+
+        return res.redirect(
+            "/student/my-courses"
+        );
+
+    }
+
+    if (
+        !Enrollment.isStudentEnrolled(
+            studentId,
+            lesson.course_id
+        )
+    ) {
+
+        return res.redirect(
+            "/student/my-courses"
+        );
+
+    }
 
     const assessments =
         Assessment.findByLesson(
@@ -42,35 +103,49 @@ exports.takeAssessment = (req, res) => {
             req.params.assessmentId
         );
 
+    if (!assessment) {
+
+        return res.redirect(
+            "/student/dashboard"
+        );
+
+    }
+
     const studentId =
         req.session.student.id;
 
+    if (
+        !isStudentEnrolledInAssessment(
+            studentId,
+            assessment
+        )
+    ) {
+
+        return res.redirect(
+            "/student/my-courses"
+        );
+
+    }
+
     const attempts =
         AssessmentResult.countAttempts(
-
             studentId,
-
             req.params.assessmentId
-
         );
 
 
-    if (attempts.attempts >= assessment.max_attempts) {
+    if (
+        attempts.attempts >=
+        assessment.max_attempts
+    ) {
 
         return res.render(
-
             "assessment-limit",
-
             {
-
                 user: req.session.student,
-
                 assessment,
-
                 attempts: attempts.attempts
-
             }
-
         );
 
     }
@@ -82,19 +157,12 @@ exports.takeAssessment = (req, res) => {
         );
 
     res.render(
-
         "student-assessment",
-
         {
-
             user: req.session.student,
-
             assessment,
-
             questions
-
         }
-
     );
 
 };
@@ -121,6 +189,19 @@ exports.submitAssessment = (req, res) => {
 
         return res.redirect(
             "/student/dashboard"
+        );
+
+    }
+
+    if (
+        !isStudentEnrolledInAssessment(
+            studentId,
+            assessment
+        )
+    ) {
+
+        return res.redirect(
+            "/student/my-courses"
         );
 
     }
