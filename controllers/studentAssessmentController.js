@@ -106,39 +106,64 @@ exports.takeAssessment = (req, res) => {
 
 exports.submitAssessment = (req, res) => {
 
-
     const assessmentId =
         req.params.assessmentId;
-
 
     const studentId =
         req.session.student.id;
 
+    const assessment =
+        Assessment.findById(
+            assessmentId
+        );
+
+    if (!assessment) {
+
+        return res.redirect(
+            "/student/dashboard"
+        );
+
+    }
+
+    const attempts =
+        AssessmentResult.countAttempts(
+            studentId,
+            assessmentId
+        );
+
+    if (
+        attempts.attempts >=
+        assessment.max_attempts
+    ) {
+
+        return res.render(
+            "assessment-limit",
+            {
+                user: req.session.student,
+                assessment,
+                attempts: attempts.attempts
+            }
+        );
+
+    }
 
     const questions =
         AssessmentQuestion.findByAssessment(
             assessmentId
         );
 
-
     let score = 0;
 
     let totalMarks = 0;
 
-
-
     questions.forEach(question => {
-
 
         const answer =
             req.body[
                 `question_${question.id}`
             ];
 
-
         totalMarks += question.marks;
-
-
 
         if (
             answer &&
@@ -149,10 +174,7 @@ exports.submitAssessment = (req, res) => {
 
         }
 
-
     });
-
-
 
     const percentage =
         totalMarks
@@ -161,42 +183,22 @@ exports.submitAssessment = (req, res) => {
               )
             : 0;
 
-
-
     AssessmentResult.saveResult(
-
         studentId,
-
         assessmentId,
-
         score,
-
         totalMarks,
-
         percentage
-
     );
-
-
 
     res.render(
-
         "assessment-result",
-
         {
-
-            user:
-                req.session.student,
-
+            user: req.session.student,
             score,
-
             totalMarks,
-
             percentage
-
         }
-
     );
-
 
 };
