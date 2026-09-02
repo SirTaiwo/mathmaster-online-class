@@ -124,8 +124,8 @@ id="eraserButton">
 </button>
 
 
-<label for="lineWidth">
-Thickness:
+<label for="lineWidth" id="lineWidthLabel">
+Pen thickness:
 </label>
 
 <input
@@ -185,6 +185,9 @@ const eraserButton =
 
 const lineWidth =
     document.getElementById("lineWidth");
+
+    const lineWidthLabel =
+    document.getElementById("lineWidthLabel");
 
 const undoButton =
     document.getElementById("undoButton");
@@ -378,6 +381,15 @@ penButton.addEventListener(
 
         erasing = false;
 
+        lineWidth.min = "1";
+
+        lineWidth.max = "20";
+
+        lineWidth.value = "3";
+
+        lineWidthLabel.textContent =
+            "Pen thickness:";
+
         ctx.globalCompositeOperation =
             "source-over";
 
@@ -390,6 +402,15 @@ eraserButton.addEventListener(
     () => {
 
         erasing = true;
+
+        lineWidth.min = "5";
+
+        lineWidth.max = "60";
+
+        lineWidth.value = "30";
+
+        lineWidthLabel.textContent =
+            "Eraser size:";
 
         ctx.globalCompositeOperation =
             "destination-out";
