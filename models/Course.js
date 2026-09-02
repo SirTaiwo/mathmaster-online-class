@@ -157,6 +157,8 @@ module.exports = {
 
     findById,
 
+    findAllCourses,
+
     deleteCourse,
 
     countByTeacher

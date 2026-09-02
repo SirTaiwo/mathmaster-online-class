@@ -531,6 +531,20 @@ exports.courseLessons = (req, res) => {
 
     }
 
+    const enrolled =
+        Enrollment.isStudentEnrolled(
+            req.session.student.id,
+            req.params.courseId
+        );
+
+    if (!enrolled) {
+
+        return res.redirect(
+            "/student/my-courses"
+        );
+
+    }
+
     const lessons =
         require("../models/Lesson")
             .findByCourse(

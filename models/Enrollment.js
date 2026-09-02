@@ -117,6 +117,32 @@ function findCoursesByStudent(
 
 }
 
+// ========================================
+// CHECK STUDENT ENROLLMENT
+// ========================================
+
+function isStudentEnrolled(
+    studentId,
+    courseId
+) {
+
+    return db.prepare(`
+
+        SELECT 1
+
+        FROM enrollments
+
+        WHERE student_id = ?
+
+        AND course_id = ?
+
+    `).get(
+        studentId,
+        courseId
+    );
+
+}
+
 
 
 // ========================================
@@ -185,6 +211,8 @@ module.exports = {
     findStudentsByCourse,
 
     findCoursesByStudent,
+
+    isStudentEnrolled,
 
     countStudentsByCourse,
 
