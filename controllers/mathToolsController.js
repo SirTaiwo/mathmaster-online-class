@@ -73,3 +73,18 @@ exports.calculator = (req, res) => {
     );
 
 };
+
+// ========================================
+// FREEHAND WHITEBOARD
+// ========================================
+
+exports.whiteboard = (req, res) => {
+
+    res.render(
+        "teacher-whiteboard",
+        {
+            user: req.session.user
+        }
+    );
+
+};

@@ -89,4 +89,14 @@ router.get(
     mathToolsController.calculator
 );
 
+// ========================================
+// TEACHER FREEHAND WHITEBOARD
+// ========================================
+
+router.get(
+    "/teacher/math-tools/whiteboard",
+    requireRole("teacher", "admin"),
+    mathToolsController.whiteboard
+);
+
 module.exports = router;
