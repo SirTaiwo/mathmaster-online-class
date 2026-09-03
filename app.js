@@ -239,6 +239,11 @@ app.use(
     assessmentRoutes
 );
 
+app.use(
+    "/",
+    assessmentQuestionRoutes
+);
+
     
 app.use(
     "/",
