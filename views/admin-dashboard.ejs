@@ -218,45 +218,6 @@
 
     </div>
 
-    <section class="recent-activity">
-
-    <h2>Recent Activity</h2>
-
-    <% if (recentUsers && recentUsers.length > 0) { %>
-
-        <% recentUsers.forEach(member => { %>
-
-            <div class="activity-item">
-
-                <strong>
-                    <%= member.first_name %>
-                    <%= member.last_name %>
-                </strong>
-
-                <br>
-
-                <span>
-                    <%= member.role %>
-                </span>
-
-                <br>
-
-                <small>
-                    Registered:
-                    <%= member.created_at %>
-                </small>
-
-            </div>
-
-        <% }) %>
-
-    <% } else { %>
-
-        <p>No recent activity.</p>
-
-    <% } %>
-
-</section>
 
 
 
@@ -357,11 +318,53 @@
 
 
 </section>
+
+<!-- Recent Activity -->
+
+<section class="recent-activity">
+    <h2>Recent Activity</h2>
+
+
+
+    <% if (recentUsers && recentUsers.length > 0) { %>
+
+        <% recentUsers.forEach(member => { %>
+
+            <div class="activity-item">
+
+                <strong>
+                    <%= member.first_name %>
+                    <%= member.last_name %>
+                </strong>
+
+                <br>
+
+                <span>
+                    <%= member.role %>
+                </span>
+
+                <br>
+
+                <small>
+                    Registered:
+                    <%= member.created_at %>
+                </small>
+
+            </div>
+
+        <% }) %>
+
+    <% } else { %>
+
+        <p>No recent activity.</p>
+
+    <% } %>
+
+</section>
+
     </main>
 
-</div>
 
-</body>
 </body>
 
 </html>
