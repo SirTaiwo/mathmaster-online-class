@@ -33,14 +33,11 @@ let graphPoints = [];
 
 function clearGraph(){
 
-    ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
-
     graphPoints = [];
+
+    plottedFunctions = [];
+
+    drawGraph();
 
     document.getElementById(
         "graphPointResult"
@@ -49,6 +46,12 @@ function clearGraph(){
     document.getElementById(
         "gradientResult"
     ).innerHTML = "Gradient:";
+
+    document.getElementById(
+        "functionResult"
+    ).innerHTML = "Function:";
+
+    updateFunctionList();
 
 }
 
@@ -371,6 +374,8 @@ function plotGraphPoint(){
         ", " +
         y +
         ")";
+
+    redrawGraphWithFunctions();
 
 }
 
