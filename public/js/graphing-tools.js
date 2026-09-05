@@ -1707,7 +1707,22 @@ function drawStatisticalGraph(
     );
 
 
-    if(graphType !== "bar"){
+    if(
+    graphType !== "bar" &&
+    graphType !== "histogram"
+){
+
+    return;
+
+}
+
+    if(graphType === "histogram"){
+
+        drawHistogram(
+            values,
+            canvas,
+            ctx
+        );
 
         return;
 
@@ -1892,6 +1907,285 @@ function drawStatisticalGraph(
                 5,
                 y - 5
             );
+
+        }
+    );
+
+
+    ctx.fillText(
+        "Value",
+        canvas.width / 2 - 15,
+        canvas.height - 10
+    );
+
+
+    ctx.save();
+
+    ctx.translate(
+        15,
+        canvas.height / 2
+    );
+
+    ctx.rotate(
+        -Math.PI / 2
+    );
+
+    ctx.fillText(
+        "Frequency",
+        0,
+        0
+    );
+
+    ctx.restore();
+
+}
+
+function drawHistogram(
+    values,
+    canvas,
+    ctx
+){
+
+    const marginLeft = 60;
+    const marginBottom = 50;
+    const marginTop = 30;
+    const marginRight = 20;
+
+
+    const graphWidth =
+        canvas.width -
+        marginLeft -
+        marginRight;
+
+
+    const graphHeight =
+        canvas.height -
+        marginTop -
+        marginBottom;
+
+
+    const minimum =
+        Math.min(
+            ...values
+        );
+
+
+    const maximum =
+        Math.max(
+            ...values
+        );
+
+
+    let range =
+        maximum -
+        minimum;
+
+
+    if(range === 0){
+
+        range = 1;
+
+    }
+
+
+    const binCount = 5;
+
+
+    const binWidth =
+        range /
+        binCount;
+
+
+    const bins =
+        Array.from(
+            {
+                length:
+                    binCount
+            },
+            () => 0
+        );
+
+
+    values.forEach(
+        value => {
+
+            let index =
+                Math.floor(
+                    (
+                        value -
+                        minimum
+                    ) /
+                    binWidth
+                );
+
+
+            if(
+                index >=
+                binCount
+            ){
+
+                index =
+                    binCount - 1;
+
+            }
+
+
+            bins[index]++;
+
+        }
+    );
+
+
+    const highestCount =
+        Math.max(
+            ...bins
+        );
+
+
+    // Axes
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        marginLeft,
+        marginTop
+    );
+
+    ctx.lineTo(
+        marginLeft,
+        canvas.height -
+        marginBottom
+    );
+
+    ctx.lineTo(
+        canvas.width -
+        marginRight,
+        canvas.height -
+        marginBottom
+    );
+
+    ctx.stroke();
+
+
+    // Y-axis labels
+
+    for(
+        let i = 0;
+        i <= highestCount;
+        i++
+    ){
+
+        const y =
+            canvas.height -
+            marginBottom -
+            (
+                i /
+                highestCount
+            ) *
+            graphHeight;
+
+
+        ctx.fillText(
+            i,
+            marginLeft - 25,
+            y + 4
+        );
+
+    }
+
+
+    const barWidth =
+        graphWidth /
+        binCount;
+
+
+    // Histogram bars
+
+    bins.forEach(
+        (count, index) => {
+
+            const barHeight =
+                (
+                    count /
+                    highestCount
+                ) *
+                graphHeight;
+
+
+            const x =
+                marginLeft +
+                index *
+                barWidth;
+
+
+            const y =
+                canvas.height -
+                marginBottom -
+                barHeight;
+
+
+            ctx.fillRect(
+                x,
+                y,
+                barWidth,
+                barHeight
+            );
+
+
+            // Frequency
+
+            ctx.fillText(
+                count,
+                x +
+                barWidth / 2 -
+                5,
+                y - 5
+            );
+
+
+            // Interval labels
+
+            const start =
+                minimum +
+                index *
+                binWidth;
+
+
+            const end =
+                minimum +
+                (
+                    index + 1
+                ) *
+                binWidth;
+
+
+            const label =
+                start.toFixed(1) +
+                "–" +
+                end.toFixed(1);
+
+
+            ctx.save();
+
+            ctx.translate(
+                x +
+                barWidth / 2,
+                canvas.height -
+                marginBottom +
+                25
+            );
+
+            ctx.rotate(
+                -Math.PI / 4
+            );
+
+            ctx.fillText(
+                label,
+                0,
+                0
+            );
+
+            ctx.restore();
 
         }
     );
