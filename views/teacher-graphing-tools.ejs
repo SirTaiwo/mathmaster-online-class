@@ -275,6 +275,101 @@ Function:
 
 </div>
 
+<div class="dashboard-card">
+
+    <h2>
+        📊 Statistical Graph Tool
+    </h2>
+
+    <p>
+        Enter numerical data to calculate statistics
+        and create a statistical graph.
+    </p>
+
+
+    <label>
+        Data:
+    </label>
+
+    <input
+        type="text"
+        id="statisticsData"
+        placeholder="e.g. 2, 4, 4, 5, 6, 7, 7, 8"
+        style="width:80%;"
+    >
+
+
+    <br><br>
+
+
+    <label>
+        Graph Type:
+    </label>
+
+    <select id="statisticsGraphType">
+
+        <option value="bar">
+            Bar Chart
+        </option>
+
+        <option value="histogram">
+            Histogram
+        </option>
+
+        <option value="pie">
+            Pie Chart
+        </option>
+
+        <option value="frequency">
+            Frequency Graph
+        </option>
+
+    </select>
+
+
+    <br><br>
+
+
+    <button
+        onclick="calculateStatistics()"
+        class="btn primary">
+
+        📊 Generate Statistical Graph
+
+    </button>
+
+
+    <button
+        onclick="clearStatistics()"
+        class="btn">
+
+        Clear
+
+    </button>
+
+
+    <br><br>
+
+
+    <div id="statisticsResults">
+
+        <p>
+            Statistics:
+        </p>
+
+    </div>
+
+
+    <canvas
+        id="statisticsCanvas"
+        width="600"
+        height="400"
+        style="border:1px solid black;">
+    </canvas>
+
+
+</div>
+
 
 
 </main>

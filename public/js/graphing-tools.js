@@ -1433,6 +1433,513 @@ function calculateGradient(){
 
 }
 
+// ======================
+// STATISTICAL GRAPH TOOL
+// ======================
+
+function parseStatisticsData(){
+
+    const input =
+        document.getElementById(
+            "statisticsData"
+        );
+
+    const rawData =
+        input.value.trim();
+
+
+    if(!rawData){
+
+        throw new Error(
+            "Please enter some numerical data."
+        );
+
+    }
+
+
+    const values =
+        rawData
+            .split(",")
+            .map(
+                value =>
+                    Number(
+                        value.trim()
+                    )
+            );
+
+
+    if(
+        values.some(
+            value =>
+                !Number.isFinite(value)
+        )
+    ){
+
+        throw new Error(
+            "Please enter numbers separated by commas."
+        );
+
+    }
+
+
+    if(!values.length){
+
+        throw new Error(
+            "Please enter at least one number."
+        );
+
+    }
+
+
+    return values;
+
+}
+
+
+function calculateMean(values){
+
+    const total =
+        values.reduce(
+            (sum, value) =>
+                sum + value,
+            0
+        );
+
+
+    return total / values.length;
+
+}
+
+
+function calculateMedian(values){
+
+    const sorted =
+        [...values].sort(
+            (a, b) =>
+                a - b
+        );
+
+
+    const middle =
+        Math.floor(
+            sorted.length / 2
+        );
+
+
+    if(
+        sorted.length % 2 === 0
+    ){
+
+        return (
+            sorted[middle - 1] +
+            sorted[middle]
+        ) / 2;
+
+    }
+
+
+    return sorted[middle];
+
+}
+
+
+function calculateMode(values){
+
+    const frequencies = {};
+
+
+    values.forEach(
+        value => {
+
+            frequencies[value] =
+                (frequencies[value] || 0) +
+                1;
+
+        }
+    );
+
+
+    const highestFrequency =
+        Math.max(
+            ...Object.values(
+                frequencies
+            )
+        );
+
+
+    if(highestFrequency === 1){
+
+        return "No mode";
+
+    }
+
+
+    return Object.keys(
+        frequencies
+    )
+        .filter(
+            value =>
+                frequencies[value] ===
+                highestFrequency
+        )
+        .join(", ");
+
+}
+
+
+function calculateStatistics(){
+
+    const result =
+        document.getElementById(
+            "statisticsResults"
+        );
+
+
+    try{
+
+        const values =
+            parseStatisticsData();
+
+
+        const mean =
+            calculateMean(
+                values
+            );
+
+
+        const median =
+            calculateMedian(
+                values
+            );
+
+
+        const mode =
+            calculateMode(
+                values
+            );
+
+
+        const minimum =
+            Math.min(
+                ...values
+            );
+
+
+        const maximum =
+            Math.max(
+                ...values
+            );
+
+
+        const range =
+            maximum -
+            minimum;
+
+
+        result.innerHTML =
+
+            "<strong>Statistics:</strong><br><br>" +
+
+            "Count: " +
+            values.length +
+            "<br>" +
+
+            "Mean: " +
+            mean.toFixed(2) +
+            "<br>" +
+
+            "Median: " +
+            median +
+            "<br>" +
+
+            "Mode: " +
+            mode +
+            "<br>" +
+
+            "Minimum: " +
+            minimum +
+            "<br>" +
+
+            "Maximum: " +
+            maximum +
+            "<br>" +
+
+            "Range: " +
+            range;
+
+                    drawStatisticalGraph(
+            values,
+            document.getElementById(
+                "statisticsGraphType"
+            ).value
+        );
+
+    }
+    catch(error){
+
+        result.innerHTML =
+            "Unable to calculate statistics: " +
+            error.message;
+
+    }
+
+}
+
+function drawStatisticalGraph(
+    values,
+    graphType
+){
+
+    const canvas =
+        document.getElementById(
+            "statisticsCanvas"
+        );
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    if(graphType !== "bar"){
+
+        return;
+
+    }
+
+
+    const frequencies = {};
+
+
+    values.forEach(
+        value => {
+
+            frequencies[value] =
+                (frequencies[value] || 0) +
+                1;
+
+        }
+    );
+
+
+    const labels =
+        Object.keys(
+            frequencies
+        ).sort(
+            (a, b) =>
+                Number(a) -
+                Number(b)
+        );
+
+
+    const counts =
+        labels.map(
+            label =>
+                frequencies[label]
+        );
+
+
+    const marginLeft = 60;
+    const marginBottom = 50;
+    const marginTop = 30;
+    const marginRight = 20;
+
+
+    const graphWidth =
+        canvas.width -
+        marginLeft -
+        marginRight;
+
+
+    const graphHeight =
+        canvas.height -
+        marginTop -
+        marginBottom;
+
+
+    const highestCount =
+        Math.max(
+            ...counts
+        );
+
+
+    const barWidth =
+        graphWidth /
+        labels.length *
+        0.7;
+
+
+    // Axes
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        marginLeft,
+        marginTop
+    );
+
+    ctx.lineTo(
+        marginLeft,
+        canvas.height -
+        marginBottom
+    );
+
+    ctx.lineTo(
+        canvas.width -
+        marginRight,
+        canvas.height -
+        marginBottom
+    );
+
+    ctx.stroke();
+
+
+    // Y-axis labels
+
+    for(
+        let i = 0;
+        i <= highestCount;
+        i++
+    ){
+
+        const y =
+            canvas.height -
+            marginBottom -
+            (
+                i /
+                highestCount
+            ) *
+            graphHeight;
+
+
+        ctx.fillText(
+            i,
+            marginLeft - 25,
+            y + 4
+        );
+
+    }
+
+
+    // Bars
+
+    labels.forEach(
+        (label, index) => {
+
+            const count =
+                frequencies[label];
+
+
+            const barHeight =
+                (
+                    count /
+                    highestCount
+                ) *
+                graphHeight;
+
+
+            const x =
+                marginLeft +
+                (
+                    index +
+                    0.15
+                ) *
+                (
+                    graphWidth /
+                    labels.length
+                );
+
+
+            const y =
+                canvas.height -
+                marginBottom -
+                barHeight;
+
+
+            ctx.fillRect(
+                x,
+                y,
+                barWidth,
+                barHeight
+            );
+
+
+            // X-axis value
+
+            ctx.fillText(
+                label,
+                x +
+                barWidth / 2 -
+                5,
+                canvas.height -
+                marginBottom +
+                20
+            );
+
+
+            // Frequency
+
+            ctx.fillText(
+                count,
+                x +
+                barWidth / 2 -
+                5,
+                y - 5
+            );
+
+        }
+    );
+
+
+    ctx.fillText(
+        "Value",
+        canvas.width / 2 - 15,
+        canvas.height - 10
+    );
+
+
+    ctx.save();
+
+    ctx.translate(
+        15,
+        canvas.height / 2
+    );
+
+    ctx.rotate(
+        -Math.PI / 2
+    );
+
+    ctx.fillText(
+        "Frequency",
+        0,
+        0
+    );
+
+    ctx.restore();
+
+}
+
+
+function clearStatistics(){
+
+    document.getElementById(
+        "statisticsData"
+    ).value = "";
+
+
+    document.getElementById(
+        "statisticsResults"
+    ).innerHTML =
+        "<p>Statistics:</p>";
+
+}
+
 
 // ======================
 // INITIAL GRAPH
