@@ -1710,7 +1710,8 @@ function drawStatisticalGraph(
     if(
     graphType !== "bar" &&
     graphType !== "histogram" &&
-    graphType !== "pie"
+    graphType !== "pie" &&
+    graphType !== "frequency"
 ){
 
     return;
@@ -1732,6 +1733,18 @@ function drawStatisticalGraph(
         if(graphType === "pie"){
 
         drawPieChart(
+            values,
+            canvas,
+            ctx
+        );
+
+        return;
+
+    }
+
+        if(graphType === "frequency"){
+
+        drawFrequencyGraph(
             values,
             canvas,
             ctx
@@ -2433,6 +2446,214 @@ function drawPieChart(
 
     ctx.font =
         "16px Arial";
+
+}
+
+
+function drawFrequencyGraph(
+    values,
+    canvas,
+    ctx
+){
+
+    const frequencies = {};
+
+
+    values.forEach(
+        value => {
+
+            frequencies[value] =
+                (frequencies[value] || 0) +
+                1;
+
+        }
+    );
+
+
+    const labels =
+        Object.keys(
+            frequencies
+        ).sort(
+            (a, b) =>
+                Number(a) -
+                Number(b)
+        );
+
+
+    const graphWidth =
+        canvas.width - 100;
+
+    const graphHeight =
+        canvas.height - 100;
+
+    const originX = 60;
+    const originY = canvas.height - 50;
+
+    const maxFrequency =
+        Math.max(
+            ...labels.map(
+                label => frequencies[label]
+            )
+        );
+
+
+    ctx.strokeStyle = "black";
+    ctx.fillStyle = "black";
+    ctx.lineWidth = 1;
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        originX,
+        30
+    );
+
+    ctx.lineTo(
+        originX,
+        originY
+    );
+
+    ctx.lineTo(
+        canvas.width - 40,
+        originY
+    );
+
+    ctx.stroke();
+
+
+    ctx.font = "12px Arial";
+
+    ctx.fillText(
+        "Frequency",
+        5,
+        25
+    );
+
+    ctx.fillText(
+        "Value",
+        canvas.width - 45,
+        originY + 35
+    );
+
+
+    for(let i = 0; i <= maxFrequency; i++){
+
+        const y =
+            originY -
+            (i / maxFrequency) * graphHeight;
+
+        ctx.fillText(
+            i,
+            35,
+            y + 4
+        );
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            originX - 5,
+            y
+        );
+
+        ctx.lineTo(
+            originX,
+            y
+        );
+
+        ctx.stroke();
+
+    }
+
+
+    const pointSpacing =
+        labels.length > 1
+            ? graphWidth / (labels.length - 1)
+            : graphWidth / 2;
+
+
+    ctx.beginPath();
+
+    labels.forEach(
+        (label, index) => {
+
+            const frequency =
+                frequencies[label];
+
+            const x =
+                labels.length === 1
+                    ? originX + graphWidth / 2
+                    : originX +
+                      index * pointSpacing;
+
+            const y =
+                originY -
+                (frequency / maxFrequency) * graphHeight;
+
+            if(index === 0){
+
+                ctx.moveTo(
+                    x,
+                    y
+                );
+
+            }else{
+
+                ctx.lineTo(
+                    x,
+                    y
+                );
+
+            }
+
+        }
+    );
+
+    ctx.stroke();
+
+
+    labels.forEach(
+        (label, index) => {
+
+            const frequency =
+                frequencies[label];
+
+            const x =
+                labels.length === 1
+                    ? originX + graphWidth / 2
+                    : originX +
+                      index * pointSpacing;
+
+            const y =
+                originY -
+                (frequency / maxFrequency) * graphHeight;
+
+            ctx.beginPath();
+
+            ctx.arc(
+                x,
+                y,
+                4,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fill();
+
+            ctx.fillText(
+                label,
+                x - 8,
+                originY + 18
+            );
+
+            ctx.fillText(
+                frequency,
+                x - 4,
+                y - 8
+            );
+
+        }
+    );
 
 }
 
