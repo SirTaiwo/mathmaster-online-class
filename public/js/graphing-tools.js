@@ -1709,7 +1709,8 @@ function drawStatisticalGraph(
 
     if(
     graphType !== "bar" &&
-    graphType !== "histogram"
+    graphType !== "histogram" &&
+    graphType !== "pie"
 ){
 
     return;
@@ -1719,6 +1720,18 @@ function drawStatisticalGraph(
     if(graphType === "histogram"){
 
         drawHistogram(
+            values,
+            canvas,
+            ctx
+        );
+
+        return;
+
+    }
+
+        if(graphType === "pie"){
+
+        drawPieChart(
             values,
             canvas,
             ctx
@@ -2216,6 +2229,210 @@ function drawHistogram(
     );
 
     ctx.restore();
+
+}
+
+function drawPieChart(
+    values,
+    canvas,
+    ctx
+){
+
+    const frequencies = {};
+
+
+    values.forEach(
+        value => {
+
+            frequencies[value] =
+                (frequencies[value] || 0) +
+                1;
+
+        }
+    );
+
+
+    const labels =
+        Object.keys(
+            frequencies
+        ).sort(
+            (a, b) =>
+                Number(a) -
+                Number(b)
+        );
+
+
+    const counts =
+        labels.map(
+            label =>
+                frequencies[label]
+        );
+
+
+    const total =
+        values.length;
+
+
+    const centerX =
+        canvas.width * 0.38;
+
+
+    const centerY =
+        canvas.height / 2;
+
+
+    const radius =
+        Math.min(
+            canvas.width,
+            canvas.height
+        ) * 0.30;
+
+
+    let startAngle = 0;
+
+
+    labels.forEach(
+        (label, index) => {
+
+            const count =
+                counts[index];
+
+
+            const sliceAngle =
+                (
+                    count /
+                    total
+                ) *
+                Math.PI *
+                2;
+
+
+            const endAngle =
+                startAngle +
+                sliceAngle;
+
+
+            // Pie slice
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                centerX,
+                centerY
+            );
+
+            ctx.arc(
+                centerX,
+                centerY,
+                radius,
+                startAngle,
+                endAngle
+            );
+
+            ctx.closePath();
+
+            ctx.fill();
+
+
+            ctx.stroke();
+
+
+            // Label
+
+            const labelAngle =
+                startAngle +
+                sliceAngle / 2;
+
+
+            const labelRadius =
+                radius +
+                20;
+
+
+            const labelX =
+                centerX +
+                Math.cos(
+                    labelAngle
+                ) *
+                labelRadius;
+
+
+            const labelY =
+                centerY +
+                Math.sin(
+                    labelAngle
+                ) *
+                labelRadius;
+
+
+            const percentage =
+                (
+                    count /
+                    total *
+                    100
+                ).toFixed(1);
+
+
+            ctx.fillText(
+                label +
+                " (" +
+                percentage +
+                "%)",
+                labelX,
+                labelY
+            );
+
+
+            startAngle =
+                endAngle;
+
+        }
+    );
+
+
+    // Legend
+
+    const legendX =
+        canvas.width * 0.70;
+
+
+    let legendY = 60;
+
+
+    ctx.font =
+        "14px Arial";
+
+
+    ctx.fillText(
+        "Value — Frequency",
+        legendX,
+        legendY
+    );
+
+
+    legendY += 25;
+
+
+    labels.forEach(
+        (label, index) => {
+
+            ctx.fillText(
+                label +
+                " — " +
+                counts[index],
+                legendX,
+                legendY
+            );
+
+
+            legendY += 22;
+
+        }
+    );
+
+
+    ctx.font =
+        "16px Arial";
 
 }
 
