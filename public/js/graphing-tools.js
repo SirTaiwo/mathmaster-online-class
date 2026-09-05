@@ -1222,24 +1222,6 @@ function plotFunction(){
             );
 
 
-        // Test the expression before
-        // accepting it.
-        const testValue =
-            evaluateFunction(
-                rpn,
-                0
-            );
-
-
-        if(!Number.isFinite(testValue)){
-
-            throw new Error(
-                "The function is undefined at x = 0."
-            );
-
-        }
-
-
         plottedFunctions.push({
 
             expression,
