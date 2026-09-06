@@ -99,4 +99,14 @@ router.get(
     mathToolsController.whiteboard
 );
 
+// ========================================
+// TEACHER STATISTICS
+// ========================================
+
+router.get(
+    "/teacher/math-tools/statistics",
+    requireRole("teacher", "admin"),
+    mathToolsController.statistics
+);
+
 module.exports = router;

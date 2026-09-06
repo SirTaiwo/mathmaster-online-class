@@ -88,3 +88,18 @@ exports.whiteboard = (req, res) => {
     );
 
 };
+
+// ========================================
+// STATISTICS WORKSPACE
+// ========================================
+
+exports.statistics = (req, res) => {
+
+    res.render(
+        "teacher-statistics",
+        {
+            user: req.session.user
+        }
+    );
+
+};

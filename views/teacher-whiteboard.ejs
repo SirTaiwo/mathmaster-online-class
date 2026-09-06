@@ -218,13 +218,22 @@ function resizeCanvas() {
     canvas.width =
         rect.width * window.devicePixelRatio;
 
-    canvas.height =
-        rect.height * window.devicePixelRatio;
+   canvas.height =
+    rect.height * window.devicePixelRatio;
 
-    ctx.scale(
-        window.devicePixelRatio,
-        window.devicePixelRatio
-    );
+ctx.setTransform(
+    1,
+    0,
+    0,
+    1,
+    0,
+    0
+);
+
+ctx.scale(
+    window.devicePixelRatio,
+    window.devicePixelRatio
+);
 
     ctx.lineCap = "round";
 
