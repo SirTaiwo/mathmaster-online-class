@@ -332,6 +332,11 @@ exports.studentPerformance = (req, res) => {
         AssessmentResult.getProgressTrend(studentId);
 
 
+    const performanceStatus =
+        AssessmentResult.getPerformanceStatus(
+            studentId
+        );
+
     const exercisePerformance =
         Submission.getStudentExercisePerformance(
             studentId
