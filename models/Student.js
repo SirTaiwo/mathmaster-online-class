@@ -296,46 +296,6 @@ function deleteUser(id) {
 
 }
 // ========================================
-// EDIT STUDENT FORM
-// ========================================
-
-exports.editStudentForm = (req, res) => {
-
-
-    const student =
-        Student.findById(
-            req.params.id
-        );
-
-
-    if (!student) {
-
-        return res.redirect(
-            "/admin/students"
-        );
-
-    }
-
-
-    res.render(
-        "edit-student",
-        {
-            user:
-                req.session.student,
-
-            student,
-
-            error: null,
-
-            success: null
-        }
-    );
-
-};
-
-
-
-// ========================================
 // UPDATE STUDENT
 // ========================================
 
@@ -369,40 +329,6 @@ function updateStudent(
 
 
 
-
-
-// ========================================
-// DELETE STUDENT
-// ========================================
-
-exports.deleteStudent = (req, res) => {
-
-
-    const student =
-        Student.findById(
-            req.params.id
-        );
-
-
-    if (!student) {
-
-        return res.redirect(
-            "/admin/students"
-        );
-
-    }
-
-
-    Student.deleteUser(
-        req.params.id
-    );
-
-
-    res.redirect(
-        "/admin/students"
-    );
-
-};
 
 
 module.exports = {
