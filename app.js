@@ -5,6 +5,9 @@ const session = require("express-session");
 const studentAssessmentRoutes =
     require("./routes/studentAssessment");
 
+const studentMathToolsRoutes =
+    require("./routes/studentMathTools");
+
 
 // Load database
 
@@ -299,6 +302,10 @@ app.use(adminAttendanceRoutes);
 app.use(
     "/",
     studentAssessmentRoutes
+);
+
+app.use(
+    studentMathToolsRoutes
 );
 
 app.use(

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>
+Student Statistics
+</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+Math<span>Master</span>
+</div>
+
+
+<div class="nav-links">
+
+<a href="/student/dashboard">
+Dashboard
+</a>
+
+<a href="/student/math-tools">
+🧮 Mathematics Library
+</a>
+
+<a href="/logout">
+Logout
+</a>
+
+</div>
+
+</nav>
+
+</header>
+
+
+
+<main class="dashboard">
+
+
+<div class="dashboard-header">
+
+<h1>
+📊 Statistics Workspace
+</h1>
+
+<p>
+Calculate and explore descriptive statistics while practising mathematics.
+</p>
+
+</div>
+
+
+
+<div class="dashboard-card">
+
+
+<h2>
+📊 Data Set
+</h2>
+
+
+<p>
+Enter numbers separated by commas.
+</p>
+
+
+<textarea
+id="statisticsData"
+rows="5"
+placeholder="Example: 12, 15, 18, 18, 20, 22, 25"
+style="width:100%; box-sizing:border-box; padding:12px; font-size:1rem;"
+></textarea>
+
+
+<br><br>
+
+
+<button
+onclick="calculateStatistics()"
+class="btn primary">
+
+Calculate Statistics
+
+</button>
+
+
+<button
+onclick="clearStatistics()"
+class="btn">
+
+Clear
+
+</button>
+
+
+</div>
+
+
+
+<div class="dashboard-card">
+
+
+<h2>
+📈 Descriptive Statistics
+</h2>
+
+
+<div id="statisticsResults">
+
+<p>
+Enter a data set and select Calculate Statistics.
+</p>
+
+</div>
+
+
+</div>
+
+
+
+<div class="dashboard-card">
+
+
+<h2>
+🧮 Statistical Measures
+</h2>
+
+
+<div
+style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:15px;"
+>
+
+
+<div>
+
+<strong>
+Count
+</strong>
+
+<p id="statCount">
+—
+</p>
+
+</div>
+
+
+<div>
+
+<strong>
+Sum
+</strong>
+
+<p id="statSum">
+—
+</p>
+
+</div>
+
+
+<div>
+
+<strong>
+Mean
+</strong>
+
+<p id="statMean">
+—
+</p>
+
+</div>
+
+
+<div>
+
+<strong>
+Median
+</strong>
+
+<p id="statMedian">
+—
+</p>
+
+</div>
+
+
+<div>
+
+<strong>
+Mode
+</strong>
+
+<p id="statMode">
+—
+</p>
+
+</div>
+
+
+<div>
+
+<strong>
+Minimum
+</strong>
+
+<p id="statMinimum">
+—
+</p>
+
+</div>
+
+
+<div>
+
+<strong>
+Maximum
+</strong>
+
+<p id="statMaximum">
+—
+</p>
+
+</div>
+
+
+<div>
+
+<strong>
+Range
+</strong>
+
+<p id="statRange">
+—
+</p>
+
+</div>
+
+
+<div>
+
+<strong>
+Q1
+</strong>
+
+<p id="statQ1">
+—
+</p>
+
+</div>
+
+
+<div>
+
+<strong>
+Q3
+</strong>
+
+<p id="statQ3">
+—
+</p>
+
+</div>
+
+
+<div>
+
+<strong>
+IQR
+</strong>
+
+<p id="statIQR">
+—
+</p>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<div class="dashboard-card">
+
+
+<h2>
+📐 Variance & Standard Deviation
+</h2>
+
+
+<div
+style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:15px;"
+>
+
+
+<div>
+
+<strong>
+Population Variance
+</strong>
+
+<p id="statPopulationVariance">
+—
+</p>
+
+</div>
+
+
+<div>
+
+<strong>
+Population Standard Deviation
+</strong>
+
+<p id="statPopulationStandardDeviation">
+—
+</p>
+
+</div>
+
+
+<div>
+
+<strong>
+Sample Variance
+</strong>
+
+<p id="statSampleVariance">
+—
+</p>
+
+</div>
+
+
+<div>
+
+<strong>
+Sample Standard Deviation
+</strong>
+
+<p id="statSampleStandardDeviation">
+—
+</p>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<div class="dashboard-card">
+
+
+<h2>
+📝 Show Working
+</h2>
+
+
+<div id="statisticsWorking">
+
+<p>
+The calculation steps will appear here.
+</p>
+
+</div>
+
+
+</div>
+
+
+
+</main>
+
+
+
+<script src="/js/teacher-statistics.js"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>
+Geometry Workspace
+</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+Math<span>Master</span>
+</div>
+
+
+<div class="nav-links">
+
+<a href="/student/dashboard">
+Dashboard
+</a>
+
+<a href="/student/math-tools">
+🧮 Mathematics Library
+</a>
+
+<a href="/logout">
+Logout
+</a>
+
+</div>
+
+</nav>
+
+</header>
+
+
+
+<main class="dashboard">
+
+
+<div class="dashboard-header">
+
+<h1>
+📐 Geometry Workspace
+</h1>
+
+<p>
+Explore geometry through interactive constructions, measurements, transformations and shapes.
+</p>
+
+</div>
+
+
+
+<div class="dashboard-card">
+
+
+<h2>
+⭕ Circle Tool
+</h2>
+
+<p>
+Enter a radius and draw a circle.
+</p>
+
+
+<label>
+Radius:
+</label>
+
+
+<input
+type="number"
+id="radius"
+value="50"
+min="10"
+max="200"
+>
+
+
+
+<button
+onclick="drawCircle()"
+class="btn primary">
+
+Draw Circle
+
+</button>
+
+
+<button
+onclick="clearCanvas()"
+class="btn">
+
+Clear
+
+</button>
+
+<button
+onclick="drawGrid()"
+class="btn primary">
+
+📊 Draw Coordinate Grid
+
+</button>
+
+<div class="dashboard-card">
+
+<h2>
+🧭 Compass Tool
+</h2>
+
+
+<p>
+Draw circles by dragging the centre and radius.
+</p>
+
+
+<button
+onclick="activeTool='compass'; drawCompass()"
+class="btn primary">
+
+Draw Compass
+
+</button>
+
+
+<p id="compassResult">
+
+Radius:
+
+</p>
+
+
+</div>
+
+<div class="dashboard-card">
+
+<h2>
+📍 Point Plotter
+</h2>
+
+
+<p>
+Plot a point on the coordinate grid.
+</p>
+
+
+<label>
+X Coordinate:
+</label>
+
+
+<input
+type="number"
+id="pointX"
+value="3"
+>
+
+
+<br><br>
+
+
+<label>
+Y Coordinate:
+</label>
+
+
+<input
+type="number"
+id="pointY"
+value="2"
+>
+
+
+<br><br>
+
+
+<label>
+Label:
+</label>
+
+
+<input
+type="text"
+id="pointLabel"
+value="A"
+>
+
+
+<br><br>
+
+
+<button
+onclick="activeTool='point'; triangleActive=false; plotPoint()"
+class="btn primary">
+
+📍 Plot Point
+
+</button>
+
+
+<p id="pointResult">
+
+Point:
+
+</p>
+
+
+</div>
+
+<div class="dashboard-card">
+
+<h2>
+📍 Midpoint Tool
+</h2>
+
+<p>
+Find the midpoint between two selected points.
+</p>
+
+<button
+onclick="activeTool='midpoint'; startMidpointTool()"
+class="btn primary">
+
+Find Midpoint
+
+</button>
+
+<p id="midpointResult">
+
+No midpoint selected.
+
+</p>
+
+</div>
+
+<div class="dashboard-card">
+
+<h2>
+📏 Line Segment Tool
+</h2>
+
+<p>
+Draw a line segment between two selected points.
+</p>
+
+<button
+onclick="activeTool='segment'; startSegmentTool()"
+class="btn primary">
+
+Draw Segment
+
+</button>
+
+<p id="segmentResult">
+
+No segment drawn.
+
+</p>
+
+</div>
+
+<div class="dashboard-card">
+
+<h2>
+↔ Parallel Line Tool
+</h2>
+
+<p>
+Draw a line parallel to a reference segment.
+</p>
+
+<button
+onclick="activeTool='parallel'; startParallelTool()"
+class="btn primary">
+
+Draw Parallel Line
+
+</button>
+
+<p id="parallelResult">
+
+No parallel line drawn.
+
+</p>
+
+</div>
+
+<div class="dashboard-card">
+
+<h2>
+⟂ Perpendicular Line Tool
+</h2>
+
+<p>
+Draw a line perpendicular to a reference line.
+</p>
+
+<button
+onclick="selectGeometryTool('perpendicular'); startPerpendicularTool()"
+class="btn primary">
+
+Draw Perpendicular Line
+
+</button>
+
+<p id="perpendicularResult">
+
+No perpendicular line drawn.
+
+</p>
+
+</div>
+
+<div class="dashboard-card">
+
+<h2>
+📐 Perpendicular Bisector Tool
+</h2>
+
+<p>
+Find the midpoint of a segment and draw its perpendicular bisector.
+</p>
+
+<button
+onclick="activeTool='bisector'; startBisectorTool()"
+class="btn primary">
+
+Draw Perpendicular Bisector
+
+</button>
+
+<p id="bisectorResult">
+
+No bisector drawn.
+
+</p>
+
+</div>
+
+<div class="dashboard-card">
+
+<h2>
+📐 Angle Bisector Tool
+</h2>
+
+<p>
+Divide an angle into two equal parts.
+</p>
+
+<button
+onclick="activeTool='angleBisector'; startAngleBisectorTool()"
+class="btn primary">
+
+Draw Angle Bisector
+
+</button>
+
+<p id="angleBisectorResult">
+
+No angle bisector drawn.
+
+</p>
+
+</div>
+
+<div class="dashboard-card">
+
+<h2>
+🔺 Polygon Builder
+</h2>
+
+<p>
+Create polygons by selecting multiple vertices.
+</p>
+
+<button
+onclick="activeTool='polygon'; startPolygonTool()"
+class="btn primary">
+
+Start Polygon
+
+</button>
+
+<button
+onclick="finishPolygon()"
+class="btn secondary">
+
+Finish Polygon
+
+</button>
+
+<p id="polygonResult">
+
+No polygon created.
+
+</p>
+
+</div>
+
+<button onclick="undo()">
+    ↩ Undo
+</button>
+
+<button onclick="redo()">
+    ↪ Redo
+</button>
+
+<br><br>
+
+
+<canvas
+id="geometryCanvas"
+width="500"
+height="400"
+style="border:1px solid black;">
+</canvas>
+
+
+</div>
+
+<div class="dashboard-card">
+
+
+<h2>
+🔄 Reflection Tool
+</h2>
+
+
+<p>
+Reflect a point across the coordinate axes.
+</p>
+
+
+<label>
+X Coordinate:
+</label>
+
+<input
+type="number"
+id="reflectX"
+value="3"
+>
+
+
+<br><br>
+
+
+<label>
+Y Coordinate:
+</label>
+
+<input
+type="number"
+id="reflectY"
+value="2"
+>
+
+
+<br><br>
+
+
+<button
+onclick="reflectXaxis()"
+class="btn primary">
+
+Reflect X-Axis
+
+</button>
+
+
+<button
+onclick="reflectYaxis()"
+class="btn primary">
+
+Reflect Y-Axis
+
+</button>
+
+
+<p id="reflectionResult">
+
+Reflection:
+
+</p>
+
+
+</div>
+
+<div class="dashboard-card">
+
+<h2>
+➡️ Translation Tool
+</h2>
+
+<p>
+Translate a point by a given horizontal and vertical distance.
+</p>
+
+<label>X Translation (Δx):</label>
+
+<input
+type="number"
+id="translateX"
+value="2"
+>
+
+<br><br>
+
+<label>Y Translation (Δy):</label>
+
+<input
+type="number"
+id="translateY"
+value="2"
+>
+
+<br><br>
+
+<button
+onclick="translatePoint()"
+class="btn primary">
+
+Translate Point
+
+</button>
+
+<p id="translationResult">
+
+Translation:
+
+</p>
+
+</div>
+
+<div class="dashboard-card">
+
+<h2>
+🔄 Rotation Tool
+</h2>
+
+<p>
+Rotate the last plotted point about the origin.
+</p>
+
+<label>
+Rotation Angle (°):
+</label>
+
+<input
+type="number"
+id="rotationAngle"
+value="90"
+>
+
+<br><br>
+
+<button
+onclick="rotatePoint()"
+class="btn primary">
+
+Rotate Point
+
+</button>
+
+<p id="rotationResult">
+
+Rotation:
+
+</p>
+
+</div>
+
+<div class="dashboard-card">
+
+
+<h2>
+📏 Ruler Tool
+</h2>
+
+
+<p>
+Measure the distance between two points.
+</p>
+
+
+<button
+onclick="activeTool='ruler'; drawRuler()"
+class="btn primary">
+
+Draw Ruler
+
+</button>
+
+
+<p id="distanceResult">
+
+Distance:
+
+</p>
+
+
+</div>
+
+<div class="dashboard-card">
+
+
+<h2>
+📐 Protractor Tool
+</h2>
+
+
+<p>
+Measure angles between two lines.
+</p>
+
+
+<button
+onclick="activeTool='angle'; drawAngle()"
+class="btn primary">
+
+Create Angle
+
+</button>
+
+
+<p id="angleResult">
+
+Angle:
+
+</p>
+
+
+</div>
+
+<div class="dashboard-card">
+
+
+<h2>
+🔺 Triangle Constructor
+</h2>
+
+
+<p>
+Create and analyse a triangle.
+</p>
+
+
+<button
+onclick="activeTool='triangle'; triangleActive=true; saveHistory(); drawTriangle()"
+class="btn primary">
+
+Create Triangle
+
+</button>
+
+
+<p id="triangleResult">
+
+Triangle Information:
+
+</p>
+
+
+</div>
+
+</main>
+
+
+
+<script src="/js/geometry-tools.js"></script>
+
+
+</body>
+
+</html>

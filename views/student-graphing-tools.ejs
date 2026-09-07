@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>
+Student Graphing
+</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+Math<span>Master</span>
+</div>
+
+
+<div class="nav-links">
+
+<a href="/student/dashboard">
+Dashboard
+</a>
+
+<a href="/student/math-tools">
+🧮 Mathematics Library
+</a>
+
+<a href="/logout">
+Logout
+</a>
+
+</div>
+
+</nav>
+
+</header>
+
+
+
+<main class="dashboard">
+
+
+<div class="dashboard-header">
+
+<h1>
+📊 Graphing Workspace
+</h1>
+
+<p>
+Explore coordinates, gradients, functions and statistical graphs interactively.
+</p>
+
+</div>
+
+
+
+<div class="dashboard-card">
+
+
+<h2>
+📊 Coordinate Plane
+</h2>
+
+<p>
+Draw and explore the Cartesian coordinate plane.
+</p>
+
+
+<button
+onclick="drawGraph()"
+class="btn primary">
+
+📊 Draw Coordinate Plane
+
+</button>
+
+
+<button
+onclick="clearGraph()"
+class="btn">
+
+Clear
+
+</button>
+
+
+<br><br>
+
+
+<canvas
+id="graphCanvas"
+width="500"
+height="400"
+style="border:1px solid black;">
+</canvas>
+
+
+</div>
+
+
+
+<div class="dashboard-card">
+
+
+<h2>
+📍 Point Plotter
+</h2>
+
+<p>
+Plot and label points on the coordinate plane.
+</p>
+
+
+<label>
+X Coordinate:
+</label>
+
+
+<input
+type="number"
+id="graphPointX"
+value="3"
+>
+
+
+<br><br>
+
+
+<label>
+Y Coordinate:
+</label>
+
+
+<input
+type="number"
+id="graphPointY"
+value="2"
+>
+
+
+<br><br>
+
+
+<label>
+Label:
+</label>
+
+
+<input
+type="text"
+id="graphPointLabel"
+value="A"
+>
+
+
+<br><br>
+
+
+<button
+onclick="plotGraphPoint()"
+class="btn primary">
+
+📍 Plot Point
+
+</button>
+
+
+<p id="graphPointResult">
+
+Point:
+
+</p>
+
+
+</div>
+
+
+
+<div class="dashboard-card">
+
+
+<h2>
+📈 Line & Gradient
+</h2>
+
+<p>
+Select two plotted points to draw a line and calculate its gradient.
+</p>
+
+
+<button
+onclick="calculateGradient()"
+class="btn primary">
+
+📈 Calculate Gradient
+
+</button>
+
+
+<p id="gradientResult">
+
+Gradient:
+
+</p>
+
+
+</div>
+
+<div class="dashboard-card">
+
+<h2>
+📉 Function Plotter
+</h2>
+
+<p>
+Plot mathematical functions on the coordinate plane.
+</p>
+
+<label>
+Function:
+</label>
+
+<input
+type="text"
+id="functionInput"
+placeholder="e.g. x^2 - 4x + 3"
+>
+
+<label>
+Angle Mode:
+</label>
+
+<select id="angleMode">
+<option value="radians">
+Radians
+</option>
+
+<option value="degrees">
+Degrees
+</option>
+</select>
+
+<br>
+
+<button
+onclick="plotFunction()"
+class="btn primary">
+
+📉 Plot Function
+
+</button>
+
+<button
+onclick="clearFunctions()"
+class="btn">
+
+Clear Functions
+
+</button>
+
+<p id="functionResult">
+
+Function:
+
+</p>
+
+<div id="functionList">
+
+</div>
+
+</div>
+
+<div class="dashboard-card">
+
+    <h2>
+        📊 Statistical Graph Tool
+    </h2>
+
+    <p>
+        Enter numerical data to calculate statistics
+        and create a statistical graph.
+    </p>
+
+
+    <label>
+        Data:
+    </label>
+
+    <input
+        type="text"
+        id="statisticsData"
+        placeholder="e.g. 2, 4, 4, 5, 6, 7, 7, 8"
+        style="width:80%;"
+    >
+
+
+    <br><br>
+
+
+    <label>
+        Graph Type:
+    </label>
+
+    <select id="statisticsGraphType">
+
+        <option value="bar">
+            Bar Chart
+        </option>
+
+        <option value="histogram">
+            Histogram
+        </option>
+
+        <option value="pie">
+            Pie Chart
+        </option>
+
+        <option value="frequency">
+            Frequency Graph
+        </option>
+
+    </select>
+
+
+    <br><br>
+
+
+    <button
+        onclick="calculateStatistics()"
+        class="btn primary">
+
+        📊 Generate Statistical Graph
+
+    </button>
+
+
+    <button
+        onclick="clearStatistics()"
+        class="btn">
+
+        Clear
+
+    </button>
+
+
+    <br><br>
+
+
+    <div id="statisticsResults">
+
+        <p>
+            Statistics:
+        </p>
+
+    </div>
+
+
+    <canvas
+        id="statisticsCanvas"
+        width="600"
+        height="400"
+        style="border:1px solid black;">
+    </canvas>
+
+
+</div>
+
+
+
+</main>
+
+
+
+<script src="/js/graphing-tools.js"></script>
+
+
+</body>
+
+</html>
