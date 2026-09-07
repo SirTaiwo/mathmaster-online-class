@@ -19,7 +19,7 @@ router.get(
 
     "/teacher/students/:id/performance",
 
-    requireRole("teacher"),
+    requireRole("teacher", "admin"),
 
     controller.viewPerformance
 
@@ -37,7 +37,7 @@ router.post(
 
     "/teacher/students/:id/feedback",
 
-    requireRole("teacher"),
+    requireRole("teacher", "admin"),
 
     studentFeedbackController.saveFeedback
 
