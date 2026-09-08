@@ -718,6 +718,28 @@ router.get(
 
     requireLogin,
 
+    (req, res, next) => {
+
+        // Students must have cleared payment
+        // before accessing their recordings.
+
+        if (
+            req.session.student &&
+            req.session.student.role === "student"
+        ) {
+
+            return requirePaymentAccess(
+                req,
+                res,
+                () => next()
+            );
+
+        }
+
+        return next();
+
+    },
+
     (req, res) => {
 
         const recording =
