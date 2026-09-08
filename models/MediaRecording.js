@@ -54,34 +54,24 @@ function findById(id) {
 
     return db.prepare(`
 
-        SELECT *
+        SELECT
+
+            media_recordings.*,
+
+            students.first_name AS teacher_first_name,
+
+            students.last_name AS teacher_last_name
 
         FROM media_recordings
 
-        WHERE id = ?
+        JOIN students
+
+            ON media_recordings.teacher_id =
+               students.id
+
+        WHERE media_recordings.id = ?
 
     `).get(id);
-
-}
-
-
-// ========================================
-// FIND RECORDINGS BY LESSON
-// ========================================
-
-function findByLesson(lesson_id) {
-
-    return db.prepare(`
-
-        SELECT *
-
-        FROM media_recordings
-
-        WHERE lesson_id = ?
-
-        ORDER BY created_at DESC
-
-    `).all(lesson_id);
 
 }
 
@@ -108,6 +98,38 @@ function findByTeacher(teacher_id) {
 
 
 // ========================================
+// FIND RECORDINGS BY LESSON
+// ========================================
+
+function findByLesson(lesson_id) {
+
+    return db.prepare(`
+
+        SELECT
+
+            media_recordings.*,
+
+            students.first_name AS teacher_first_name,
+
+            students.last_name AS teacher_last_name
+
+        FROM media_recordings
+
+        JOIN students
+
+            ON media_recordings.teacher_id =
+               students.id
+
+        WHERE media_recordings.lesson_id = ?
+
+        ORDER BY media_recordings.created_at DESC
+
+    `).all(lesson_id);
+
+}
+
+
+// ========================================
 // FIND RECORDINGS BY TEACHER AND LESSON
 // ========================================
 
@@ -129,8 +151,10 @@ function findByTeacherAndLesson(
         ORDER BY created_at DESC
 
     `).all(
+
         teacher_id,
         lesson_id
+
     );
 
 }
@@ -159,9 +183,9 @@ module.exports = {
 
     findById,
 
-    findByLesson,
-
     findByTeacher,
+
+    findByLesson,
 
     findByTeacherAndLesson,
 
