@@ -14,10 +14,10 @@ const ctx =
 const originX =
     canvas.width / 2;
 
-const originY =
+let originY =
     canvas.height / 2;
 
-const scale = 40;
+let scale = 50;
 
 
 // ======================
@@ -189,52 +189,70 @@ function drawGraph(){
 
     // X coordinates
 
-    for(
-        let value = -6;
-        value <= 6;
-        value++
-    ){
+   const minX =
+    Math.ceil(-originX / scale);
 
-        if(value === 0){
-            continue;
-        }
+const maxX =
+    Math.floor((canvas.width - originX) / scale);
 
-        const canvasX =
-            originX +
-            value * scale;
 
-        ctx.fillText(
-            value,
-            canvasX - 4,
-            originY + 15
-        );
+for(
+    let value = minX;
+    value <= maxX;
+    value++
+){
 
+    if(value === 0){
+        continue;
     }
+
+    const canvasX =
+        originX +
+        value * scale;
+
+    ctx.fillText(
+        value,
+        canvasX - 4,
+        originY + 15
+    );
+
+}
 
 
     // Y coordinates
 
-    for(
-        let value = -5;
-        value <= 5;
-        value++
-    ){
+    const minY =
+    Math.ceil(
+        -(canvas.height - originY) / scale
+    );
 
-        if(value === 0){
-            continue;
-        }
+const maxY =
+    Math.floor(
+        originY / scale
+    );
 
-        const canvasY =
-            originY -
-            value * scale;
 
-        ctx.fillText(
-            value,
-            originX + 6,
-            canvasY + 4
-        );
+for(
+    let value = minY;
+    value <= maxY;
+    value++
+){
 
+    if(value === 0){
+        continue;
     }
+
+    const canvasY =
+        originY -
+        value * scale;
+
+    ctx.fillText(
+        value,
+        originX + 6,
+        canvasY + 4
+    );
+
+}
 
 
     // Origin
@@ -1151,6 +1169,126 @@ function drawFunction(rpn){
 
 }
 
+// ----------------------
+// AUTO FIT GRAPH
+// ----------------------
+
+function fitGraphToFunctions(){
+
+    if(!plottedFunctions.length){
+        return;
+    }
+
+    let minY = Infinity;
+    let maxY = -Infinity;
+
+    const minX =
+        -originX / scale;
+
+    const maxX =
+        (canvas.width - originX) / scale;
+
+    const step =
+        1 / scale;
+
+    plottedFunctions.forEach(
+        functionItem => {
+
+            for(
+                let x = minX;
+                x <= maxX;
+                x += step
+            ){
+
+                let y;
+
+                try{
+
+                    y =
+                        evaluateFunction(
+                            functionItem.rpn,
+                            x
+                        );
+
+                }
+                catch(error){
+
+                    continue;
+
+                }
+
+                if(
+                    !Number.isFinite(y) ||
+                    Math.abs(y) > 100000
+                ){
+
+                    continue;
+
+                }
+
+                minY =
+                    Math.min(
+                        minY,
+                        y
+                    );
+
+                maxY =
+                    Math.max(
+                        maxY,
+                        y
+                    );
+
+            }
+
+        }
+    );
+
+
+    if(
+        !Number.isFinite(minY) ||
+        !Number.isFinite(maxY)
+    ){
+
+        return;
+
+    }
+
+
+    const padding = 1.5;
+
+    const requiredMinY =
+        minY - padding;
+
+    const requiredMaxY =
+        maxY + padding;
+
+
+    const requiredHeight =
+        requiredMaxY -
+        requiredMinY;
+
+
+    const verticalScale =
+        canvas.height /
+        requiredHeight;
+
+
+    if(verticalScale < scale){
+
+        scale =
+            Math.max(
+                20,
+                Math.floor(verticalScale)
+            );
+
+    }
+
+
+    originY =
+        -requiredMinY * scale;
+
+}
+
 
 // ----------------------
 // REDRAW FUNCTIONS
@@ -1222,15 +1360,17 @@ function plotFunction(){
             );
 
 
-        plottedFunctions.push({
+      plottedFunctions.push({
 
-            expression,
-            rpn
+    expression,
+    rpn
 
-        });
+});
 
 
-        redrawGraphWithFunctions();
+// fitGraphToFunctions();
+
+redrawGraphWithFunctions();
 
 
         result.innerHTML =
@@ -1309,6 +1449,11 @@ function updateFunctionList(){
 function clearFunctions(){
 
     plottedFunctions = [];
+
+    scale = 50;
+
+    originY =
+        canvas.height / 2;
 
     redrawGraphWithFunctions();
 
