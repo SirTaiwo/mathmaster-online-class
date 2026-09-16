@@ -1,4 +1,5 @@
 const Student = require("../models/Student");
+const Class = require("../models/Class");
 const Gradebook = require("../models/Gradebook");
 const bcrypt = require("bcryptjs");
 
@@ -61,6 +62,28 @@ exports.assessmentGradebook = (req, res) => {
 };
 
 // ========================================
+// ADMIN REPORTS & ANALYTICS
+// ========================================
+
+exports.reportsAnalytics = (req, res) => {
+
+    const stats =
+        Student.getStatistics();
+
+    const classes =
+        Class.findAll();
+
+    res.render(
+        "admin-reports-analytics",
+        {
+            user: req.session.student,
+            stats,
+            classCount: classes.length
+        }
+    );
+
+};
+
 // MANAGE USERS PAGE
 // ========================================
 

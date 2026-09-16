@@ -31,7 +31,16 @@ router.get(
 );
 
 
+// ADMIN REPORTS & ANALYTICS
 // ========================================
+
+router.get(
+    "/admin/reports-analytics",
+    requireRole("admin"),
+    adminController.reportsAnalytics
+);
+
+
 // MANAGE USERS
 // ========================================
 
