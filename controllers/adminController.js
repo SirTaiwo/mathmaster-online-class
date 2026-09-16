@@ -1,4 +1,5 @@
 const Student = require("../models/Student");
+const Gradebook = require("../models/Gradebook");
 const bcrypt = require("bcryptjs");
 
 // ========================================
@@ -28,6 +29,32 @@ exports.dashboard = (req, res) => {
             users,
 
             recentUsers
+        }
+    );
+
+};
+
+// ========================================
+// ADMIN ASSESSMENT & GRADEBOOK
+// ========================================
+
+exports.assessmentGradebook = (req, res) => {
+
+    const analytics =
+        Gradebook.getDashboardAnalytics();
+
+    const distribution =
+        Gradebook.getPerformanceDistribution();
+
+    res.render(
+        "admin-assessment-gradebook",
+        {
+            user:
+                req.session.student,
+
+            analytics,
+
+            distribution
         }
     );
 

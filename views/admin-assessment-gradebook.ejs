@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Assessment & Gradebook</title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+<body>
+
+<header>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Math<span>Master</span>
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/">
+                Home
+            </a>
+
+            <a href="/logout">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+</header>
+
+
+<div class="admin-layout">
+
+    <!-- Sidebar -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+            Math<span>Master</span>
+        </div>
+
+        <ul class="sidebar-menu">
+
+            <li>
+                <a href="/admin/dashboard">
+                    🏠 Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="/admin/users">
+                    👥 Users
+                </a>
+            </li>
+
+            <li>
+                <a href="/admin/students">
+                    👨‍🎓 Students
+                </a>
+            </li>
+
+            <li>
+                <a href="/admin/teachers">
+                    👨‍🏫 Teachers
+                </a>
+            </li>
+
+            <li>
+                <a href="/admin/classes">
+                    📚 Classes
+                </a>
+            </li>
+
+            <li>
+                <a href="/admin/attendance">
+                    📅 Attendance
+                </a>
+            </li>
+
+            <li>
+                <a href="/admin/assessment-gradebook">
+                    📝 Assessment & Gradebook
+                </a>
+            </li>
+
+        </ul>
+
+        <a
+            class="logout-btn"
+            href="/logout"
+        >
+            🚪 Logout
+        </a>
+
+    </aside>
+
+
+    <!-- Main Content -->
+
+    <main class="main-content">
+
+        <div class="dashboard-header">
+
+            <p class="eyebrow">
+                ACADEMIC MANAGEMENT
+            </p>
+
+            <h1>
+                Assessment & Gradebook
+            </h1>
+
+            <p>
+                System-wide assessment performance overview
+            </p>
+
+        </div>
+
+
+        <!-- Assessment Statistics -->
+
+        <section class="module-section">
+
+            <h2>
+                Assessment Statistics
+            </h2>
+
+
+            <div class="dashboard-grid">
+
+
+                <div class="stat-card">
+
+                    <h3>
+                        Total Attempts
+                    </h3>
+
+                    <p>
+                        <%= analytics.total_attempts || 0 %>
+                    </p>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <h3>
+                        Average Score
+                    </h3>
+
+                    <p>
+                        <%= analytics.average_score || 0 %>%
+                    </p>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <h3>
+                        Highest Score
+                    </h3>
+
+                    <p>
+                        <%= analytics.highest_score || 0 %>%
+                    </p>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <h3>
+                        Lowest Score
+                    </h3>
+
+                    <p>
+                        <%= analytics.lowest_score || 0 %>%
+                    </p>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <h3>
+                        Passed
+                    </h3>
+
+                    <p>
+                        <%= analytics.passed || 0 %>
+                    </p>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <h3>
+                        Failed
+                    </h3>
+
+                    <p>
+                        <%= analytics.failed || 0 %>
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- Performance Distribution -->
+
+        <section class="module-section">
+
+            <h2>
+                Performance Distribution
+            </h2>
+
+
+            <div class="admin-module-grid">
+
+
+                <div class="module-card">
+
+                    <h3>
+                        Excellent
+                    </h3>
+
+                    <p>
+                        80% and above
+                    </p>
+
+                    <strong>
+                        <%= distribution.excellent || 0 %>
+                    </strong>
+
+                </div>
+
+
+                <div class="module-card">
+
+                    <h3>
+                        Good
+                    </h3>
+
+                    <p>
+                        70% – 79%
+                    </p>
+
+                    <strong>
+                        <%= distribution.good || 0 %>
+                    </strong>
+
+                </div>
+
+
+                <div class="module-card">
+
+                    <h3>
+                        Satisfactory
+                    </h3>
+
+                    <p>
+                        50% – 69%
+                    </p>
+
+                    <strong>
+                        <%= distribution.satisfactory || 0 %>
+                    </strong>
+
+                </div>
+
+
+                <div class="module-card">
+
+                    <h3>
+                        Needs Support
+                    </h3>
+
+                    <p>
+                        Below 50%
+                    </p>
+
+                    <strong>
+                        <%= distribution.support || 0 %>
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- Navigation -->
+
+        <section class="module-section">
+
+            <a
+                class="btn primary"
+                href="/admin/dashboard"
+            >
+                ← Back to Admin Dashboard
+            </a>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+</body>
+
+</html>

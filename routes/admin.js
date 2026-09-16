@@ -20,6 +20,16 @@ router.get(
     adminController.dashboard
 );
 
+// ========================================
+// ADMIN ASSESSMENT & GRADEBOOK
+// ========================================
+
+router.get(
+    "/admin/assessment-gradebook",
+    requireRole("admin"),
+    adminController.assessmentGradebook
+);
+
 
 // ========================================
 // MANAGE USERS
