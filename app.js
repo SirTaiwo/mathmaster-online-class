@@ -39,6 +39,9 @@ const adminRoutes =
 
     const lessonRoutes =
     require("./routes/lesson");
+    const classroomRoutes =
+    require("./routes/classroom");
+
 
     const assessmentRoutes =
     require("./routes/assessment");
@@ -214,6 +217,11 @@ app.use(
 app.use(
     "/",
     lessonRoutes
+);
+
+app.use(
+    "/",
+    classroomRoutes
 );
 
 app.use(

@@ -65,6 +65,46 @@ Grade:
 <%= course.grade %>
 </strong>
 </p>
+
+<% if (activeSession) { %>
+
+<div
+    class="dashboard-card"
+    style="margin: 20px 0; border-left: 5px solid #2e7d32;">
+
+    <h3>
+        🟢 Live Classroom Active
+    </h3>
+
+    <p>
+        This classroom session is currently active.
+    </p>
+
+    <p>
+        <strong>Started:</strong>
+        <%= activeSession.started_at %>
+    </p>
+
+    <form
+        method="POST"
+        action="/teacher/classroom/<%= activeSession.id %>/end"
+        style="margin-top: 15px;">
+
+        <button
+            type="submit"
+            class="btn"
+            onclick="return confirm('End this live classroom session?');">
+
+            ⏹️ End Live Classroom
+
+        </button>
+
+    </form>
+
+</div>
+
+<% } %>
+
 <a
 href="/teacher/courses/<%= course.id %>/gradebook"
 class="btn primary">

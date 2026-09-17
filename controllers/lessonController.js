@@ -10,6 +10,9 @@ const Course =
     const LessonMaterial =
     require("../models/LessonMaterial");
 
+    const ClassroomSession =
+    require("../models/ClassroomSession");
+
 
 // ========================================
 // VIEW COURSE LESSONS
@@ -31,6 +34,11 @@ exports.lessons = (req, res) => {
         );
 
     }
+
+    const activeSession =
+    ClassroomSession.findActiveByCourse(
+        req.params.courseId
+    );
 
 
     const lessons =
@@ -71,6 +79,8 @@ exports.lessons = (req, res) => {
                 req.session.student,
 
             course,
+
+            activeSession,
 
             lessons,
 

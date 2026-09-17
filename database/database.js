@@ -174,6 +174,38 @@ db.prepare(`
 `).run();
 
 // ========================================
+// CREATE CLASSROOM SESSIONS TABLE
+// ========================================
+
+db.prepare(`
+
+    CREATE TABLE IF NOT EXISTS classroom_sessions (
+
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+        course_id INTEGER NOT NULL,
+
+        teacher_id INTEGER NOT NULL,
+
+        status TEXT NOT NULL DEFAULT 'active',
+
+        started_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+        ended_at DATETIME,
+
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+        FOREIGN KEY(course_id)
+            REFERENCES courses(id),
+
+        FOREIGN KEY(teacher_id)
+            REFERENCES students(id)
+
+    )
+
+`).run();
+
+// ========================================
 // CREATE STUDENT FEEDBACK TABLE
 // ========================================
 

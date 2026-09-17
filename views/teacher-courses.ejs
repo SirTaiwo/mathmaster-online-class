@@ -129,6 +129,19 @@ Grade:
     Manage Lessons
 </a>
 
+<form
+    method="POST"
+    action="/teacher/courses/<%= course.id %>/classroom/start"
+    style="margin-top: 10px;"
+>
+    <button
+        class="btn primary"
+        type="submit"
+    >
+        Start Live Classroom
+    </button>
+</form>
+
 <a href="/teacher/courses/delete/<%= course.id %>">
 
 Delete
