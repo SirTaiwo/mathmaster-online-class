@@ -76,6 +76,36 @@ Grade:
 
 
 
+<% if (activeSession) { %>
+
+<div
+    class="dashboard-card"
+    style="margin: 20px 0; border-left: 5px solid #2e7d32;"
+>
+
+    <h2>🟢 Live Classroom Available</h2>
+
+    <p>
+        Your teacher has started a live classroom session for this course.
+    </p>
+
+    <p>
+        <strong>Started:</strong>
+        <%= activeSession.started_at %>
+    </p>
+
+    <a
+        href="/student/courses/<%= course.id %>/classroom"
+        class="btn primary"
+    >
+        🎓 Join Live Classroom
+    </a>
+
+</div>
+
+<% } %>
+
+
 <% if (lessons.length === 0) { %>
 
 <div class="card">

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>
+Live Classroom - <%= course.title %>
+</title>
+
+<link rel="stylesheet"
+      href="/css/style.css">
+
+</head>
+
+<body>
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+Math<span>Master</span>
+</div>
+
+<div class="nav-links">
+
+<a href="/student/dashboard">
+Dashboard
+</a>
+
+<a href="/student/my-courses">
+My Courses
+</a>
+
+<a href="/logout">
+Logout
+</a>
+
+</div>
+
+</nav>
+
+</header>
+
+
+<main class="dashboard">
+
+<div class="dashboard-header">
+
+<p class="eyebrow">
+LIVE CLASSROOM
+</p>
+
+<h1>
+<%= course.title %>
+</h1>
+
+<p>
+Grade:
+<strong><%= course.grade %></strong>
+</p>
+
+</div>
+
+
+<div
+    class="dashboard-card"
+    style="border-left: 5px solid #2e7d32;"
+>
+
+<h2>
+🟢 Live Classroom Active
+</h2>
+
+<p>
+You have successfully joined the live classroom.
+</p>
+
+<p>
+<strong>Started:</strong>
+<%= activeSession.started_at %>
+</p>
+
+<p>
+Your teacher is currently conducting this classroom session.
+</p>
+
+</div>
+
+<div
+    class="dashboard-card"
+    style="margin-top: 20px;"
+>
+
+<h2>
+How are you following the lesson?
+</h2>
+
+<p>
+Let your teacher know how you are doing.
+</p>
+
+
+<div
+    style="display: flex; flex-wrap: wrap; gap: 10px;"
+>
+
+
+<form
+    method="POST"
+    action="/student/courses/<%= course.id %>/classroom/interaction"
+>
+
+<input
+    type="hidden"
+    name="interactionType"
+    value="understand"
+>
+
+<button
+    class="btn primary"
+    type="submit"
+>
+👍 Understand
+</button>
+
+</form>
+
+
+<form
+    method="POST"
+    action="/student/courses/<%= course.id %>/classroom/interaction"
+>
+
+<input
+    type="hidden"
+    name="interactionType"
+    value="not_sure"
+>
+
+<button
+    class="btn secondary"
+    type="submit"
+>
+🤔 Not Sure
+</button>
+
+</form>
+
+
+<form
+    method="POST"
+    action="/student/courses/<%= course.id %>/classroom/interaction"
+>
+
+<input
+    type="hidden"
+    name="interactionType"
+    value="need_help"
+>
+
+<button
+    class="btn secondary"
+    type="submit"
+>
+🆘 Need Help
+</button>
+
+</form>
+
+
+<form
+    method="POST"
+    action="/student/courses/<%= course.id %>/classroom/interaction"
+>
+
+<input
+    type="hidden"
+    name="interactionType"
+    value="repeat"
+>
+
+<button
+    class="btn secondary"
+    type="submit"
+>
+🔁 Repeat
+</button>
+
+</form>
+
+
+</div>
+
+</div>
+
+<div
+    style="margin-top: 20px;"
+>
+
+<a
+    href="/student/courses/<%= course.id %>/lessons"
+    class="btn secondary"
+>
+← Back to Course Lessons
+</a>
+
+</div>
+
+</main>
+
+</body>
+
+</html>

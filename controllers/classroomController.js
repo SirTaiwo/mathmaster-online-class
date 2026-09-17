@@ -4,6 +4,12 @@ const ClassroomSession =
 const Course =
     require("../models/Course");
 
+const Enrollment =
+    require("../models/Enrollment");
+
+const ClassroomInteraction =
+    require("../models/ClassroomInteraction");
+
 
 // ========================================
 // START CLASSROOM SESSION
@@ -138,6 +144,215 @@ exports.endSession = (req, res) => {
 
     res.redirect(
         `/teacher/courses/${session.course_id}/lessons`
+    );
+
+};
+
+
+// ========================================
+// STUDENT JOIN CLASSROOM SESSION
+// ========================================
+
+exports.joinSession = (req, res) => {
+
+    const studentId =
+        req.session.student.id;
+
+    const courseId =
+        Number(req.params.courseId);
+
+
+    // ========================================
+    // VERIFY COURSE
+    // ========================================
+
+    const course =
+        Course.findById(courseId);
+
+
+    if (!course) {
+
+        return res.status(404).render(
+            "403"
+        );
+
+    }
+
+
+    // ========================================
+    // VERIFY STUDENT ENROLLMENT
+    // ========================================
+
+    const enrolled =
+        Enrollment.isStudentEnrolled(
+            studentId,
+            courseId
+        );
+
+
+    if (!enrolled) {
+
+        return res.status(403).render(
+            "403"
+        );
+
+    }
+
+
+    // ========================================
+    // VERIFY ACTIVE CLASSROOM
+    // ========================================
+
+    const activeSession =
+        ClassroomSession.findActiveByCourse(
+            courseId
+        );
+
+
+    if (!activeSession) {
+
+        return res.redirect(
+            `/student/courses/${courseId}/lessons`
+        );
+
+    }
+
+
+    // ========================================
+    // OPEN CLASSROOM
+    // ========================================
+
+    res.render(
+        "student-classroom",
+        {
+
+            user:
+                req.session.student,
+
+            course,
+
+            activeSession
+
+        }
+    );
+
+};
+
+
+// ========================================
+// STUDENT CLASSROOM INTERACTION
+// ========================================
+
+exports.submitInteraction = (req, res) => {
+
+    const studentId =
+        req.session.student.id;
+
+    const courseId =
+        Number(req.params.courseId);
+
+    const interactionType =
+        req.body.interactionType;
+
+
+    // ========================================
+    // VERIFY COURSE
+    // ========================================
+
+    const course =
+        Course.findById(courseId);
+
+
+    if (!course) {
+
+        return res.status(404).render(
+            "403"
+        );
+
+    }
+
+
+    // ========================================
+    // VERIFY STUDENT ENROLLMENT
+    // ========================================
+
+    const enrolled =
+        Enrollment.isStudentEnrolled(
+            studentId,
+            courseId
+        );
+
+
+    if (!enrolled) {
+
+        return res.status(403).render(
+            "403"
+        );
+
+    }
+
+
+    // ========================================
+    // VERIFY ACTIVE CLASSROOM
+    // ========================================
+
+    const activeSession =
+        ClassroomSession.findActiveByCourse(
+            courseId
+        );
+
+
+    if (!activeSession) {
+
+        return res.redirect(
+            `/student/courses/${courseId}/lessons`
+        );
+
+    }
+
+
+    // ========================================
+    // VERIFY INTERACTION TYPE
+    // ========================================
+
+    const allowedInteractions = [
+        "understand",
+        "not_sure",
+        "need_help",
+        "repeat"
+    ];
+
+
+    if (
+        !allowedInteractions.includes(
+            interactionType
+        )
+    ) {
+
+        return res.status(400).render(
+            "403"
+        );
+
+    }
+
+
+    // ========================================
+    // SAVE INTERACTION
+    // ========================================
+
+    ClassroomInteraction.createInteraction(
+        activeSession.id,
+        studentId,
+        interactionType
+    );
+
+
+    // ========================================
+    // RETURN TO CLASSROOM
+    // ========================================
+
+    res.redirect(
+        `/student/courses/${courseId}/classroom`
     );
 
 };

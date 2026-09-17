@@ -21,6 +21,9 @@ const Course =
     const AssessmentResult =
     require("../models/AssessmentResult");
 
+    const ClassroomSession =
+    require("../models/ClassroomSession");
+
     const StudentFeedback =
     require("../models/StudentFeedback");
 
@@ -545,6 +548,11 @@ exports.courseLessons = (req, res) => {
 
     }
 
+    const activeSession =
+        ClassroomSession.findActiveByCourse(
+            req.params.courseId
+        );
+
     const lessons =
         require("../models/Lesson")
             .findByCourse(
@@ -578,6 +586,9 @@ exports.courseLessons = (req, res) => {
                 req.session.student,
 
             course,
+
+            activeSession,
+
 
             lessons
 

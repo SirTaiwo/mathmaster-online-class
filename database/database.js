@@ -206,6 +206,34 @@ db.prepare(`
 `).run();
 
 // ========================================
+// CREATE CLASSROOM INTERACTIONS TABLE
+// ========================================
+
+db.prepare(`
+
+    CREATE TABLE IF NOT EXISTS classroom_interactions (
+
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+        session_id INTEGER NOT NULL,
+
+        student_id INTEGER NOT NULL,
+
+        interaction_type TEXT NOT NULL,
+
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+        FOREIGN KEY(session_id)
+            REFERENCES classroom_sessions(id),
+
+        FOREIGN KEY(student_id)
+            REFERENCES students(id)
+
+    )
+
+`).run();
+
+// ========================================
 // CREATE STUDENT FEEDBACK TABLE
 // ========================================
 
