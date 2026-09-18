@@ -85,6 +85,76 @@ Grade:
         <%= activeSession.started_at %>
     </p>
 
+        <div style="margin-top: 20px;">
+
+        <h4>
+            📊 Student Classroom Feedback
+        </h4>
+
+        <p>
+            👍 Understand:
+            <strong>
+                <%= classroomInteractionSummary.understand %>
+            </strong>
+        </p>
+
+        <p>
+            🤔 Not Sure:
+            <strong>
+                <%= classroomInteractionSummary.not_sure %>
+            </strong>
+        </p>
+
+        <p>
+            🆘 Need Help:
+            <strong>
+                <%= classroomInteractionSummary.need_help %>
+            </strong>
+        </p>
+
+        <p>
+            🔁 Repeat:
+            <strong>
+                <%= classroomInteractionSummary.repeat %>
+            </strong>
+        </p>
+
+    </div>
+
+            <div style="margin-top: 20px;">
+
+            <h4>
+                🕒 Recent Responses
+            </h4>
+
+            <% if (classroomInteractions.length === 0) { %>
+
+                <p>
+                    No student responses yet.
+                </p>
+
+            <% } else { %>
+
+                <% classroomInteractions.slice().reverse().forEach((interaction) => { %>
+
+                    <p>
+                        <strong>
+                            <%= interaction.first_name %>
+                            <%= interaction.last_name %>
+                        </strong>
+
+                        —
+                        <%= interaction.interaction_type %>
+                        —
+                        <%= interaction.created_at %>
+                    </p>
+
+                <% }); %>
+
+            <% } %>
+
+        </div>
+
     <form
         method="POST"
         action="/teacher/classroom/<%= activeSession.id %>/end"

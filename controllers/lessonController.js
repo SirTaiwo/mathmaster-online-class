@@ -13,6 +13,9 @@ const Course =
     const ClassroomSession =
     require("../models/ClassroomSession");
 
+    const ClassroomInteraction =
+    require("../models/ClassroomInteraction");
+
 
 // ========================================
 // VIEW COURSE LESSONS
@@ -39,6 +42,40 @@ exports.lessons = (req, res) => {
     ClassroomSession.findActiveByCourse(
         req.params.courseId
     );
+
+    let classroomInteractions = [];
+
+    if (activeSession) {
+
+        classroomInteractions =
+            ClassroomInteraction.findBySession(
+                activeSession.id
+            );
+
+    }
+
+        const classroomInteractionSummary = {
+        understand: 0,
+        not_sure: 0,
+        need_help: 0,
+        repeat: 0
+    };
+
+    classroomInteractions.forEach((interaction) => {
+
+        if (
+            classroomInteractionSummary[
+                interaction.interaction_type
+            ] !== undefined
+        ) {
+
+            classroomInteractionSummary[
+                interaction.interaction_type
+            ]++;
+
+        }
+
+    });
 
 
     const lessons =
@@ -81,6 +118,10 @@ exports.lessons = (req, res) => {
             course,
 
             activeSession,
+
+            classroomInteractions,
+
+            classroomInteractionSummary,
 
             lessons,
 
