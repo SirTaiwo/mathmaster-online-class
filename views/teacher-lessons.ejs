@@ -155,7 +155,7 @@ Grade:
 
         </div>
 
-        <div style="margin-top: 20px;">
+          <div style="margin-top: 20px;">
 
             <h4>
                 💬 Student Written Messages
@@ -183,12 +183,51 @@ Grade:
                         <%= message.created_at %>
                     </p>
 
+                    <% if (message.teacher_response) { %>
+
+                        <p>
+                            <strong>
+                                👨‍🏫 Teacher Response:
+                            </strong>
+
+                            <%= message.teacher_response %>
+                            —
+                            <%= message.responded_at %>
+                        </p>
+
+                    <% } else { %>
+
+                        <form
+                            method="POST"
+                            action="/teacher/classroom/message/<%= message.id %>/respond"
+                            style="margin-top: 10px;">
+
+                            <textarea
+                                name="teacherResponse"
+                                rows="3"
+                                placeholder="Reply to this student..."
+                                required
+                                style="width: 100%; max-width: 600px;"></textarea>
+
+                            <br>
+
+                            <button
+                                type="submit"
+                                class="btn secondary">
+
+                                💬 Send Response
+
+                            </button>
+
+                        </form>
+
+                    <% } %>
+
                 <% }); %>
 
             <% } %>
 
         </div>
-
     <form
         method="POST"
         action="/teacher/classroom/<%= activeSession.id %>/end"

@@ -67,5 +67,15 @@ router.post(
     classroomController.submitMessage
 );
 
+// ========================================
+// TEACHER CLASSROOM MESSAGE RESPONSE
+// ========================================
+
+router.post(
+    "/teacher/classroom/message/:messageId/respond",
+    requireRole("teacher"),
+    classroomController.respondToMessage
+);
+
 
 module.exports = router;

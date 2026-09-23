@@ -59,11 +59,66 @@ function findBySession(sessionId) {
 
 }
 
+// ========================================
+// FIND CLASSROOM MESSAGE BY ID
+// ========================================
+
+function findById(messageId) {
+
+    return db.prepare(`
+
+        SELECT
+            classroom_messages.*,
+            students.first_name,
+            students.last_name
+
+        FROM classroom_messages
+
+        JOIN students
+        ON students.id =
+           classroom_messages.student_id
+
+        WHERE classroom_messages.id = ?
+
+    `).get(messageId);
+
+}
+
+// ========================================
+// RESPOND TO CLASSROOM MESSAGE
+// ========================================
+
+function respondToMessage(
+    messageId,
+    teacherResponse
+) {
+
+    return db.prepare(`
+
+        UPDATE classroom_messages
+
+        SET
+            teacher_response = ?,
+            responded_at = CURRENT_TIMESTAMP
+
+        WHERE id = ?
+
+    `).run(
+        teacherResponse,
+        messageId
+    );
+
+}
+
 
 module.exports = {
 
     createMessage,
 
-    findBySession
+    findBySession,
+
+    findById,
+
+    respondToMessage
 
 };

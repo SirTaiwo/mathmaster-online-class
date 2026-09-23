@@ -262,6 +262,26 @@ db.prepare(`
 `).run();
 
 // ========================================
+// ADD CLASSROOM MESSAGE RESPONSE FIELDS
+// ========================================
+
+try {
+    db.prepare("ALTER TABLE classroom_messages ADD COLUMN teacher_response TEXT").run();
+} catch (error) {
+    if (!error.message.includes("duplicate column name")) {
+        throw error;
+    }
+}
+
+try {
+    db.prepare("ALTER TABLE classroom_messages ADD COLUMN responded_at DATETIME").run();
+} catch (error) {
+    if (!error.message.includes("duplicate column name")) {
+        throw error;
+    }
+}
+
+// ========================================
 // CREATE STUDENT FEEDBACK TABLE
 // ========================================
 

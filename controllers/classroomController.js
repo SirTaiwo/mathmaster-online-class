@@ -465,3 +465,107 @@ exports.submitMessage = (req, res) => {
     );
 
 };
+
+// ========================================
+// TEACHER CLASSROOM MESSAGE RESPONSE
+// ========================================
+
+exports.respondToMessage = (req, res) => {
+
+    const teacherId =
+        req.session.student.id;
+
+    const messageId =
+        Number(req.params.messageId);
+
+
+    // ========================================
+    // FIND MESSAGE
+    // ========================================
+
+    const message =
+        ClassroomMessage.findById(
+            messageId
+        );
+
+
+    if (!message) {
+
+        return res.status(404).render(
+            "403"
+        );
+
+    }
+
+
+    // ========================================
+    // FIND CLASSROOM SESSION
+    // ========================================
+
+    const session =
+        ClassroomSession.findById(
+            message.session_id
+        );
+
+
+    if (!session) {
+
+        return res.status(404).render(
+            "403"
+        );
+
+    }
+
+
+    // ========================================
+    // VERIFY TEACHER OWNERSHIP
+    // ========================================
+
+    if (
+        session.teacher_id !==
+        teacherId
+    ) {
+
+        return res.status(403).render(
+            "403"
+        );
+
+    }
+
+
+    // ========================================
+    // VERIFY RESPONSE
+    // ========================================
+
+    const teacherResponse =
+        (req.body.teacherResponse || "").trim();
+
+
+    if (!teacherResponse) {
+
+        return res.redirect(
+            `/teacher/courses/${session.course_id}/lessons`
+        );
+
+    }
+
+
+    // ========================================
+    // SAVE RESPONSE
+    // ========================================
+
+    ClassroomMessage.respondToMessage(
+        messageId,
+        teacherResponse
+    );
+
+
+    // ========================================
+    // RETURN TO COURSE LESSONS
+    // ========================================
+
+    res.redirect(
+        `/teacher/courses/${session.course_id}/lessons`
+    );
+
+};
