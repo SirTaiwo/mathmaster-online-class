@@ -234,6 +234,34 @@ db.prepare(`
 `).run();
 
 // ========================================
+// CREATE CLASSROOM MESSAGES TABLE
+// ========================================
+
+db.prepare(`
+
+    CREATE TABLE IF NOT EXISTS classroom_messages (
+
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+        session_id INTEGER NOT NULL,
+
+        student_id INTEGER NOT NULL,
+
+        message TEXT NOT NULL,
+
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+        FOREIGN KEY(session_id)
+            REFERENCES classroom_sessions(id),
+
+        FOREIGN KEY(student_id)
+            REFERENCES students(id)
+
+    )
+
+`).run();
+
+// ========================================
 // CREATE STUDENT FEEDBACK TABLE
 // ========================================
 

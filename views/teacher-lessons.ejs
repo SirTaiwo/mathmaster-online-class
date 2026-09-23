@@ -155,6 +155,40 @@ Grade:
 
         </div>
 
+        <div style="margin-top: 20px;">
+
+            <h4>
+                💬 Student Written Messages
+            </h4>
+
+            <% if (classroomMessages.length === 0) { %>
+
+                <p>
+                    No written messages yet.
+                </p>
+
+            <% } else { %>
+
+                <% classroomMessages.slice().reverse().forEach((message) => { %>
+
+                    <p>
+                        <strong>
+                            <%= message.first_name %>
+                            <%= message.last_name %>
+                        </strong>
+
+                        —
+                        <%= message.message %>
+                        —
+                        <%= message.created_at %>
+                    </p>
+
+                <% }); %>
+
+            <% } %>
+
+        </div>
+
     <form
         method="POST"
         action="/teacher/classroom/<%= activeSession.id %>/end"

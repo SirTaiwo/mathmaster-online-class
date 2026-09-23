@@ -200,6 +200,44 @@ Let your teacher know how you are doing.
 </div>
 
 <div
+    class="dashboard-card"
+    style="margin-top: 20px;"
+>
+
+<h2>
+💬 Message Your Teacher
+</h2>
+
+<p>
+Have a question or something you would like your teacher to know?
+</p>
+
+<form
+    method="POST"
+    action="/student/courses/<%= course.id %>/classroom/message"
+>
+
+<textarea
+    name="message"
+    rows="4"
+    placeholder="Type your question or message here..."
+    style="width: 100%; max-width: 700px; padding: 10px; box-sizing: border-box;"
+></textarea>
+
+<br><br>
+
+<button
+    class="btn primary"
+    type="submit"
+>
+Send Message
+</button>
+
+</form>
+
+</div>
+
+<div
     style="margin-top: 20px;"
 >
 

@@ -57,4 +57,15 @@ router.post(
 );
 
 
+// ========================================
+// STUDENT CLASSROOM WRITTEN MESSAGE
+// ========================================
+
+router.post(
+    "/student/courses/:courseId/classroom/message",
+    requireRole("student"),
+    classroomController.submitMessage
+);
+
+
 module.exports = router;

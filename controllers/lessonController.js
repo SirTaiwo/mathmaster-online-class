@@ -16,6 +16,9 @@ const Course =
     const ClassroomInteraction =
     require("../models/ClassroomInteraction");
 
+    const ClassroomMessage =
+    require("../models/ClassroomMessage");
+
 
 // ========================================
 // VIEW COURSE LESSONS
@@ -49,6 +52,17 @@ exports.lessons = (req, res) => {
 
         classroomInteractions =
             ClassroomInteraction.findBySession(
+                activeSession.id
+            );
+
+    }
+
+    let classroomMessages = [];
+
+    if (activeSession) {
+
+        classroomMessages =
+            ClassroomMessage.findBySession(
                 activeSession.id
             );
 
@@ -122,6 +136,8 @@ exports.lessons = (req, res) => {
             classroomInteractions,
 
             classroomInteractionSummary,
+
+            classroomMessages,
 
             lessons,
 

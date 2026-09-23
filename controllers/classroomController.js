@@ -10,6 +10,9 @@ const Enrollment =
 const ClassroomInteraction =
     require("../models/ClassroomInteraction");
 
+    const ClassroomMessage =
+    require("../models/ClassroomMessage");
+
 
 // ========================================
 // START CLASSROOM SESSION
@@ -344,6 +347,112 @@ exports.submitInteraction = (req, res) => {
         activeSession.id,
         studentId,
         interactionType
+    );
+
+
+    // ========================================
+    // RETURN TO CLASSROOM
+    // ========================================
+
+    res.redirect(
+        `/student/courses/${courseId}/classroom`
+    );
+
+};
+
+// ========================================
+// STUDENT CLASSROOM WRITTEN MESSAGE
+// ========================================
+
+exports.submitMessage = (req, res) => {
+
+    const studentId =
+        req.session.student.id;
+
+    const courseId =
+        Number(req.params.courseId);
+
+    const message =
+        (req.body.message || "").trim();
+
+
+    // ========================================
+    // VERIFY COURSE
+    // ========================================
+
+    const course =
+        Course.findById(courseId);
+
+
+    if (!course) {
+
+        return res.status(404).render(
+            "403"
+        );
+
+    }
+
+
+    // ========================================
+    // VERIFY STUDENT ENROLLMENT
+    // ========================================
+
+    const enrolled =
+        Enrollment.isStudentEnrolled(
+            studentId,
+            courseId
+        );
+
+
+    if (!enrolled) {
+
+        return res.status(403).render(
+            "403"
+        );
+
+    }
+
+
+    // ========================================
+    // VERIFY ACTIVE CLASSROOM
+    // ========================================
+
+    const activeSession =
+        ClassroomSession.findActiveByCourse(
+            courseId
+        );
+
+
+    if (!activeSession) {
+
+        return res.redirect(
+            `/student/courses/${courseId}/lessons`
+        );
+
+    }
+
+
+    // ========================================
+    // VERIFY MESSAGE
+    // ========================================
+
+    if (!message) {
+
+        return res.redirect(
+            `/student/courses/${courseId}/classroom`
+        );
+
+    }
+
+
+    // ========================================
+    // SAVE MESSAGE
+    // ========================================
+
+    ClassroomMessage.createMessage(
+        activeSession.id,
+        studentId,
+        message
     );
 
 
