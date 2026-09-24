@@ -220,6 +220,12 @@ exports.joinSession = (req, res) => {
 
     }
 
+        const classroomMessages =
+        ClassroomMessage.findByStudentAndSession(
+            studentId,
+            activeSession.id
+        );
+
 
     // ========================================
     // OPEN CLASSROOM
@@ -234,7 +240,9 @@ exports.joinSession = (req, res) => {
 
             course,
 
-            activeSession
+            activeSession,
+
+            classroomMessages
 
         }
     );

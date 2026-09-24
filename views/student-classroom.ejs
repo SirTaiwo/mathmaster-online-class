@@ -258,6 +258,77 @@ Send Message
 </div>
 
 <div
+    class="dashboard-card"
+    style="margin-top: 20px;"
+>
+
+<h2>
+📨 My Classroom Messages
+</h2>
+
+<% if (classroomMessages.length === 0) { %>
+
+    <p>
+    You have not sent any classroom messages yet.
+    </p>
+
+<% } else { %>
+
+    <% classroomMessages.slice().reverse().forEach((message) => { %>
+
+        <div
+            style="margin-bottom: 20px;"
+        >
+
+        <p>
+        <strong>
+        Your Message:
+        </strong>
+        <%= message.message %>
+        </p>
+
+        <p>
+        <strong>
+        Sent:
+        </strong>
+        <%= message.created_at %>
+        </p>
+
+        <% if (message.teacher_response) { %>
+
+            <p>
+            <strong>
+            👨‍🏫 Teacher Response:
+            </strong>
+            <%= message.teacher_response %>
+            </p>
+
+            <p>
+            <strong>
+            Responded:
+            </strong>
+            <%= message.responded_at %>
+            </p>
+
+        <% } else { %>
+
+            <p>
+            <em>
+            Your teacher has not responded yet.
+            </em>
+            </p>
+
+        <% } %>
+
+        </div>
+
+    <% }); %>
+
+<% } %>
+
+</div>
+
+<div
     style="margin-top: 20px;"
 >
 

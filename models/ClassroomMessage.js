@@ -85,6 +85,40 @@ function findById(messageId) {
 }
 
 // ========================================
+// FIND MESSAGES BY STUDENT AND SESSION
+// ========================================
+
+function findByStudentAndSession(
+    studentId,
+    sessionId
+) {
+
+    return db.prepare(`
+
+        SELECT
+            classroom_messages.*,
+            students.first_name,
+            students.last_name
+
+        FROM classroom_messages
+
+        JOIN students
+        ON students.id =
+           classroom_messages.student_id
+
+        WHERE classroom_messages.student_id = ?
+        AND classroom_messages.session_id = ?
+
+        ORDER BY classroom_messages.created_at ASC
+
+    `).all(
+        studentId,
+        sessionId
+    );
+
+}
+
+// ========================================
 // RESPOND TO CLASSROOM MESSAGE
 // ========================================
 
@@ -118,6 +152,8 @@ module.exports = {
     findBySession,
 
     findById,
+
+    findByStudentAndSession,
 
     respondToMessage
 
