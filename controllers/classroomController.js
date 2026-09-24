@@ -322,7 +322,8 @@ exports.submitInteraction = (req, res) => {
         "understand",
         "not_sure",
         "need_help",
-        "repeat"
+        "repeat",
+        "raise_hand"
     ];
 
 

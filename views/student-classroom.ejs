@@ -194,6 +194,26 @@ Let your teacher know how you are doing.
 
 </form>
 
+<form
+    method="POST"
+    action="/student/courses/<%= course.id %>/classroom/interaction"
+>
+
+<input
+    type="hidden"
+    name="interactionType"
+    value="raise_hand"
+>
+
+<button
+    class="btn secondary"
+    type="submit"
+>
+✋ Raise Hand
+</button>
+
+</form>
+
 
 </div>
 

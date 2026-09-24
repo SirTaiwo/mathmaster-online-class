@@ -68,11 +68,12 @@ exports.lessons = (req, res) => {
 
     }
 
-        const classroomInteractionSummary = {
+          const classroomInteractionSummary = {
         understand: 0,
         not_sure: 0,
         need_help: 0,
-        repeat: 0
+        repeat: 0,
+        raise_hand: 0
     };
 
     classroomInteractions.forEach((interaction) => {
