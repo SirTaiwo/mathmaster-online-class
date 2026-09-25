@@ -98,6 +98,71 @@ Your teacher is currently conducting this classroom session.
 >
 
 <h2>
+✋ My Raise Hand Status
+</h2>
+
+<%
+const raiseHandInteractions =
+    classroomInteractions.filter(
+        (interaction) =>
+            interaction.interaction_type === "raise_hand"
+    );
+%>
+
+<% if (raiseHandInteractions.length === 0) { %>
+
+    <p>
+    You have not raised your hand yet.
+    </p>
+
+<% } else { %>
+
+    <% raiseHandInteractions.forEach((interaction) => { %>
+
+        <div
+            style="margin-bottom: 15px;"
+        >
+
+        <p>
+        <strong>
+        ✋ Raise Hand:
+        </strong>
+        <%= interaction.created_at %>
+        </p>
+
+        <% if (interaction.acknowledged_at) { %>
+
+            <p>
+            <strong>
+            ✅ Teacher Acknowledged:
+            </strong>
+            <%= interaction.acknowledged_at %>
+            </p>
+
+        <% } else { %>
+
+            <p>
+            <em>
+            Waiting for teacher acknowledgement.
+            </em>
+            </p>
+
+        <% } %>
+
+        </div>
+
+    <% }); %>
+
+<% } %>
+
+</div>
+
+<div
+    class="dashboard-card"
+    style="margin-top: 20px;"
+>
+
+<h2>
 How are you following the lesson?
 </h2>
 

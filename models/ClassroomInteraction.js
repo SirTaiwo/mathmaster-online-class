@@ -38,6 +38,25 @@ function findBySession(sessionId) {
     `).all(sessionId);
 }
 
+// FIND INTERACTIONS BY STUDENT AND SESSION
+function findByStudentAndSession(
+    studentId,
+    sessionId
+) {
+    return db.prepare(`
+        SELECT
+            classroom_interactions.*
+        FROM classroom_interactions
+        WHERE student_id = ?
+        AND session_id = ?
+        ORDER BY created_at DESC
+    `).all(
+        studentId,
+        sessionId
+    );
+}
+
+
 function findById(
     interactionId
 ) {
@@ -80,6 +99,7 @@ function acknowledgeInteraction(
 module.exports = {
     createInteraction,
     findBySession,
+    findByStudentAndSession,
     findById,
     acknowledgeInteraction
 };

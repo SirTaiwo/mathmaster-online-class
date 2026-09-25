@@ -226,6 +226,12 @@ exports.joinSession = (req, res) => {
             activeSession.id
         );
 
+            const classroomInteractions =
+        ClassroomInteraction.findByStudentAndSession(
+            studentId,
+            activeSession.id
+        );
+
 
     // ========================================
     // OPEN CLASSROOM
@@ -242,7 +248,9 @@ exports.joinSession = (req, res) => {
 
             activeSession,
 
-            classroomMessages
+            classroomMessages,
+
+            classroomInteractions
 
         }
     );
