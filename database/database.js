@@ -234,6 +234,30 @@ db.prepare(`
 `).run();
 
 // ========================================
+// ADD CLASSROOM INTERACTION ACKNOWLEDGEMENT
+// ========================================
+
+try {
+
+    db.prepare(
+        "ALTER TABLE classroom_interactions ADD COLUMN acknowledged_at DATETIME"
+    ).run();
+
+} catch (error) {
+
+    if (
+        !error.message.includes(
+            "duplicate column name"
+        )
+    ) {
+
+        throw error;
+
+    }
+
+}
+
+// ========================================
 // CREATE CLASSROOM MESSAGES TABLE
 // ========================================
 

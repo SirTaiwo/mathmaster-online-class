@@ -370,6 +370,92 @@ exports.submitInteraction = (req, res) => {
 };
 
 // ========================================
+// TEACHER ACKNOWLEDGE CLASSROOM INTERACTION
+// ========================================
+
+exports.acknowledgeInteraction = (req, res) => {
+
+    const teacherId =
+        req.session.student.id;
+
+    const interactionId =
+        Number(req.params.interactionId);
+
+
+    // ========================================
+    // FIND INTERACTION
+    // ========================================
+
+    const interaction =
+        ClassroomInteraction.findById(
+            interactionId
+        );
+
+
+    if (!interaction) {
+
+        return res.status(404).render(
+            "403"
+        );
+
+    }
+
+
+    // ========================================
+    // FIND CLASSROOM SESSION
+    // ========================================
+
+    const session =
+        ClassroomSession.findById(
+            interaction.session_id
+        );
+
+
+    if (!session) {
+
+        return res.status(404).render(
+            "403"
+        );
+
+    }
+
+
+    // ========================================
+    // VERIFY TEACHER OWNERSHIP
+    // ========================================
+
+    if (
+        session.teacher_id !==
+        teacherId
+    ) {
+
+        return res.status(403).render(
+            "403"
+        );
+
+    }
+
+
+    // ========================================
+    // ACKNOWLEDGE INTERACTION
+    // ========================================
+
+    ClassroomInteraction.acknowledgeInteraction(
+        interactionId
+    );
+
+
+    // ========================================
+    // RETURN TO COURSE LESSONS
+    // ========================================
+
+    res.redirect(
+        `/teacher/courses/${session.course_id}/lessons`
+    );
+
+};
+
+// ========================================
 // STUDENT CLASSROOM WRITTEN MESSAGE
 // ========================================
 

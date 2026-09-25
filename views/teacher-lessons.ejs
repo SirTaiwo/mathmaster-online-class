@@ -144,17 +144,52 @@ Grade:
 
                 <% classroomInteractions.slice().reverse().forEach((interaction) => { %>
 
-                    <p>
-                        <strong>
-                            <%= interaction.first_name %>
-                            <%= interaction.last_name %>
-                        </strong>
+                   <p>
+    <strong>
+        <%= interaction.first_name %>
+        <%= interaction.last_name %>
+    </strong>
 
-                        —
-                        <%= interaction.interaction_type %>
-                        —
-                        <%= interaction.created_at %>
-                    </p>
+    —
+    <%= interaction.interaction_type %>
+    —
+    <%= interaction.created_at %>
+</p>
+
+<% if (
+    interaction.interaction_type === "raise_hand"
+    && !interaction.acknowledged_at
+) { %>
+
+    <form
+        method="POST"
+        action="/teacher/classroom/interaction/<%= interaction.id %>/acknowledge"
+        style="margin-top: 5px;"
+    >
+
+        <button
+            type="submit"
+            class="btn secondary"
+        >
+            ✅ Acknowledge Raise Hand
+        </button>
+
+    </form>
+
+<% } else if (
+    interaction.interaction_type === "raise_hand"
+    && interaction.acknowledged_at
+) { %>
+
+    <p>
+        <strong>
+            ✅ Acknowledged:
+        </strong>
+
+        <%= interaction.acknowledged_at %>
+    </p>
+
+<% } %>
 
                 <% }); %>
 

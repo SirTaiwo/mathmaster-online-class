@@ -77,5 +77,15 @@ router.post(
     classroomController.respondToMessage
 );
 
+// ========================================
+// TEACHER ACKNOWLEDGE CLASSROOM INTERACTION
+// ========================================
+
+router.post(
+    "/teacher/classroom/interaction/:interactionId/acknowledge",
+    requireRole("teacher"),
+    classroomController.acknowledgeInteraction
+);
+
 
 module.exports = router;

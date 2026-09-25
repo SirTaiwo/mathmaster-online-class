@@ -38,7 +38,48 @@ function findBySession(sessionId) {
     `).all(sessionId);
 }
 
+function findById(
+    interactionId
+) {
+
+    return db.prepare(`
+        SELECT
+            classroom_interactions.*,
+            students.first_name,
+            students.last_name
+        FROM classroom_interactions
+        JOIN students
+        ON students.id =
+           classroom_interactions.student_id
+        WHERE classroom_interactions.id = ?
+    `).get(
+        interactionId
+    );
+
+}
+
+// ACKNOWLEDGE CLASSROOM INTERACTION
+function acknowledgeInteraction(
+    interactionId
+) {
+
+    return db.prepare(`
+        UPDATE classroom_interactions
+
+        SET
+            acknowledged_at = CURRENT_TIMESTAMP
+
+        WHERE id = ?
+
+    `).run(
+        interactionId
+    );
+
+}
+
 module.exports = {
     createInteraction,
-    findBySession
+    findBySession,
+    findById,
+    acknowledgeInteraction
 };
