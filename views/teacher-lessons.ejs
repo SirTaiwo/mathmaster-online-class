@@ -156,10 +156,7 @@ Grade:
     <%= interaction.created_at %>
 </p>
 
-<% if (
-    interaction.interaction_type === "raise_hand"
-    && !interaction.acknowledged_at
-) { %>
+<% if (!interaction.acknowledged_at) { %>
 
     <form
         method="POST"
@@ -171,15 +168,12 @@ Grade:
             type="submit"
             class="btn secondary"
         >
-            ✅ Acknowledge Raise Hand
+            ✅ Acknowledge
         </button>
 
     </form>
 
-<% } else if (
-    interaction.interaction_type === "raise_hand"
-    && interaction.acknowledged_at
-) { %>
+<% } else { %>
 
     <p>
         <strong>
