@@ -98,37 +98,49 @@ Your teacher is currently conducting this classroom session.
 >
 
 <h2>
-✋ My Raise Hand Status
+📊 My Classroom Feedback Status
 </h2>
 
 <%
-const raiseHandInteractions =
-    classroomInteractions.filter(
-        (interaction) =>
-            interaction.interaction_type === "raise_hand"
-    );
+const feedbackInteractions =
+    classroomInteractions;
 %>
 
-<% if (raiseHandInteractions.length === 0) { %>
+<% if (feedbackInteractions.length === 0) { %>
 
     <p>
-    You have not raised your hand yet.
+    You have not sent any classroom feedback yet.
     </p>
 
 <% } else { %>
 
-    <% raiseHandInteractions.forEach((interaction) => { %>
+    <% feedbackInteractions.forEach((interaction) => { %>
 
         <div
             style="margin-bottom: 15px;"
         >
 
         <p>
-        <strong>
-        ✋ Raise Hand:
-        </strong>
-        <%= interaction.created_at %>
-        </p>
+<strong>
+
+<% if (interaction.interaction_type === "understand") { %>
+    👍 Understand:
+<% } else if (interaction.interaction_type === "not_sure") { %>
+    🤔 Not Sure:
+<% } else if (interaction.interaction_type === "need_help") { %>
+    🆘 Need Help:
+<% } else if (interaction.interaction_type === "repeat") { %>
+    🔁 Repeat:
+<% } else if (interaction.interaction_type === "raise_hand") { %>
+    ✋ Raise Hand:
+<% } else { %>
+    <%= interaction.interaction_type %>:
+<% } %>
+
+</strong>
+
+<%= interaction.created_at %>
+</p>
 
         <% if (interaction.acknowledged_at) { %>
 
