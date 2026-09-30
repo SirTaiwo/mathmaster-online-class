@@ -45,6 +45,31 @@ if (!hasRoleColumn) {
 }
 
 // ========================================
+// CREATE ASSESSMENTS TABLE
+// ========================================
+
+db.prepare(`
+    CREATE TABLE IF NOT EXISTS assessments (
+
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+        lesson_id INTEGER NOT NULL,
+
+        title TEXT NOT NULL,
+
+        description TEXT,
+
+        total_marks INTEGER DEFAULT 0,
+
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+        max_attempts INTEGER DEFAULT 1
+
+    )
+`).run();
+
+
+// ========================================
 // DATABASE MIGRATION
 // ADD MAX ATTEMPTS TO ASSESSMENTS
 // ========================================
