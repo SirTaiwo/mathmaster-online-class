@@ -93,12 +93,10 @@ Your teacher is currently conducting this classroom session.
 </div>
 
 <div
+    id="classroom-feedback-status"
     class="dashboard-card"
     style="margin-top: 20px;"
 >
-
-<h2>
-📊 My Classroom Feedback Status
 </h2>
 
 <%
@@ -335,12 +333,10 @@ Send Message
 </div>
 
 <div
+    id="classroom-messages"
     class="dashboard-card"
     style="margin-top: 20px;"
 >
-
-<h2>
-📨 My Classroom Messages
 </h2>
 
 <% if (classroomMessages.length === 0) { %>
@@ -417,6 +413,270 @@ Send Message
 </a>
 
 </div>
+
+<script>
+
+const classroomStatusUrl =
+    "/student/courses/<%= course.id %>/classroom/status";
+
+
+function escapeHtml(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+async function refreshClassroomStatus() {
+
+    try {
+
+        const response =
+            await fetch(classroomStatusUrl);
+
+        if (!response.ok) {
+            return;
+        }
+
+        const data =
+            await response.json();
+
+
+        if (!data.success || !data.active) {
+            return;
+        }
+
+
+        // ----------------------------------------
+        // REFRESH FEEDBACK STATUS
+        // ----------------------------------------
+
+        const feedbackContainer =
+            document.getElementById(
+                "classroom-feedback-status"
+            );
+
+
+        if (feedbackContainer) {
+
+            const interactions =
+                data.classroomInteractions || [];
+
+
+            let html = `
+                <h2>
+                📊 My Classroom Feedback Status
+                </h2>
+            `;
+
+
+            if (interactions.length === 0) {
+
+                html += `
+                    <p>
+                    You have not sent any classroom feedback yet.
+                    </p>
+                `;
+
+            } else {
+
+                interactions.forEach((interaction) => {
+
+                    let label =
+                        interaction.interaction_type;
+
+
+                    if (interaction.interaction_type === "understand") {
+                        label = "👍 Understand";
+                    } else if (interaction.interaction_type === "not_sure") {
+                        label = "🤔 Not Sure";
+                    } else if (interaction.interaction_type === "need_help") {
+                        label = "🆘 Need Help";
+                    } else if (interaction.interaction_type === "repeat") {
+                        label = "🔁 Repeat";
+                    } else if (interaction.interaction_type === "raise_hand") {
+                        label = "✋ Raise Hand";
+                    }
+
+
+                    html += `
+                        <div style="margin-bottom: 15px;">
+
+                            <p>
+                                <strong>
+                                ${label}:
+                                </strong>
+                                ${interaction.created_at}
+                            </p>
+                    `;
+
+
+                    if (interaction.acknowledged_at) {
+
+                        html += `
+                            <p>
+                                <strong>
+                                ✅ Teacher Acknowledged:
+                                </strong>
+                                ${interaction.acknowledged_at}
+                            </p>
+                        `;
+
+                    } else {
+
+                        html += `
+                            <p>
+                                <em>
+                                Waiting for teacher acknowledgement.
+                                </em>
+                            </p>
+                        `;
+
+                    }
+
+
+                    html += `
+                        </div>
+                    `;
+
+                });
+
+            }
+
+
+            feedbackContainer.innerHTML =
+                html;
+
+        }
+
+
+        // ----------------------------------------
+        // REFRESH CLASSROOM MESSAGES
+        // ----------------------------------------
+
+        const messagesContainer =
+            document.getElementById(
+                "classroom-messages"
+            );
+
+
+        if (messagesContainer) {
+
+            const messages =
+                data.classroomMessages || [];
+
+
+            let html = `
+                <h2>
+                📨 My Classroom Messages
+                </h2>
+            `;
+
+
+            if (messages.length === 0) {
+
+                html += `
+                    <p>
+                    You have not sent any classroom messages yet.
+                    </p>
+                `;
+
+            } else {
+
+                messages
+                    .slice()
+                    .reverse()
+                    .forEach((message) => {
+
+                        html += `
+                            <div style="margin-bottom: 20px;">
+
+                                <p>
+                                    <strong>
+                                    Your Message:
+                                    </strong>
+                                    ${escapeHtml(message.message)}
+                                </p>
+
+                                <p>
+                                    <strong>
+                                    Sent:
+                                    </strong>
+                                    ${message.created_at}
+                                </p>
+                        `;
+
+
+                        if (message.teacher_response) {
+
+                            html += `
+                                <p>
+                                    <strong>
+                                    👨‍🏫 Teacher Response:
+                                    </strong>
+                                    ${escapeHtml(message.teacher_response)}
+                                </p>
+
+                                <p>
+                                    <strong>
+                                    Responded:
+                                    </strong>
+                                    ${message.responded_at}
+                                </p>
+                            `;
+
+                        } else {
+
+                            html += `
+                                <p>
+                                    <em>
+                                    Your teacher has not responded yet.
+                                    </em>
+                                </p>
+                            `;
+
+                        }
+
+
+                        html += `
+                            </div>
+                        `;
+
+                    });
+
+            }
+
+
+            messagesContainer.innerHTML =
+                html;
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Classroom status refresh failed:",
+            error
+        );
+
+    }
+
+}
+
+
+// Refresh every 5 seconds.
+
+setInterval(
+    refreshClassroomStatus,
+    5000
+);
+
+</script>
 
 </main>
 

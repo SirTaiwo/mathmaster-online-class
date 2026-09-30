@@ -45,6 +45,16 @@ router.get(
     classroomController.joinSession
 );
 
+// ========================================
+// STUDENT CLASSROOM STATUS
+// ========================================
+
+router.get(
+    "/student/courses/:courseId/classroom/status",
+    requireRole("student"),
+    classroomController.getStudentClassroomStatus
+);
+
 
 // ========================================
 // STUDENT CLASSROOM INTERACTION

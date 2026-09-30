@@ -672,3 +672,95 @@ exports.respondToMessage = (req, res) => {
     );
 
 };
+
+// ========================================
+// STUDENT CLASSROOM STATUS
+// ========================================
+
+exports.getStudentClassroomStatus = (req, res) => {
+
+    const studentId =
+        req.session.student.id;
+
+    const courseId =
+        Number(req.params.courseId);
+
+
+    const course =
+        Course.findById(courseId);
+
+
+    if (!course) {
+
+        return res.status(404).json({
+            success: false,
+            message: "Course not found."
+        });
+
+    }
+
+
+    const enrolled =
+        Enrollment.isStudentEnrolled(
+            studentId,
+            courseId
+        );
+
+
+    if (!enrolled) {
+
+        return res.status(403).json({
+            success: false,
+            message: "Access denied."
+        });
+
+    }
+
+
+    const activeSession =
+        ClassroomSession.findActiveByCourse(
+            courseId
+        );
+
+
+    if (!activeSession) {
+
+        return res.json({
+            success: true,
+            active: false,
+            classroomInteractions: [],
+            classroomMessages: []
+        });
+
+    }
+
+
+    const classroomInteractions =
+        ClassroomInteraction.findByStudentAndSession(
+            studentId,
+            activeSession.id
+        );
+
+
+    const classroomMessages =
+        ClassroomMessage.findByStudentAndSession(
+            studentId,
+            activeSession.id
+        );
+
+
+    res.json({
+
+        success: true,
+
+        active: true,
+
+        activeSession,
+
+        classroomInteractions,
+
+        classroomMessages
+
+    });
+
+};
