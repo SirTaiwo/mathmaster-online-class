@@ -4,6 +4,9 @@ const multer =
 const path =
     require("path");
 
+const { recordingsDirectory } =
+    require("../config/storage");
+
 
 // ========================================
 // MEDIA STORAGE
@@ -20,10 +23,7 @@ const storage =
 
             cb(
                 null,
-               path.join(
-    __dirname,
-    "../private/media/recordings"
-)
+                recordingsDirectory
             );
 
         },

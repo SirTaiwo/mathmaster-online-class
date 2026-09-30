@@ -1,5 +1,10 @@
 const express = require("express");
 const path = require("path");
+
+const {
+    recordingsDirectory,
+    materialsDirectory
+} = require("../config/storage");
 const fs = require("fs");
 
 const {
@@ -29,11 +34,6 @@ const router = express.Router();
 // PRIVATE RECORDING DIRECTORY
 // ========================================
 
-const recordingsDirectory =
-    path.join(
-        __dirname,
-        "../private/media/recordings"
-    );
 
 
 // ========================================
@@ -570,11 +570,7 @@ function streamLearningMaterial(
     }
 
 
-    const materialsDirectory =
-        path.join(
-            __dirname,
-            "../private/media/materials"
-        );
+
 
 
     const filename =

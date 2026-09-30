@@ -1,6 +1,8 @@
 const Database = require("better-sqlite3");
 
-const db = new Database("database/mathclass.db");
+const { databasePath } = require("../config/storage");
+
+const db = new Database(databasePath);
 
 
 // ========================================
