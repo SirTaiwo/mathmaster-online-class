@@ -7,8 +7,36 @@ async function createAdmin() {
 
     const firstName = "System";
     const lastName = "Administrator";
-    const email = "admin@mathmaster.com";
-    const password = "Admin@12345";
+
+    const email =
+        process.env.ADMIN_EMAIL;
+
+    const password =
+        process.env.ADMIN_PASSWORD;
+
+
+    // Validate required environment variables
+
+    if (!email || !password) {
+
+        console.error(`
+========================================
+Missing admin credentials
+========================================
+
+Please set:
+
+ADMIN_EMAIL
+ADMIN_PASSWORD
+
+before running this script.
+
+========================================
+        `);
+
+        process.exit(1);
+
+    }
 
 
     // Check if admin already exists
@@ -67,9 +95,6 @@ async function createAdmin() {
 
 Email:
 ${email}
-
-Password:
-${password}
 
 Role:
 admin
