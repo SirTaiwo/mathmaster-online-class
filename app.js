@@ -87,7 +87,8 @@ require("./routes/adminAttendance");
 
 const app = express();
 
-const PORT = 3000;
+const PORT =
+    process.env.PORT || 3000;
 
 
 // ========================================
@@ -134,19 +135,23 @@ app.use(
 app.use(
     session({
 
-        secret:
-            "mathmaster-secret-key",
+       secret:
+    process.env.SESSION_SECRET ||
+    "mathmaster-local-secret",
 
-        resave: false,
+resave: false,
 
-        saveUninitialized: false,
+saveUninitialized: false,
 
-        cookie: {
+cookie: {
 
-            maxAge:
-                1000 * 60 * 60
+    maxAge:
+        1000 * 60 * 60,
 
-        }
+    secure:
+        process.env.NODE_ENV === "production"
+
+}
 
     })
 );
