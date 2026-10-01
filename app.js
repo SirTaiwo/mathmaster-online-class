@@ -87,6 +87,14 @@ require("./routes/adminAttendance");
 
 const app = express();
 
+app.use((req, res, next) => {
+    res.setHeader(
+        "X-MathMaster-Deployment",
+        "e18871c"
+    );
+    next();
+});
+
 const PORT =
     process.env.PORT || 3000;
 
