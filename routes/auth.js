@@ -122,15 +122,9 @@ router.post("/register", async (req, res) => {
 // LOGIN PAGE
 // ========================================
 
-router.get("/login-debug", (req, res) => {
-    res.send("MATHMASTER DEBUG PATH 7d1f120");
-});
+
 
 router.get("/login", (req, res) => {
-
-    if (req.query.debug === "1") {
-        return res.send("MATHMASTER DEBUG DEPLOYMENT 95115fb");
-    }
 
     res.render("login", {
         error: null
@@ -150,30 +144,6 @@ router.post("/login", async (req, res) => {
         password
     } = req.body;
 
-    const loginDebug =
-    req.query.debug === "1";
-
-    console.log("LOGIN REQUEST BODY:", {
-    email: email,
-    passwordReceived: Boolean(password),
-    emailLength: email ? email.length : 0,
-    passwordLength: password ? password.length : 0
-});
-
-res.setHeader(
-    "X-Debug-Email-Length",
-    email ? String(email.length) : "0"
-);
-
-res.setHeader(
-    "X-Debug-Password-Received",
-    String(Boolean(password))
-);
-
-res.setHeader(
-    "X-Debug-Password-Length",
-    password ? String(password.length) : "0"
-);
 
 
     try {
@@ -182,18 +152,13 @@ res.setHeader(
 
         const student =
             Student.findByEmail(email);
-            console.log("========== LOGIN ==========");
-console.log("Email entered:", email);
-console.log("User found:", student);
+
 
 
        if (!student) {
 
     return res.render("login", {
-        error:
-            loginDebug
-                ? `DEBUG: emailLength=${email ? email.length : 0}, passwordReceived=${Boolean(password)}, passwordLength=${password ? password.length : 0}, userFound=false`
-                : "Invalid email or password."
+        error: "Invalid email or password."
     });
 
 }
@@ -206,25 +171,12 @@ console.log("User found:", student);
                 student.password
             );
 
-            res.setHeader(
-    "X-Debug-User-Found",
-    String(Boolean(student))
-);
-
-res.setHeader(
-    "X-Debug-Password-Correct",
-    String(passwordCorrect)
-);
-            console.log("Password correct:", passwordCorrect);
 
 
        if (!passwordCorrect) {
 
     return res.render("login", {
-        error:
-            loginDebug
-                ? `DEBUG: emailLength=${email ? email.length : 0}, passwordReceived=${Boolean(password)}, passwordLength=${password ? password.length : 0}, userFound=true, passwordCorrect=false`
-                : "Invalid email or password."
+        error: "Invalid email or password."
     });
 
 }
@@ -252,8 +204,6 @@ res.setHeader(
         student.role
 
 };
-console.log("Role:", student.role);
-
 
         // Go to dashboard
 
