@@ -149,6 +149,21 @@ router.post("/login", async (req, res) => {
     passwordLength: password ? password.length : 0
 });
 
+res.setHeader(
+    "X-Debug-Email-Length",
+    email ? String(email.length) : "0"
+);
+
+res.setHeader(
+    "X-Debug-Password-Received",
+    String(Boolean(password))
+);
+
+res.setHeader(
+    "X-Debug-Password-Length",
+    password ? String(password.length) : "0"
+);
+
 
     try {
 
@@ -178,6 +193,16 @@ console.log("User found:", student);
                 password,
                 student.password
             );
+
+            res.setHeader(
+    "X-Debug-User-Found",
+    String(Boolean(student))
+);
+
+res.setHeader(
+    "X-Debug-Password-Correct",
+    String(passwordCorrect)
+);
             console.log("Password correct:", passwordCorrect);
 
 
