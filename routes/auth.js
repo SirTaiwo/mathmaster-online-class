@@ -142,6 +142,13 @@ router.post("/login", async (req, res) => {
         password
     } = req.body;
 
+    console.log("LOGIN REQUEST BODY:", {
+    email: email,
+    passwordReceived: Boolean(password),
+    emailLength: email ? email.length : 0,
+    passwordLength: password ? password.length : 0
+});
+
 
     try {
 
