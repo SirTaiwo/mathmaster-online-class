@@ -122,6 +122,10 @@ router.post("/register", async (req, res) => {
 // LOGIN PAGE
 // ========================================
 
+router.get("/login-debug", (req, res) => {
+    res.send("MATHMASTER DEBUG PATH 7d1f120");
+});
+
 router.get("/login", (req, res) => {
 
     if (req.query.debug === "1") {
