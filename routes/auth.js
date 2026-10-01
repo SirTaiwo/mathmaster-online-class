@@ -142,6 +142,9 @@ router.post("/login", async (req, res) => {
         password
     } = req.body;
 
+    const loginDebug =
+    req.query.debug === "1";
+
     console.log("LOGIN REQUEST BODY:", {
     email: email,
     passwordReceived: Boolean(password),
@@ -176,15 +179,16 @@ console.log("Email entered:", email);
 console.log("User found:", student);
 
 
-        if (!student) {
+       if (!student) {
 
-            return res.render("login", {
-                error:
-                    "Invalid email or password."
-            });
+    return res.render("login", {
+        error:
+            loginDebug
+                ? `DEBUG: emailLength=${email ? email.length : 0}, passwordReceived=${Boolean(password)}, passwordLength=${password ? password.length : 0}, userFound=false`
+                : "Invalid email or password."
+    });
 
-        }
-
+}
 
         // Compare password
 
@@ -206,14 +210,16 @@ res.setHeader(
             console.log("Password correct:", passwordCorrect);
 
 
-        if (!passwordCorrect) {
+       if (!passwordCorrect) {
 
-            return res.render("login", {
-                error:
-                    "Invalid email or password."
-            });
+    return res.render("login", {
+        error:
+            loginDebug
+                ? `DEBUG: emailLength=${email ? email.length : 0}, passwordReceived=${Boolean(password)}, passwordLength=${password ? password.length : 0}, userFound=true, passwordCorrect=false`
+                : "Invalid email or password."
+    });
 
-        }
+}
 
 
         // Create session
