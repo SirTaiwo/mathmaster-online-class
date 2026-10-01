@@ -124,6 +124,10 @@ router.post("/register", async (req, res) => {
 
 router.get("/login", (req, res) => {
 
+    if (req.query.debug === "1") {
+        return res.send("MATHMASTER DEBUG DEPLOYMENT 95115fb");
+    }
+
     res.render("login", {
         error: null
     });
